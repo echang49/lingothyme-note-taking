@@ -1,0 +1,163 @@
+/* roboto-regular - latin */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: local(''),
+         url('../fonts/roboto-v20-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+}
+/* roboto-700 - latin */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    src: local(''),
+         url('../fonts/roboto-v20-latin-700.woff2') format('woff2'), /* Super Modern Browsers */
+}
+/* roboto-900 - latin */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 900;
+    src: local(''),
+         url('../fonts/roboto-v20-latin-900.woff2') format('woff2'), /* Super Modern Browsers */
+}
+
+//COMPISITION
+body {
+    background-color: #FAFAFA;
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0;
+}
+
+//UTILITY
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 30px;
+    letter-spacing: 1px;
+    .primary-button, .secondary-button {
+        all: unset;
+        padding: 15px 45px;
+        color: #FFFFFF;
+        cursor: pointer;
+        margin: 20px 0;
+        border-radius: 50px;
+    }
+    .primary-button {
+        background-color: #467AFF;
+        margin-right: 20px;
+        &:hover {
+            background-color: #1F7AFF;
+        }
+    }
+    .secondary-button {
+        background-color: #FF4444;
+        &:hover {
+            background-color: #DD4444;
+        }
+    }
+}
+
+.title {
+    font-size: 35px;
+    font-weight: 900;
+    text-align: center;
+}
+
+//BLOCK
+.enterRoom {
+    flex-direction: column;
+    height: 100vh;
+    .input {
+        display: flex;
+        flex-direction: column;
+        label {
+            font-size: 20px;
+            color: #2AA11F;
+            margin-bottom: 5px;
+        }
+        input {
+            border-radius: 25px;
+            line-height: 1.5rem;
+            padding: 10px 20px;
+            font-size: 20px;
+            outline: none;
+            border: 2px solid #2AA11F;
+        }
+    }
+}
+
+.createRoom {
+    .title {
+        color: #2AA11F;
+    }
+    img {
+        margin: 50px;
+    }
+    .flex-column {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .input {
+            display: flex;
+            flex-direction: column;
+            margin: 10px 0;
+            label {
+                font-size: 20px;
+                color: #2AA11F;
+                margin-bottom: 5px;
+            }
+            input[type=text] {
+                border-radius: 25px;
+                line-height: 1.5rem;
+                padding: 10px 20px;
+                font-size: 20px;
+                outline: none;
+                border: 2px solid #2AA11F;
+                width: 30vw;
+            }
+            textarea {
+                border-radius: 25px;
+                line-height: 1.5rem;
+                padding: 10px 20px;
+                font-size: 20px;
+                outline: none;
+                border: 2px solid #2AA11F;
+                width: 30vw;
+            }
+            .range {
+                width: calc(30vw + 40px);
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                input[type=range] {
+                    width: 30vw;
+                }
+                .range-value {
+                    font-size: 20px;
+                }
+            }
+            .flow {
+                width: calc(30vw + 40px);
+            }
+            input[type=date] {
+                width: calc(30vw + 40px);
+            }
+            .buttons {
+                width: calc(30vw + 40px);
+            }
+        }
+    }
+}
+
+//EXCEPTION

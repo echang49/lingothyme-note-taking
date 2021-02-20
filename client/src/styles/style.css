@@ -1,0 +1,216 @@
+/* roboto-regular - latin */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: local(""), url("../fonts/roboto-v20-latin-regular.woff2") format("woff2");
+}
+
+/* roboto-700 - latin */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  src: local(""), url("../fonts/roboto-v20-latin-700.woff2") format("woff2");
+}
+
+/* roboto-900 - latin */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 900;
+  src: local(""), url("../fonts/roboto-v20-latin-900.woff2") format("woff2");
+}
+
+body {
+  background-color: #FAFAFA;
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.center {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.buttons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  font-size: 30px;
+  letter-spacing: 1px;
+}
+
+.buttons .primary-button, .buttons .secondary-button {
+  all: unset;
+  padding: 15px 45px;
+  color: #FFFFFF;
+  cursor: pointer;
+  margin: 20px 0;
+  border-radius: 50px;
+}
+
+.buttons .primary-button {
+  background-color: #467AFF;
+  margin-right: 20px;
+}
+
+.buttons .primary-button:hover {
+  background-color: #1F7AFF;
+}
+
+.buttons .secondary-button {
+  background-color: #FF4444;
+}
+
+.buttons .secondary-button:hover {
+  background-color: #DD4444;
+}
+
+.title {
+  font-size: 35px;
+  font-weight: 900;
+  text-align: center;
+}
+
+.enterRoom {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: 100vh;
+}
+
+.enterRoom .input {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.enterRoom .input label {
+  font-size: 20px;
+  color: #2AA11F;
+  margin-bottom: 5px;
+}
+
+.enterRoom .input input {
+  border-radius: 25px;
+  line-height: 1.5rem;
+  padding: 10px 20px;
+  font-size: 20px;
+  outline: none;
+  border: 2px solid #2AA11F;
+}
+
+.createRoom .title {
+  color: #2AA11F;
+}
+
+.createRoom img {
+  margin: 50px;
+}
+
+.createRoom .flex-column {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.createRoom .flex-column .input {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin: 10px 0;
+}
+
+.createRoom .flex-column .input label {
+  font-size: 20px;
+  color: #2AA11F;
+  margin-bottom: 5px;
+}
+
+.createRoom .flex-column .input input[type=text] {
+  border-radius: 25px;
+  line-height: 1.5rem;
+  padding: 10px 20px;
+  font-size: 20px;
+  outline: none;
+  border: 2px solid #2AA11F;
+  width: 30vw;
+}
+
+.createRoom .flex-column .input textarea {
+  border-radius: 25px;
+  line-height: 1.5rem;
+  padding: 10px 20px;
+  font-size: 20px;
+  outline: none;
+  border: 2px solid #2AA11F;
+  width: 30vw;
+}
+
+.createRoom .flex-column .input .range {
+  width: calc(30vw + 40px);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.createRoom .flex-column .input .range input[type=range] {
+  width: 30vw;
+}
+
+.createRoom .flex-column .input .range .range-value {
+  font-size: 20px;
+}
+
+.createRoom .flex-column .input .flow {
+  width: calc(30vw + 40px);
+}
+
+.createRoom .flex-column .input input[type=date] {
+  width: calc(30vw + 40px);
+}
+
+.createRoom .flex-column .input .buttons {
+  width: calc(30vw + 40px);
+}
+/*# sourceMappingURL=style.css.map */

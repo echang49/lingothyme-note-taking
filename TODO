@@ -1,0 +1,57 @@
+DEVELOP SYSTEM WHERE STUDENTS CAN WRITE ON THE PLATFORM AND THEN DOWNLOAD IT
+
+Create room codes and then allow students to make Websocket
+Take from last year websocket project but adapt it to my needs.
+Create two different codes. One for the normal user priveleges EX: CODE - ABCDE and one for admin user priveleges EX: ABCDE-1A4G4
+When someone joins a room, it will first pull everything from the database
+When a note is updated, send to everyone on websocket and send to the database as well
+When the admin says that the room is done, a pdf will be made of the contents and sent to the admin
+Allow admin to create room
+
+FRONTEND
+
+Admin Room Create Page
+Admin Room View
+User Room View
+
+BACKEND
+    Access Code Page
+        If access code exists, bring to room. If not, give warning
+    Admin Room Create Page
+        Allow user to add question/note on top left
+        Allow user to set participant numbers
+        User must send their email
+        Allow user to choose the flow of events (currently will only be brainstorm, paragraph writing)
+        Set date of discussion (Room will expire the day after if not used. Cannot set rooms after 1 month of today)
+        After, give public code and admin code
+    Admin Room View
+        Allow admin to have all permissions of the user
+        Allow admin to change event stage (Brainstorm to Paragraph Writing to End)
+        On end, the information in the database is packaged as a PDF and sent to admin user email
+
+DATABASE 
+    On saving something, it is sent to database?
+    People can only edit their own stuff. 
+
+MISC
+    Make perpetual license contract with shubham. Shubham can use his code freely, can't use it to build a competing product. Can have copy of the project codebase for personal reasons.
+
+FUTURE:
+    Make Responsive
+    Allow viewers to join with a /view/VIEWCODE where code might be ABCDE and VIEWCODE might be EDCBA
+
+DONE:
+Create Access Code Page
+Create Admin Login USERNAME: LingoThyme PASSWORD: IrisNanEdward (Basic security for now since we'll open it up later)
+
+SCHEMA ROOM 
+    RoomID:
+    UserIds:
+    Question:
+    Discussion Date:
+    AdminEMail:
+    BrainStormDocs: [],
+    ParagraphWritingDocs: [],
+
+FIGMA:
+    https://www.figma.com/file/3YarfpSBa2UJPEWGDe1W1w/Lingo-Thyme-Platform?node-id=0%3A1
