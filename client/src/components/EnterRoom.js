@@ -12,7 +12,7 @@ function EnterRoom() {
 
   return (
     <div className="enterRoom center">
-      <img src={Logo} height="250px"/>
+      <img src={Logo} alt="LingoThyme logo" height="250px"/>
       <div className="input">
         <label>Room Code:</label>
         <input type="text" ref={textInput} />

@@ -39,6 +39,7 @@ MISC
 FUTURE:
     Make Responsive
     Allow viewers to join with a /view/VIEWCODE where code might be ABCDE and VIEWCODE might be EDCBA
+    Ensure state change with redux
 
 DONE:
 Create Access Code Page
