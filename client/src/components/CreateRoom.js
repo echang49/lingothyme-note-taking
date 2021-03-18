@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import axios from "axios";
 import "../styles/style.css";
 import Logo from "../assets/main-logo.png";
 
@@ -25,7 +26,39 @@ function CreateRoom() {
   }
 
   function handleClick() {
+    let emailBool = emailIsValid(emailInput.current.value);
+    if(emailBool) {
+      if(questionInput.current.value !== "") {
+        let date = new Date(dateInput.current.value);
+        date.setDate(date.getDate() + 1); //add 1 day to the date of discussion for leeway
+        let data = {
+          email: emailInput.current.value,
+          number: numberInput.current.value,
+          question: questionInput.current.value,
+          date: date
+        }
+        axios.post('/api/auth/createRoom', data)
+          .then((res) => {
+            let { publicKey, privateKey } = res.data;
+            alert("Your public key is: " + publicKey + ". \nYour private key is: " + privateKey + ". \n\nYour public key is for the participants of the room and the private key is for you." +
+            " To use the private key on the home page, enter the code as \"" + publicKey + "-" + privateKey + "\". \n\n NOTE: YOUR ROOM EXPIRES " + (date.getMonth() + 1) + "-" + (date.getDate() + 1) + "-" + date.getFullYear() + " AT MIDNIGHT EST/EDT.");
+          })
+          .catch((err) => {
+            alert(err);
+        })
+      }
+      else {
+        alert("Please enter a question.");
+      }
+    }
+    else {
+      alert("Please enter a valid email address.");
+    }
+  }
 
+  //utility function to test validity of email
+  function emailIsValid (email) {
+    return /\S+@\S+\.\S+/.test(email)
   }
 
   function changeNumber() {
