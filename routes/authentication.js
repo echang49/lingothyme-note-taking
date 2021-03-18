@@ -46,4 +46,87 @@ router.post('/createRoom', (req, res) => {
     makeRoom(publicKey, privateKey, email, number, question, date, res);   
 });
 
+router.post('/enterRoom', (req, res) => {
+    let { code } = req.body;
+    let normalCode, adminCode;
+    //if code has - go to admin half, if it doesn't continue on normal
+    if(code.includes("-")) {
+        code = code.split("-");
+        normalCode = code[0];
+        adminCode = code[1];
+    }
+    else {
+        normalCode = code;
+    }
+    //if code not of proper length or it is an admin and that code is not of proper length.
+    if((normalCode.length !== 5) || (adminCode !== undefined && adminCode.length !== 5)) {
+        return res.send([false]);
+    }
+    //not an admin
+    if(adminCode === undefined) {
+        Room.findOne({publicKey: normalCode})
+        .then(room => {
+            if(room) {
+                return res.send([true, false]);
+            }
+            else {
+                return res.send([false]);
+            }
+        });
+    }
+    else {
+        Room.findOne({publicKey: normalCode, privateKey: adminCode})
+        .then(room => {
+            if(room) {
+                return res.send([true, true]);
+            }
+            else {
+                return res.send([false]);
+            }
+        });
+    }
+});
+
+router.post('/verifyUser', (req, res) => {
+   let { location } = req.body;
+   //split ?id=. if the result is length 5, look for the code.
+   let code = location.split("?id=")[1];
+   if(code !== undefined && code.length === 5) {
+        Room.findOne({publicKey: code})
+        .then(room => {
+            if(room) {
+                return res.send(true);
+            }
+            else {
+                return res.send(false);
+            }
+        });
+   }
+   else {
+        return res.send(false);
+   }
+});
+
+router.post('/verifyAdmin', (req, res) => {
+    let { location } = req.body;
+    //split ?id=. if the result is length 5, look for the code.
+    location = location.split("?id=")[1].split("-");
+    let normalCode = location[0];
+    let adminCode = location[1];
+    if(normalCode !== undefined && normalCode.length === 5 && adminCode !== undefined && adminCode.length === 5) {
+        Room.findOne({publicKey: normalCode, privateKey: adminCode})
+        .then(room => {
+            if(room) {
+                return res.send(true);
+            }
+            else {
+                return res.send(false);
+            }
+        });
+    }
+    else {
+         return res.send(false);
+    }
+ });
+
 module.exports = router;

@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import "../styles/style.css";
 import Logo from "../assets/main-logo.png";
@@ -108,8 +109,8 @@ function CreateRoom() {
               <input type="date" ref={dateInput} onChange={() => changeDate()}/>
             </div>
             <div className="buttons">
-              <button className="primary-button" onClick={() => handleClick()} >CREATE</button>
-              <a className="secondary-button" href="/">CANCEL</a>
+              <button className="primary-button" onClick={() => handleClick()}>CREATE</button>
+              <Link className="secondary-button" to="/">CANCEL</Link>
             </div>
           </div>
         </div>
@@ -125,7 +126,7 @@ function CreateRoom() {
             <input type="password" ref={passInput} />
             <div className="buttons">
               <button className="primary-button" onClick={() => handleFirstClick()} >LOGIN</button>
-              <a className="secondary-button" href="/">RETURN</a>
+              <Link className="secondary-button" to="/">RETURN</Link>
             </div>
           </div>
         </div>
