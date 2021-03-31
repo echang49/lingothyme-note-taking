@@ -213,4 +213,15 @@ body {
 .createRoom .flex-column .input .buttons {
   width: calc(30vw + 40px);
 }
+
+.questions {
+  all: unset;
+  background-color: #2AA11F;
+  padding: 50px;
+  border-radius: 20px;
+}
+
+.testing {
+  padding: 100px 200px;
+}
 /*# sourceMappingURL=style.css.map */

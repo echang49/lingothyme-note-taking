@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Redirect, useLocation } from "react-router-dom"; 
 import axios from "axios";
+import Question from "./viewComponents/question";
 
 
 function EditorView() {
@@ -24,8 +25,9 @@ function EditorView() {
         <div>
             {
                 bool ?
-                    <div>
+                    <div className="testing">
                         <p>EDITOR VIEW</p>
+                        <Question />
                     </div>
                 :
                     <Redirect to="/" />
