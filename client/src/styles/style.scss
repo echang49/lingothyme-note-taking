@@ -201,6 +201,26 @@ body {
     }
 }
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+.questions {
+    background-color: #FFF;
+    width: 550px;
+    height: 100px;
+    padding: 20px 50px;
+    border-radius: 100px;
+    box-shadow: 4px 4px 7px 2px #ccc;        
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    img {
+        margin-right: 20px;
+    }
+    p {
+        font-size: 18px;
+=======
+>>>>>>> Stashed changes
 .brainstorming {
     all: unset;
     padding: 20px;
@@ -216,11 +236,11 @@ body {
     } 
     &::-webkit-scrollbar-thumb {
         background-color: #000000;
+<<<<<<< Updated upstream
+=======
+>>>>>>> 05a8e7bbb1aca0d1d6c9f05fded123e493af4fc6
+>>>>>>> Stashed changes
     }
 }
 
 //EXCEPTION
-
-.testing {
-    padding: 100px 200px;
-}
