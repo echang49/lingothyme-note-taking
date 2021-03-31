@@ -246,6 +246,33 @@ body {
   width: calc(30vw + 40px);
 }
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+.questions {
+  background-color: #FFF;
+  width: 550px;
+  height: 100px;
+  padding: 20px 50px;
+  border-radius: 100px;
+  -webkit-box-shadow: 4px 4px 7px 2px #ccc;
+          box-shadow: 4px 4px 7px 2px #ccc;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.questions img {
+  margin-right: 20px;
+=======
+>>>>>>> Stashed changes
 .brainstorming {
   all: unset;
   padding: 20px;
@@ -265,9 +292,13 @@ body {
 
 .brainstorming::-webkit-scrollbar-thumb {
   background-color: #000000;
+<<<<<<< Updated upstream
+=======
+>>>>>>> 05a8e7bbb1aca0d1d6c9f05fded123e493af4fc6
+>>>>>>> Stashed changes
 }
 
-.testing {
-  padding: 100px 200px;
+.questions p {
+  font-size: 18px;
 }
 /*# sourceMappingURL=style.css.map */
