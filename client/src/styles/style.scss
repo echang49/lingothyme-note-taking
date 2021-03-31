@@ -23,15 +23,6 @@
          url('../fonts/roboto-v20-latin-900.woff2') format('woff2'), /* Super Modern Browsers */
 }
 
-$color-1: #FBE0B7; 
-$color-2: #787BDA; 
-$color-3: #F27C4A; 
-$color-4: #F893B2; 
-$color-5: #A4DCFC; 
-$color-6: #11C7AA; 
-$color-7: #FFE55B; 
-$color-8: #D3D3D3; 
-
 //COMPISITION
 body {
     background-color: #FAFAFA;
@@ -81,38 +72,6 @@ body {
     font-size: 35px;
     font-weight: 900;
     text-align: center;
-}
-
-.color-1 {
-    background-color: $color-1!important;
-}
-
-.color-2 {
-    background-color: $color-2!important;
-}
-
-.color-3 {
-    background-color: $color-3!important;
-}
-
-.color-4 {
-    background-color: $color-4!important;
-}
-
-.color-5 {
-    background-color: $color-5!important;
-}
-
-.color-6 {
-    background-color: $color-6!important;
-}
-
-.color-7 {
-    background-color: $color-7!important;
-}
-
-.color-8 {
-    background-color: $color-8!important;
 }
 
 //BLOCK
@@ -201,9 +160,6 @@ body {
     }
 }
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
 .questions {
     background-color: #FFF;
     width: 550px;
@@ -219,28 +175,11 @@ body {
     }
     p {
         font-size: 18px;
-=======
->>>>>>> Stashed changes
-.brainstorming {
-    all: unset;
-    padding: 20px;
-    height: 125px;
-    border-radius: 7px;
-    &::-webkit-scrollbar-track {
-        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-        background-color: #F5F5F5;
-    }
-    &::-webkit-scrollbar {
-        width: 6px;
-        background-color: #F5F5F5;
-    } 
-    &::-webkit-scrollbar-thumb {
-        background-color: #000000;
-<<<<<<< Updated upstream
-=======
->>>>>>> 05a8e7bbb1aca0d1d6c9f05fded123e493af4fc6
->>>>>>> Stashed changes
     }
 }
 
 //EXCEPTION
+
+.testing {
+    padding: 100px 200px;
+}
