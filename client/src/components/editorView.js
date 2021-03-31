@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { Redirect, useLocation } from "react-router-dom"; 
 import axios from "axios";
-import Brainstorm from "./viewComponents/brainstormResponse";
+import Question from "./viewComponents/question";
 
 
 function EditorView() {
     const location = useLocation().search;
     const [bool, setBool] = useState(true);
-    const [userID, setUserID] = useState(3);
 
     useEffect(() => {
         console.log(location);
@@ -28,7 +27,7 @@ function EditorView() {
                 bool ?
                     <div className="testing">
                         <p>EDITOR VIEW</p>
-                        <Brainstorm userID={userID} />
+                        <Question />
                     </div>
                 :
                     <Redirect to="/" />
