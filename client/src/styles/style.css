@@ -23,7 +23,7 @@
 }
 
 body {
-  background-color: #FAFAFA;
+  background-color: #E9EDF5;
   font-family: 'Roboto', sans-serif;
   font-size: 15px;
   font-weight: 700;
@@ -63,20 +63,20 @@ body {
   color: #FFFFFF;
   cursor: pointer;
   margin: 20px 0;
-  border-radius: 50px;
+  border-radius: 5px;
 }
 
 .buttons .primary-button {
-  background-color: #467AFF;
+  background-color: #5B8AFD;
   margin-right: 20px;
 }
 
 .buttons .primary-button:hover {
-  background-color: #1F7AFF;
+  background-color: #3564da;
 }
 
 .buttons .secondary-button {
-  background-color: #FF4444;
+  background-color: #FF7C7C;
 }
 
 .buttons .secondary-button:hover {
@@ -109,7 +109,7 @@ body {
 
 .enterRoom .input label {
   font-size: 20px;
-  color: #2AA11F;
+  color: #6bb363;
   margin-bottom: 5px;
 }
 
@@ -119,7 +119,7 @@ body {
   padding: 10px 20px;
   font-size: 20px;
   outline: none;
-  border: 2px solid #2AA11F;
+  border: 2px solid #6bb363;
 }
 
 .createRoom .title {
@@ -214,14 +214,100 @@ body {
   width: calc(30vw + 40px);
 }
 
+.userView nav {
+  background-color: #6C93FC;
+  height: 64px;
+  padding: 0 50px;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 10vw 20vw auto 20vw 10vw;
+      grid-template-columns: 10vw 20vw auto 20vw 10vw;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.userView nav p {
+  margin: 0;
+  color: #FAFAFA;
+}
+
+.userView nav .nav-roomphase {
+  font-size: 24px;
+  letter-spacing: 0.5px;
+}
+
+.userView nav .nav-center {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.userView nav .nav-center .note-icon:hover {
+  cursor: pointer;
+}
+
+.userView nav .nav-end {
+  -ms-grid-column: 5;
+      grid-column-start: 5;
+  grid-column-end: 6;
+  -ms-grid-column-align: end;
+      justify-self: end;
+}
+
+.userView nav .nav-end button {
+  all: unset;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: #ffffff00;
+  font-size: 22px;
+  font-weight: 400;
+  color: #FAFAFA;
+  border: 2px solid #FAFAFA;
+  border-radius: 4px;
+  padding: 7px 15px;
+}
+
+.userView nav .nav-end button p {
+  margin-right: 10px;
+}
+
+.userView nav .nav-end button:hover {
+  cursor: pointer;
+  background-color: #FAFAFA;
+}
+
+.userView nav .nav-end button:hover p {
+  color: #666666;
+}
+
+.userView nav .nav-end button:hover svg path {
+  stroke: #666666 !important;
+}
+
 .questions {
   background-color: #FFF;
   width: 550px;
   height: 100px;
   padding: 20px 50px;
-  border-radius: 100px;
-  -webkit-box-shadow: 4px 4px 7px 2px #ccc;
-          box-shadow: 4px 4px 7px 2px #ccc;
+  border-radius: 20px;
+  -webkit-box-shadow: 0px 0px 0px 3px #5B8AFD;
+          box-shadow: 0px 0px 0px 3px #5B8AFD;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -240,6 +326,11 @@ body {
 
 .questions p {
   font-size: 18px;
+}
+
+.questions h1 {
+  font-size: 32px;
+  color: #666666;
 }
 
 .testing {
