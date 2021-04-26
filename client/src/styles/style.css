@@ -300,14 +300,97 @@ body {
   stroke: #666666 !important;
 }
 
+.userView .body {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: auto 15vw;
+      grid-template-columns: auto 15vw;
+  height: calc(100vh - 64px);
+}
+
+.userView .body .canvas {
+  -ms-grid-column: 1;
+      grid-column-start: 1;
+  grid-column-end: 2;
+}
+
+.userView .body .userList {
+  -ms-grid-column: 2;
+      grid-column-start: 2;
+  grid-column-end: 3;
+  background-color: #F0F0F0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.userView .body .userList .userList-header {
+  background-color: #CCCCCC;
+  height: 64px;
+  padding: 0 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.userView .body .userList .userList-header p {
+  margin: 0;
+  font-size: 18px;
+  color: #666666;
+  font-weight: bold;
+}
+
+.userView .body .userList .userList-body {
+  padding: 0 25px;
+}
+
 .questions {
-  background-color: #FFF;
+  background-color: #FAFAFA;
+  border: 4px solid #5B8AFD;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-radius: 16px;
   width: 550px;
-  height: 100px;
-  padding: 20px 50px;
-  border-radius: 20px;
-  -webkit-box-shadow: 0px 0px 0px 3px #5B8AFD;
-          box-shadow: 0px 0px 0px 3px #5B8AFD;
+  padding: 25px 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.questions p {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 23px;
+  margin-bottom: 0;
+}
+
+.questions h1 {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 28px;
+  color: #666666;
+  margin: 0;
+}
+
+.users {
+  background-color: #FAFAFA;
+  border-radius: 8px;
+  height: 64px;
+  margin: 10px 0;
+  padding: 0 15px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -320,17 +403,11 @@ body {
           align-items: center;
 }
 
-.questions img {
-  margin-right: 20px;
-}
-
-.questions p {
-  font-size: 18px;
-}
-
-.questions h1 {
-  font-size: 32px;
-  color: #666666;
+.users p {
+  font-size: 16px;
+  color: #999999;
+  font-weight: bold;
+  padding: 0 20px;
 }
 
 .testing {
