@@ -23,23 +23,26 @@ function EditorView() {
     const nameInput = useRef(null);
     const location = useLocation().search;
     const [bool, setBool] = useState(true);
-    const [phase1, setPhase1] = useState(true);
+    const [nameState, setNameState] = useState(true);
+    const [phase, setPhase] = useState(1);
 
     useEffect(() => {
         console.log(location);
         axios.post('/api/auth/verifyUser', {location})
         .then((res) => {
-            if(!res.data) {
+            if(!res.data[0]) {
                 setBool(false);
             }
-            const name = JSON.parse(localStorage.getItem('name'));
+            const localStorageName = JSON.parse(localStorage.getItem('name'));
             const currentTime = Date.now();;
             //see if name exists or is expired
-            if(name !== null) {
-                if(new Date(name[1]).getTime() > currentTime) {
-                    setPhase1(false);
+            if(localStorageName !== null) {
+                if(new Date(localStorageName[1]).getTime() > currentTime) {
+                    setNameState(false);
                 } 
             }
+            setPhase(res.data[1]);
+            //find out what phase we're in => Let verifyUser also get the phase
         })
         .catch((err) => {
             alert(err);
@@ -51,28 +54,55 @@ function EditorView() {
         const tomorrow = new Date(today);
         tomorrow.setDate(tomorrow.getDate() + 1);
         localStorage.setItem('name', JSON.stringify([name, tomorrow]));
-        setPhase1(false);
+        setNameState(false);
     }
 
-    return (
-        <div>
-            {
-                bool ?
-                    <div className="userView">
-                        {
-                            phase1 ?
-                                <div className="phase1 center">
-                                    <img src={ColorLogo} alt="LingoThyme logo" height="250px"/>
-                                    <div className="input">
+    if(nameState === true) {
+        return(
+            <div>
+                {
+                    bool ?
+                        <div className="userView">
+                            <div className="nameState center">
+                                <img src={ColorLogo} alt="LingoThyme logo" height="250px"/>
+                                <div className="input">
                                     <label>Please Enter Your Name:</label>
                                     <input type="text" ref={nameInput} />
                                     <div className="buttons">
                                         <button className="primary-button" onClick={() => setName(nameInput.current.value)}>Continue</button>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    :
+                    <Redirect to="/" />
+                }
+            </div>
+        );
+    }
+    else {
+        switch(phase) {
+            case 1:
+                return(
+                    <div>
+                        {
+                            bool ?
+                                <div className="userView">
+                                    <div className="phase1 center">
+                                        <p className="title">The admin did not start the session yet.<br />Please hold tight while they prepare the session.</p>
                                     </div>
                                 </div>
                             :
-                                <div>
+                            <Redirect to="/" />
+                        }
+                    </div>
+                );
+            case 2:
+                return(
+                    <div>
+                        {
+                            bool ?
+                                <div className="userView">
                                     <nav>
                                         <span className="nav-start">
                                             <Logo />
@@ -114,16 +144,14 @@ function EditorView() {
                                         </div>
                                     </div>
                                 </div>
+                            :
+                            <Redirect to="/" />
                         }
-                        
-
-                        {/**Have 4 different components. Meeting has not started, brainstorming, collaborative writing, meeting has finished */}
                     </div>
-                :
-                    <Redirect to="/" />
-            }
-         </div>
-    );
+                );
+        }
+    }
+
 }
     
 export default EditorView;

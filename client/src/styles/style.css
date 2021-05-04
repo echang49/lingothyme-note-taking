@@ -351,7 +351,7 @@ body {
   padding: 0 25px;
 }
 
-.userView .phase1 {
+.userView .nameState {
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
@@ -359,7 +359,7 @@ body {
   height: 100vh;
 }
 
-.userView .phase1 .input {
+.userView .nameState .input {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -369,13 +369,13 @@ body {
           flex-direction: column;
 }
 
-.userView .phase1 .input label {
+.userView .nameState .input label {
   font-size: 20px;
   color: #6bb363;
   margin-bottom: 5px;
 }
 
-.userView .phase1 .input input {
+.userView .nameState .input input {
   border-radius: 25px;
   line-height: 1.5rem;
   padding: 10px 20px;
@@ -384,14 +384,27 @@ body {
   border: 2px solid #6bb363;
 }
 
-.userView .phase1 .input .buttons {
+.userView .nameState .input .buttons {
   -ms-flex-item-align: center;
       -ms-grid-row-align: center;
       align-self: center;
 }
 
-.userView .phase1 .input .buttons button {
+.userView .nameState .input .buttons button {
   margin-right: 0;
+}
+
+.userView .phase1 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  height: 100vh;
 }
 
 .questions {

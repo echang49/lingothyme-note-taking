@@ -255,7 +255,7 @@ body {
             }
         }
     }
-    .phase1 {
+    .nameState {
         flex-direction: column;
         height: 100vh;
         .input {
@@ -282,6 +282,12 @@ body {
                 }
             }
         }
+    }
+    .phase1 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
     }
 }
 

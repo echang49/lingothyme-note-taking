@@ -28,7 +28,8 @@ function makeRoom(publicKey, privateKey, email, number, question, date, res) {
                 email,
                 capacity: number,
                 question,
-                date
+                date,
+                "phase": 1
             });
         
             newRoom.save().then().catch(err => console.log(err));
@@ -95,10 +96,11 @@ router.post('/verifyUser', (req, res) => {
         Room.findOne({publicKey: code})
         .then(room => {
             if(room) {
-                return res.send(true);
+                console.log(room);
+                return res.send([true, room.phase]);
             }
             else {
-                return res.send(false);
+                return res.send([false]);
             }
         });
    }
