@@ -351,6 +351,49 @@ body {
   padding: 0 25px;
 }
 
+.userView .phase1 {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: 100vh;
+}
+
+.userView .phase1 .input {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.userView .phase1 .input label {
+  font-size: 20px;
+  color: #6bb363;
+  margin-bottom: 5px;
+}
+
+.userView .phase1 .input input {
+  border-radius: 25px;
+  line-height: 1.5rem;
+  padding: 10px 20px;
+  font-size: 20px;
+  outline: none;
+  border: 2px solid #6bb363;
+}
+
+.userView .phase1 .input .buttons {
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+}
+
+.userView .phase1 .input .buttons button {
+  margin-right: 0;
+}
+
 .questions {
   background-color: #FAFAFA;
   border: 4px solid #5B8AFD;
