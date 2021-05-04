@@ -1,5 +1,3 @@
-import Flag from "../../assets/english_flag.png";
-
 function Question() {
     return (
         <div className="questions">
