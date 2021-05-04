@@ -26,6 +26,8 @@ function EditorView() {
     const [nameState, setNameState] = useState(true);
     const [phase, setPhase] = useState(1);
 
+    var socket = io.connect('http://localhost:5000');
+
     useEffect(() => {
         console.log(location);
         axios.post('/api/auth/verifyUser', {location})
@@ -39,10 +41,10 @@ function EditorView() {
             if(localStorageName !== null) {
                 if(new Date(localStorageName[1]).getTime() > currentTime) {
                     setNameState(false);
-                } 
+                    socket.emit('new-user', location, localStorageName[0]);
+                }
             }
             setPhase(res.data[1]);
-            //find out what phase we're in => Let verifyUser also get the phase
         })
         .catch((err) => {
             alert(err);
@@ -56,6 +58,14 @@ function EditorView() {
         localStorage.setItem('name', JSON.stringify([name, tomorrow]));
         setNameState(false);
     }
+
+    socket.on('user-connected', (data) => {
+        //data is user name and id
+    })
+
+    socket.on('phase_change', (data) =>  {
+        setPhase(data);
+    });
 
     if(nameState === true) {
         return(
@@ -151,6 +161,8 @@ function EditorView() {
                 );
         }
     }
+
+
 
 }
     

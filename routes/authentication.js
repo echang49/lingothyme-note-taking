@@ -1,3 +1,4 @@
+const fs = require('fs');
 const express = require('express')
 const router  = express.Router();
 const Room = require('../models/Rooms');
@@ -96,7 +97,12 @@ router.post('/verifyUser', (req, res) => {
         Room.findOne({publicKey: code})
         .then(room => {
             if(room) {
-                console.log(room);
+                let rawdata = fs.readFileSync('./config/rooms.json');
+                let rooms = JSON.parse(rawdata);
+                if(rooms[code] == null){
+                    rooms[code] = { users: {} };
+                    fs.writeFileSync('config/rooms.json', JSON.stringify(rooms));
+                }
                 return res.send([true, room.phase]);
             }
             else {

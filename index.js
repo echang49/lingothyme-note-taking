@@ -3,6 +3,7 @@ const express = require('express'); //Backend framework
 const path = require('path'); //Path points to different places
 const dotenv = require('dotenv'); //dotenv is for storing session secrets
 const connectDB = require('./config/db'); //file to connect to MongoDB Atlas
+const fs = require('fs');
 const http = require('http').Server(express); //nodejs http dependency
 const io = require('socket.io')(http); //socket.io over http for "live-editing"
 const cors = require('cors'); //cross origin resource sharing
@@ -65,30 +66,38 @@ const job = schedule.scheduleJob('0 0 * * *', () => {
 io.sockets.on('connection', (socket) => {
     socket.on('new-user', (room, name) => {
         socket.join(room);
+        let rawdata = fs.readFileSync('./config/rooms.json');
+        let rooms = JSON.parse(rawdata);
         if (!rooms[room]) rooms[room] = {users: {}};
-        rooms[room].users[socket.id] = name;
-        socket.to(room).broadcast.emit('user-connected', name + ' has joined the chatroom');
+        let ids = [1,2,3,4,5,6,7,8]
+        //only unique ids left
+        for(let i of rooms[room].users) {
+            ids.splice(ids.indexOf(i[1]),1);
+        }
+        rooms[room].users[socket.id] = [name, ids[0]];
+        fs.writeFileSync('config/rooms.json', JSON.stringify(rooms));
+        socket.to(room).broadcast.emit('user-connected', [name, id]);
     })
 
     //disconnect the users from the room
-    socket.on('disconnect', () => {
-        for(const room in rooms) {
-            if (rooms[room].users[socket.id]) {
-                const name = rooms[room].users[socket.id];
-                socket.to(room).broadcast.emit('user-disconnected', name + ' has left the chatroom');
-                delete rooms[room].users[socket.id];
+    // socket.on('disconnect', () => {
+    //     for(const room in rooms) {
+    //         if (rooms[room].users[socket.id]) {
+    //             const name = rooms[room].users[socket.id];
+    //             socket.to(room).broadcast.emit('user-disconnected', name + ' has left the chatroom');
+    //             delete rooms[room].users[socket.id];
                 
-                //if the room now has 0 users, delete room
-                if(Object.keys(rooms[room].users).length === 0) {
-                    delete rooms[room];
-                    console.log("ROOM HAS BEEN DELETED");
-                }
-            }
-        }
-    })
+    //             //if the room now has 0 users, delete room
+    //             if(Object.keys(rooms[room].users).length === 0) {
+    //                 delete rooms[room];
+    //                 console.log("ROOM HAS BEEN DELETED");
+    //             }
+    //         }
+    //     }
+    // })
 
     //emit message to all users in the chatroom
-    socket.on('send_chat_message', (room, message) => {
-        io.in(room).emit('chat_message', { message: message, name: rooms[room].users[socket.id] });
-    })
+    // socket.on('send_chat_message', (room, message) => {
+    //     io.in(room).emit('chat_message', { message: message, name: rooms[room].users[socket.id] });
+    // })
 });
