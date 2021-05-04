@@ -16,6 +16,7 @@ import User5 from "../assets/users/Image5.webp";
 import User6 from "../assets/users/Image6.webp";
 import User7 from "../assets/users/Image7.webp";
 import User8 from "../assets/users/Image8.webp";
+import Brainstorm from "./viewComponents/brainstormResponse";
 
 function EditorView() {
     const location = useLocation().search;
@@ -60,6 +61,7 @@ function EditorView() {
                             <div className="canvas">
                                 <div className="testing">
                                     <Question />
+                                    <Brainstorm />
                                 </div>
                             </div>
                             <div className="userList">

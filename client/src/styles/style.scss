@@ -300,6 +300,66 @@ body {
     }
 }
 
+// $brainstorming-colours:
+//     "colour1" #7194ee,
+//     "colour2" #7194ee,
+//     "colour3" #7194ee,
+//     "colour4" #7194ee,
+//     "colour5" #7194ee,
+//     "colour6" #7194ee,
+//     "colour7" #7194ee,
+//     "colour8" #7194ee;
+
+// @each $i in $brainstorming-colours{
+//     .brainstorming-#{nth($i, 1)}{
+//         background-color: nth($i, 2);
+//         box-sizing: border-box;
+//         border-radius: 16px;
+//         width: 250px;
+//         height: 250px;
+//         padding: 20px 20px; 
+//         display: flex;
+//         flex-direction: row;
+//         p {
+//             font-style: normal;
+//             font-weight: normal;
+//             font-size: 18px;
+//             line-height: 23px;
+//             margin-bottom: 0;
+//         }
+//     }
+// }
+
+.brainstorming{
+    background-color: #7194ee;
+    box-sizing: border-box;
+    border-radius: 16px;
+    width: 250px;
+    height: 250px;
+    padding: 25px 20px; 
+    display: flex;
+
+
+    flex-direction: column;
+    // p {
+    //     font-style: normal;
+    //     font-weight: normal;
+    //     font-size: 18px;
+    //     line-height: 23px;
+    //     margin-bottom: 0;
+    // }
+}
+
+.brainstorming textarea {
+    position: inherit;
+    width: inherit;
+    height: inherit;
+    background: inherit;
+    margin: 0;
+    padding: 0;
+    border: 2px solid black;
+}
+
 //EXCEPTION
 
 .testing {

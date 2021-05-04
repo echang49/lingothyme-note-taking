@@ -2,7 +2,9 @@ function Brainstorm(props) {
     let color = "color-"+props.userID;
     return (
         <div>
-            <textarea className={"brainstorming " + color} ></textarea>
+            <div className={"brainstorming-" + color} >
+                <textarea>test text</textarea>
+            </div>
         </div>
     );
 }
