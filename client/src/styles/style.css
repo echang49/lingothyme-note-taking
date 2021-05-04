@@ -454,13 +454,12 @@ body {
 }
 
 .brainstorming {
-  background-color: #7194ee;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  background-color: #ccdaff;
   border-radius: 16px;
-  width: 250px;
-  height: 250px;
-  padding: 25px 20px;
+  width: 220px;
+  height: 170px;
+  padding: 20px;
+  position: relative;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -477,7 +476,10 @@ body {
   background: inherit;
   margin: 0;
   padding: 0;
-  border: 2px solid black;
+  border: 0px solid black;
+  resize: none;
+  font-size: 16px;
+  font-family: Roboto;
 }
 
 .testing {
