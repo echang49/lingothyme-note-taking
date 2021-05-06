@@ -103,7 +103,7 @@ router.post('/verifyUser', (req, res) => {
                     rooms[code] = { users: {} };
                     fs.writeFileSync('config/rooms.json', JSON.stringify(rooms));
                 }
-                return res.send([true, room.phase]);
+                return res.send([true, room.phase, rooms[code]]);
             }
             else {
                 return res.send([false]);

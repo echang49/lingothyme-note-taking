@@ -1,12 +1,10 @@
 //require modules
 const express = require('express'); //Backend framework
+
 const path = require('path'); //Path points to different places
-const bodyParser = require('body-parser'); //body-parser parses incoming data into JSON or URL-ENCODED data
 const dotenv = require('dotenv'); //dotenv is for storing session secrets
 const connectDB = require('./config/db'); //file to connect to MongoDB Atlas
 const fs = require('fs');
-const http = require('http').Server(express); //nodejs http dependency
-const io = require('socket.io')(http); //socket.io over http for "live-editing"
 const cors = require('cors'); //cross origin resource sharing
 const schedule = require('node-schedule'); //for cron jobs
 const Room = require('./models/Rooms');
@@ -21,7 +19,10 @@ connectDB();
 const app = express();
 
 //CORS Middleware
-app.use(cors());
+app.use(cors({credentials: true, methods: ["GET", "POST"], origin: 'http://localhost:3000'}));
+
+const http = require('http').Server(app); //nodejs http dependency
+const io = require('socket.io')(http); //socket.io over http for "live-editing"
 
 app.use(express.static(path.join(__dirname, 'client/build'))); // Serve the static files from the React app
 app.use(express.urlencoded({extended: true})); //Parse URL-encoded bodies
@@ -64,8 +65,11 @@ const job = schedule.scheduleJob('0 0 * * *', () => {
 });
 
 //WEB SOCKET CREATED UPON NEW CONNECTION
-io.sockets.on('connection', (socket) => {
+io.on('connection', (socket) => {
+    console.log("New client connected");
+
     socket.on('new-user', (room, name) => {
+        console.log("NEW USER");
         socket.join(room);
         let rawdata = fs.readFileSync('./config/rooms.json');
         let rooms = JSON.parse(rawdata);

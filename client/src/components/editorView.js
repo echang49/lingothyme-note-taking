@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { Redirect, useLocation } from "react-router-dom"; 
+import io from "socket.io-client";
 import axios from "axios";
 import Question from "./viewComponents/question";
 import User from "./viewComponents/users";
@@ -25,27 +26,42 @@ function EditorView() {
     const [bool, setBool] = useState(true);
     const [nameState, setNameState] = useState(true);
     const [phase, setPhase] = useState(1);
+    const [userList, setUserList] = useState([]);
 
-    var socket = io.connect('http://localhost:5000');
+    const socket = io("http://127.0.0.1:5000", {
+        withCredentials: true
+    });
+
+    socket.on('connection', () => {
+        console.log("connection")
+    });
+
+    socket.on('user-connected', (data) => {
+        //data is user name and id
+        console.log(data);
+    })
+
+    socket.on('phase_change', (data) =>  {
+        setPhase(data);
+    });
 
     useEffect(() => {
-        console.log(location);
         axios.post('/api/auth/verifyUser', {location})
         .then((res) => {
             if(!res.data[0]) {
                 setBool(false);
             }
+            setPhase(res.data[1]);
+            setUserList(res.data[2]);
             const localStorageName = JSON.parse(localStorage.getItem('name'));
-            const currentTime = Date.now();;
+            const currentTime = Date.now();
             //see if name exists or is expired
             if(localStorageName !== null) {
                 if(new Date(localStorageName[1]).getTime() > currentTime) {
                     setNameState(false);
-                } 
-                socket.emit('new-user', location, localStorageName[0]);
+                    socket.emit('new-user', location, localStorageName[0]);
+                }
             }
-            setPhase(res.data[1]);
-            //find out what phase we're in => Let verifyUser also get the phase
         })
         .catch((err) => {
             alert(err);
@@ -58,15 +74,8 @@ function EditorView() {
         tomorrow.setDate(tomorrow.getDate() + 1);
         localStorage.setItem('name', JSON.stringify([name, tomorrow]));
         setNameState(false);
+        socket.emit('new-user', location, name);
     }
-
-    socket.on('user-connected', (data) => {
-        //data is user name and id
-    })
-
-    socket.on('phase_change', (data) =>  {
-        setPhase(data);
-    });
 
     if(nameState === true) {
         return(
