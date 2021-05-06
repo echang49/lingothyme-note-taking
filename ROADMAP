@@ -1,9 +1,6 @@
 1. resdesign ui components (make navbar functional AKA make it do things)
+2. build out "meeting hasn't started yet" phase for Users 
+3. Let admin start meeting 
 4. brainstorming phase 
 5. UI components for collaborative writing phase 
 6. collaborative writing phase
-
-3. Let admin start meeting (when they start, go from phase 1 to phase 2 on atlas)
-
-Create the socket room right away so that people can listen to it.
-When everyone leaves the room, delete it

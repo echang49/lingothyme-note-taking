@@ -1,4 +1,3 @@
-const fs = require('fs');
 const express = require('express')
 const router  = express.Router();
 const Room = require('../models/Rooms');
@@ -29,8 +28,7 @@ function makeRoom(publicKey, privateKey, email, number, question, date, res) {
                 email,
                 capacity: number,
                 question,
-                date,
-                "phase": 1
+                date
             });
         
             newRoom.save().then().catch(err => console.log(err));
@@ -97,16 +95,10 @@ router.post('/verifyUser', (req, res) => {
         Room.findOne({publicKey: code})
         .then(room => {
             if(room) {
-                let rawdata = fs.readFileSync('./config/rooms.json');
-                let rooms = JSON.parse(rawdata);
-                if(rooms[code] == null){
-                    rooms[code] = { users: {} };
-                    fs.writeFileSync('config/rooms.json', JSON.stringify(rooms));
-                }
-                return res.send([true, room.phase]);
+                return res.send(true);
             }
             else {
-                return res.send([false]);
+                return res.send(false);
             }
         });
    }
