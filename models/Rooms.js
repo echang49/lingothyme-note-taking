@@ -25,6 +25,10 @@ const RoomSchema = new mongoose.Schema({
     date: {
         type: Date,
         required: true
+    },
+    phase: {
+        type: Number,
+        required: true
     }
 })
 

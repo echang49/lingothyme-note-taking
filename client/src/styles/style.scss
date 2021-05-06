@@ -255,6 +255,40 @@ body {
             }
         }
     }
+    .nameState {
+        flex-direction: column;
+        height: 100vh;
+        .input {
+            display: flex;
+            flex-direction: column;
+
+            label {
+                font-size: 20px;
+                color: #6bb363;
+                margin-bottom: 5px;
+            }
+            input {
+                border-radius: 25px;
+                line-height: 1.5rem;
+                padding: 10px 20px;
+                font-size: 20px;
+                outline: none;
+                border: 2px solid #6bb363;
+            }
+            .buttons {
+                align-self: center;
+                button {
+                    margin-right: 0;
+                }
+            }
+        }
+    }
+    .phase1 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
 }
 
 .questions {
@@ -339,7 +373,11 @@ body {
     position: relative;
     display: flex;
     flex-direction: column;
-
+    icon{
+        position: absolute;
+        top: 10;
+        right: 10;
+    }
 }
 
 .brainstorming textarea {
