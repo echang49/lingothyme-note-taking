@@ -48,9 +48,7 @@ function EditorView() {
                                 <p>Brainstorming Room</p>
                             </span>
                             <span className="nav-center">
-                                <button>
-                                    <Note className="note-icon" />
-                                </button>    
+                                <Note className="note-icon" />
                             </span>
                             <span className="nav-end">
                                 <button>

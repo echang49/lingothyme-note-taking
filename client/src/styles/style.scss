@@ -190,12 +190,6 @@ body {
                     cursor: pointer;
                 }
             }
-
-            button {
-                background-color: transparent;
-                border: none;
-                outline:none;
-            }
         }
         .nav-end {
             grid-column-start: 5;
@@ -362,12 +356,6 @@ body {
     font-family: Roboto;
 }
 
-.brainstorming icon{
-    position: absolute;
-    top: 10;
-    right: 10;
-
-}
 //EXCEPTION
 
 .testing {
