@@ -4,7 +4,7 @@ function Brainstorm(props) {
     return (
         <div>
             <div className={"brainstorming " + color} >
-                <textarea>test text</textarea>
+                <textarea></textarea>
             </div>
         </div>
     );

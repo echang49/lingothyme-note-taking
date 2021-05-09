@@ -20,6 +20,8 @@ import User7 from "../assets/users/Image7.webp";
 import User8 from "../assets/users/Image8.webp";
 import Brainstorm from "./viewComponents/brainstormResponse";
 
+let socket;
+
 function EditorView() {
     const nameInput = useRef(null);
     const location = useLocation().search;
@@ -28,24 +30,25 @@ function EditorView() {
     const [phase, setPhase] = useState(1);
     const [userList, setUserList] = useState([]);
 
-    const socket = io("http://127.0.0.1:5000", {
-        withCredentials: true
-    });
-
-    socket.on('connection', () => {
-        console.log("connection")
-    });
-
-    socket.on('user-connected', (data) => {
-        //data is user name and id
-        console.log(data);
-    })
-
-    socket.on('phase_change', (data) =>  {
-        setPhase(data);
-    });
-
     useEffect(() => {
+        socket = io("http://localhost:5000", {
+            reconnectionDelayMax: 10000,
+            withCredentials: true
+        });
+
+        socket.on('connect', () => {
+            //connection
+        });
+    
+        socket.on('user-connected', (data) => {
+            //data is user name and id
+            console.log(data);
+        })
+    
+        socket.on('phase_change', (data) =>  {
+            setPhase(data);
+        });
+
         axios.post('/api/auth/verifyUser', {location})
         .then((res) => {
             if(!res.data[0]) {
@@ -59,7 +62,7 @@ function EditorView() {
             if(localStorageName !== null) {
                 if(new Date(localStorageName[1]).getTime() > currentTime) {
                     setNameState(false);
-                    socket.emit('new-user', location, localStorageName[0]);
+                    socket.emit("new-user", location, localStorageName[0]);
                 }
             }
         })

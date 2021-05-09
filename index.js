@@ -19,10 +19,7 @@ connectDB();
 const app = express();
 
 //CORS Middleware
-app.use(cors({credentials: true, methods: ["GET", "POST"], origin: 'http://localhost:3000'}));
-
-const http = require('http').Server(app); //nodejs http dependency
-const io = require('socket.io')(http); //socket.io over http for "live-editing"
+app.use(cors());
 
 app.use(express.static(path.join(__dirname, 'client/build'))); // Serve the static files from the React app
 app.use(express.urlencoded({extended: true})); //Parse URL-encoded bodies
@@ -39,7 +36,7 @@ app.get('*', (req,res) =>{
 
 //Express app listens in on the following port
 const port = process.env.PORT || 5000;
-app.listen(port);
+var server = app.listen(port);
 
 console.log('App is listening on port ' + port);
 
@@ -47,7 +44,6 @@ console.log('App is listening on port ' + port);
 const job = schedule.scheduleJob('0 0 * * *', () => {
     //get date as of right now. If this is older than the one posted, deleted the posted ones
     let date = Date.now();
-    console.log(date);
     Room.find({} , (err, rooms) => {
         if(err) {
             console.log(err);
@@ -64,42 +60,53 @@ const job = schedule.scheduleJob('0 0 * * *', () => {
     })
 });
 
-//WEB SOCKET CREATED UPON NEW CONNECTION
-io.on('connection', (socket) => {
-    console.log("New client connected");
+var io = require('socket.io')(undefined, {
+    cors: {
+      origin: "http://localhost:3000",
+      methods: ["GET", "POST"],
+      credentials: true
+    }
+  }).listen(server); //socket.io over http for "live-editing"
 
-    socket.on('new-user', (room, name) => {
-        console.log("NEW USER");
+//WEB SOCKET CREATED UPON NEW CONNECTION
+io.on('connect', (socket) => {
+    socket.on('new-user', (location, name) => {
+        let room = location.split("?id=")[1];
         socket.join(room);
         let rawdata = fs.readFileSync('./config/rooms.json');
         let rooms = JSON.parse(rawdata);
         if (!rooms[room]) rooms[room] = {users: {}};
         let ids = [1,2,3,4,5,6,7,8]
         //only unique ids left
-        for(let i of rooms[room].users) {
-            ids.splice(ids.indexOf(i[1]),1);
+        for(let i in rooms[room].users) {
+            ids.splice(ids.indexOf(rooms[room].users[i][1]),1);
         }
         rooms[room].users[socket.id] = [name, ids[0]];
         fs.writeFileSync('config/rooms.json', JSON.stringify(rooms));
-        socket.to(room).broadcast.emit('user-connected', [name, id]);
+        //socket.to(room).broadcast.emit('user-connected', [name, id]);
     })
 
     // //disconnect the users from the room
-    // socket.on('disconnect', () => {
-    //     for(const room in rooms) {
-    //         if (rooms[room].users[socket.id]) {
-    //             const name = rooms[room].users[socket.id];
-    //             socket.to(room).broadcast.emit('user-disconnected', name + ' has left the chatroom');
-    //             delete rooms[room].users[socket.id];
-                
-    //             //if the room now has 0 users, delete room
-    //             if(Object.keys(rooms[room].users).length === 0) {
-    //                 delete rooms[room];
-    //                 console.log("ROOM HAS BEEN DELETED");
-    //             }
-    //         }
-    //     }
-    // })
+    socket.on('disconnect', () => {
+        let rawdata = fs.readFileSync('./config/rooms.json');
+        let rooms = JSON.parse(rawdata);
+        console.log("SOPMEONE DISCONNECT")
+        for(const room in rooms) {
+            if (rooms[room].users[socket.id]) {
+                const id = rooms[room].users[socket.id];
+                socket.to(room).broadcast.emit('user-disconnected', id);
+                delete rooms[room].users[socket.id];
+
+                //if the room now has 0 users, delete room
+                if(Object.keys(rooms[room].users).length === 0) {
+                    delete rooms[room];
+                }
+
+                fs.writeFileSync('config/rooms.json', JSON.stringify(rooms));
+                break;
+            }
+        }
+    })
 
     // //emit message to all users in the chatroom
     // socket.on('send_chat_message', (room, message) => {
