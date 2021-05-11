@@ -71,13 +71,15 @@ var io = require('socket.io')(undefined, {
 //WEB SOCKET CREATED UPON NEW CONNECTION
 io.on('connect', (socket) => {
     const ID = socket.id;
-
+    
     socket.on('new-user', (location, name) => {
         let room = location.split("?id=")[1];
         socket.join(room);
         let rawdata = fs.readFileSync('./config/rooms.json');
         let rooms = JSON.parse(rawdata);
         if (!rooms[room]) rooms[room] = {users: {}};
+        //tell new user who's already in
+        socket.emit('connection', rooms[room].users);
         let ids = [1,2,3,4,5,6,7,8]
         //only unique ids left
         for(let i in rooms[room].users) {
@@ -85,6 +87,7 @@ io.on('connect', (socket) => {
         }
         rooms[room].users[ID] = [name, ids[0]];
         fs.writeFileSync('config/rooms.json', JSON.stringify(rooms));
+        //emit to everyone in room that someone new is here
         io.to(room).emit('user-connected', [name, ids[0]]);
     })
 

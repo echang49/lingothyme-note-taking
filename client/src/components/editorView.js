@@ -30,25 +30,34 @@ function EditorView() {
     const [phase, setPhase] = useState(1);
     const [userList, setUserList] = useState([]);
 
+
     useEffect(() => {
         socket = io("http://localhost:5000", {
             reconnectionDelayMax: 10000,
             withCredentials: true
         });
 
-        socket.on('connect', (data) => {
-            //sends over the list of users and IDS
+        //on connection, set the user list of people already connected
+        socket.on('connection', (data) => {
+            let tempUserList = userList;
+            for(let i in data) {
+                tempUserList.push(data[i]);
+            }
+            setUserList([...tempUserList]);
         });
     
+        //when a new user joins, add them to the user list
         socket.on('user-connected', (data) => {
-            alert("CONNECTED!");
-            console.log(data);
-            //new user connected
+            let tempUserList = userList;
+            tempUserList.push(data);
+            setUserList([...tempUserList]);
         });
 
+        //when a user leaves, remove them from the user list
         socket.on('user-disconnected', (data) => {
-            alert("DISCONNECTED!");
-            console.log(data);
+            let tempUserList = userList;
+            tempUserList.splice(tempUserList.indexOf(data),1);
+            setUserList([...tempUserList]);
         });
     
         socket.on('phase_change', (data) =>  {
@@ -61,7 +70,6 @@ function EditorView() {
                 setBool(false);
             }
             setPhase(res.data[1]);
-            setUserList(res.data[2]);
             const localStorageName = JSON.parse(localStorage.getItem('name'));
             const currentTime = Date.now();
             //see if name exists or is expired
@@ -81,6 +89,27 @@ function EditorView() {
             socket.disconnect();
         }
     }, [location]);
+
+    function renderProfilePicture(image){
+        switch(image){
+            case 1:
+                return User1;
+            case 2:
+                return User2;
+            case 3:
+                return User3;
+            case 4:
+                return User4;
+            case 5:
+                return User5;
+            case 6:
+                return User6;
+            case 7:
+                return User7;
+            case 8:
+                return User8;
+        }
+    }
 
     function setName(name) {
         const today = new Date();
@@ -172,14 +201,11 @@ function EditorView() {
                                                 <p>Users</p>
                                             </div>
                                             <div className="userList-body">
-                                                <User picture={User1} name="Edward" />
-                                                <User picture={User2} name="Nanjiong" />
-                                                <User picture={User3} name="Iris" />
-                                                <User picture={User4} name="Janet" />
-                                                <User picture={User5} name="Vimal" />
-                                                <User picture={User6} name="Adrian" />
-                                                <User picture={User7} name="Shubham" />
-                                                <User picture={User8} name="Veronique" />
+                                                {
+                                                    userList.map((data, index) => (
+                                                        <User key={data[1]} name={data[0]} picture={data[1]} />
+                                                    ))
+                                                }
                                             </div>
                                         </div>
                                     </div>
