@@ -36,14 +36,20 @@ function EditorView() {
             withCredentials: true
         });
 
-        socket.on('connect', () => {
-            //connection
+        socket.on('connect', (data) => {
+            //sends over the list of users and IDS
         });
     
         socket.on('user-connected', (data) => {
-            //data is user name and id
+            alert("CONNECTED!");
             console.log(data);
-        })
+            //new user connected
+        });
+
+        socket.on('user-disconnected', (data) => {
+            alert("DISCONNECTED!");
+            console.log(data);
+        });
     
         socket.on('phase_change', (data) =>  {
             setPhase(data);
@@ -69,6 +75,11 @@ function EditorView() {
         .catch((err) => {
             alert(err);
         });
+
+        // Anything in here is fired on component unmount.
+        return () => {
+            socket.disconnect();
+        }
     }, [location]);
 
     function setName(name) {

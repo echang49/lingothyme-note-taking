@@ -70,6 +70,8 @@ var io = require('socket.io')(undefined, {
 
 //WEB SOCKET CREATED UPON NEW CONNECTION
 io.on('connect', (socket) => {
+    const ID = socket.id;
+
     socket.on('new-user', (location, name) => {
         let room = location.split("?id=")[1];
         socket.join(room);
@@ -81,21 +83,20 @@ io.on('connect', (socket) => {
         for(let i in rooms[room].users) {
             ids.splice(ids.indexOf(rooms[room].users[i][1]),1);
         }
-        rooms[room].users[socket.id] = [name, ids[0]];
+        rooms[room].users[ID] = [name, ids[0]];
         fs.writeFileSync('config/rooms.json', JSON.stringify(rooms));
-        //socket.to(room).broadcast.emit('user-connected', [name, id]);
+        io.to(room).emit('user-connected', [name, ids[0]]);
     })
 
     // //disconnect the users from the room
     socket.on('disconnect', () => {
         let rawdata = fs.readFileSync('./config/rooms.json');
         let rooms = JSON.parse(rawdata);
-        console.log("SOPMEONE DISCONNECT")
+
         for(const room in rooms) {
-            if (rooms[room].users[socket.id]) {
-                const id = rooms[room].users[socket.id];
-                socket.to(room).broadcast.emit('user-disconnected', id);
-                delete rooms[room].users[socket.id];
+            if (rooms[room].users[ID]) {
+                io.to(room).emit('user-disconnected', rooms[room].users[ID]);
+                delete rooms[room].users[ID];
 
                 //if the room now has 0 users, delete room
                 if(Object.keys(rooms[room].users).length === 0) {
