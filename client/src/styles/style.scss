@@ -23,6 +23,15 @@
          url('../fonts/roboto-v20-latin-900.woff2') format('woff2'), /* Super Modern Browsers */
 }
 
+$color-1: #ccdaff;
+$color-2: #FFCCF3;
+$color-3: #FFF1CC;
+$color-4: #CCFFD8;
+$color-5: #A882DD;
+$color-6: #DD838A;
+$color-7: #B7DD83;
+$color-8: #83DDA8;
+
 //COMPISITION
 body {
     background-color: #E9EDF5;
@@ -32,7 +41,49 @@ body {
     margin: 0;
 }
 
+textarea {
+    border: none;
+    overflow: auto;
+    outline: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    resize: none; /*remove the resize handle on the bottom right*/
+}
+
 //UTILITY
+.color-1 {
+    background-color: $color-1;
+}
+
+.color-2 {
+    background-color: $color-2;
+}
+
+.color-3 {
+    background-color: $color-3;
+}
+
+.color-4 {
+    background-color: $color-4;
+}
+
+.color-5 {
+    background-color: $color-5;
+}
+
+.color-6 {
+    background-color: $color-6;
+}
+
+.color-7 {
+    background-color: $color-7;
+}
+
+.color-8 {
+    background-color: $color-8;
+}
+
 .center {
     display: flex;
     justify-content: center;
@@ -230,6 +281,15 @@ body {
         .canvas {
             grid-column-start: 1;
             grid-column-end: 2;
+            padding: 45px;
+            overflow-y: scroll;
+            .brainstorm-row {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                margin: 0 -20px;
+            }
         }
         .userList {
             grid-column-start: 2;
@@ -334,38 +394,8 @@ body {
     }
 }
 
-// $brainstorming-colours:
-//     "colour1" #7194ee,
-//     "colour2" #7194ee,
-//     "colour3" #7194ee,
-//     "colour4" #7194ee,
-//     "colour5" #7194ee,
-//     "colour6" #7194ee,
-//     "colour7" #7194ee,
-//     "colour8" #7194ee;
-
-// @each $i in $brainstorming-colours{
-//     .brainstorming-#{nth($i, 1)}{
-//         background-color: nth($i, 2);
-//         box-sizing: border-box;
-//         border-radius: 16px;
-//         width: 250px;
-//         height: 250px;
-//         padding: 20px 20px; 
-//         display: flex;
-//         flex-direction: row;
-//         p {
-//             font-style: normal;
-//             font-weight: normal;
-//             font-size: 18px;
-//             line-height: 23px;
-//             margin-bottom: 0;
-//         }
-//     }
-// }
-
 .brainstorming{
-    background-color: #ccdaff;
+    margin: 20px;
     border-radius: 16px;
     width: 220px;
     height: 170px;
@@ -378,24 +408,19 @@ body {
         top: 10;
         right: 10;
     }
-}
-
-.brainstorming textarea {
-    position: inherit;
-    width: inherit;
-    height: inherit;
-    background: inherit;
-    margin: 0;
-    padding: 0;
-    border: 0px solid black;
-    resize: none;
-
-    font-size: 16px;
-    font-family: Roboto;
+    textarea {
+        position: inherit;
+        width: inherit;
+        height: inherit;
+        background: inherit;
+        margin: 0;
+        padding: 0;
+        border: 0px solid black;
+        resize: none;
+    
+        font-size: 16px;
+        font-family: Roboto;
+    }
 }
 
 //EXCEPTION
-
-.testing {
-    padding: 100px 200px;
-}

@@ -72,7 +72,7 @@ var io = require('socket.io')(undefined, {
 io.on('connect', (socket) => {
     const ID = socket.id;
     
-    socket.on('new-user', (location, name) => {
+    socket.on('new-user', (location, name, callback) => {
         let room = location.split("?id=")[1];
         socket.join(room);
         let rawdata = fs.readFileSync('./config/rooms.json');
@@ -89,6 +89,9 @@ io.on('connect', (socket) => {
         fs.writeFileSync('config/rooms.json', JSON.stringify(rooms));
         //emit to everyone in room that someone new is here
         io.to(room).emit('user-connected', [name, ids[0]]);
+        callback({
+            id: ids[0]
+        });
     })
 
     // //disconnect the users from the room

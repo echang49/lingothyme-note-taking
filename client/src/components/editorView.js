@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, createRef } from "react";
 import { Redirect, useLocation, Link } from "react-router-dom"; 
 import io from "socket.io-client";
 import axios from "axios";
@@ -27,9 +27,12 @@ function EditorView() {
     const location = useLocation().search;
     const [bool, setBool] = useState(true);
     const [nameState, setNameState] = useState(true);
-    const [phase, setPhase] = useState(1);
-    const [userList, setUserList] = useState([]);
 
+    const [phase, setPhase] = useState(1);
+    const [userList, setUserList] = useState([]); //[name, id]
+    const [userID, setUserID] = useState(); 
+    const [brainstormList, setBrainstormList] = useState([]); //[value, userID, id]
+    const brainstormRefs = useRef(brainstormList.map(() => createRef()));
 
     useEffect(() => {
         socket = io("http://localhost:5000", {
@@ -60,6 +63,14 @@ function EditorView() {
             tempUserList.splice(slicedIndex,1);
             setUserList([...tempUserList]);
         });
+
+        //when a user creates a new brainstorming component
+        socket.on('new-brainstorm', (data) => {
+        });
+
+        //when a user edits a brainstorming component
+        socket.on('edit-brainstorm', (data) => {
+        });
     
         socket.on('phase_change', (data) =>  {
             setPhase(data);
@@ -77,7 +88,9 @@ function EditorView() {
             if(localStorageName !== null) {
                 if(new Date(localStorageName[1]).getTime() > currentTime) {
                     setNameState(false);
-                    socket.emit("new-user", location, localStorageName[0]);
+                    socket.emit("new-user", location, localStorageName[0], (res) => {
+                        setUserID(res.id);
+                    });
                 }
             }
         })
@@ -118,11 +131,16 @@ function EditorView() {
         tomorrow.setDate(tomorrow.getDate() + 1);
         localStorage.setItem('name', JSON.stringify([name, tomorrow]));
         setNameState(false);
-        socket.emit('new-user', location, name);
+        socket.emit('new-user', location, name, (res) => {
+            setUserID(res.id);
+        });
     }
 
     function handleNoteClick () {
-        //useRef. create a Brainstorming component under the testing area  
+        //useRef. create a Brainstorming component under the testing area
+        let tempBrainstormList = brainstormList;
+        console.log(userID);
+        setBrainstormList([...tempBrainstormList, ["", userID, tempBrainstormList.length]]);
     }
 
     if(nameState === true) {
@@ -176,7 +194,7 @@ function EditorView() {
                                             <Logo />
                                         </span>
                                         <span className="nav-roomphase">
-                                            <p>Brainstorming Room</p>
+                                             
                                         </span>
                                         <span className="nav-center">
                                             <Note className="note-icon" onClick={() => handleNoteClick()} />
@@ -192,9 +210,13 @@ function EditorView() {
                                     </nav>
                                     <div className="body">
                                         <div className="canvas">
-                                            <div className="testing">
-                                                <Question />
-                                                <Brainstorm />
+                                            <Question />
+                                            <div className="brainstorm-row">
+                                                {
+                                                    brainstormList.map((data, index) => (
+                                                        <Brainstorm ref={brainstormRefs.current[data[2]]} key={"Brainstorming"+data[2]} userID={data[1]} /> //also need value and id passed down
+                                                    ))
+                                                }
                                             </div>
                                         </div>
                                         <div className="userList">
@@ -204,7 +226,7 @@ function EditorView() {
                                             <div className="userList-body">
                                                 {
                                                     userList.map((data, index) => (
-                                                        <User key={data[1]} name={data[0]} picture={data[1]} />
+                                                        <User key={"User"+data[1]} name={data[0]} picture={data[1]} />
                                                     ))
                                                 }
                                             </div>
@@ -215,6 +237,14 @@ function EditorView() {
                                 <Redirect to="/" />
                         }
                     </div>
+                );
+            case 3:
+                return(
+                    <div>PHASE 3</div>
+                );
+            case 4: 
+                return(
+                    <div>PHASE 4</div>
                 );
         }
     }

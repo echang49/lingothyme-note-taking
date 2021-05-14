@@ -30,6 +30,48 @@ body {
   margin: 0;
 }
 
+textarea {
+  border: none;
+  overflow: auto;
+  outline: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  resize: none;
+  /*remove the resize handle on the bottom right*/
+}
+
+.color-1 {
+  background-color: #ccdaff;
+}
+
+.color-2 {
+  background-color: #FFCCF3;
+}
+
+.color-3 {
+  background-color: #FFF1CC;
+}
+
+.color-4 {
+  background-color: #CCFFD8;
+}
+
+.color-5 {
+  background-color: #A882DD;
+}
+
+.color-6 {
+  background-color: #DD838A;
+}
+
+.color-7 {
+  background-color: #B7DD83;
+}
+
+.color-8 {
+  background-color: #83DDA8;
+}
+
 .center {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -312,6 +354,24 @@ body {
   -ms-grid-column: 1;
       grid-column-start: 1;
   grid-column-end: 2;
+  padding: 45px;
+  overflow-y: scroll;
+}
+
+.userView .body .canvas .brainstorm-row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin: 0 -20px;
 }
 
 .userView .body .userList {
@@ -467,7 +527,7 @@ body {
 }
 
 .brainstorming {
-  background-color: #ccdaff;
+  margin: 20px;
   border-radius: 16px;
   width: 220px;
   height: 170px;
@@ -499,9 +559,5 @@ body {
   resize: none;
   font-size: 16px;
   font-family: Roboto;
-}
-
-.testing {
-  padding: 100px 200px;
 }
 /*# sourceMappingURL=style.css.map */
