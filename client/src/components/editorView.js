@@ -55,8 +55,9 @@ function EditorView() {
 
         //when a user leaves, remove them from the user list
         socket.on('user-disconnected', (data) => {
+            let slicedIndex = userList.findIndex((element) =>  JSON.stringify(element) === JSON.stringify(data));
             let tempUserList = userList;
-            tempUserList.splice(tempUserList.indexOf(data),1);
+            tempUserList.splice(slicedIndex,1);
             setUserList([...tempUserList]);
         });
     
