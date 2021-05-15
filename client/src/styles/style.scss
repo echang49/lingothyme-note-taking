@@ -96,7 +96,7 @@ textarea {
     justify-content: space-between;
     font-size: 30px;
     letter-spacing: 1px;
-    .primary-button, .secondary-button {
+    .primary-button, .secondary-button, .exit-button {
         all: unset;
         padding: 15px 45px;
         color: #FFFFFF;
@@ -120,6 +120,14 @@ textarea {
 
         &:hover {
             background-color: #DD4444;
+        }
+    }
+
+    .exit-button {
+        background-color: #008E41;
+    
+        &:hover {
+            background-color: #087539;
         }
     }
 }
@@ -351,6 +359,130 @@ textarea {
     }
 }
 
+.carousel-container{
+    background-color: #FAFAFA;
+    border: 4px solid #5B8AFD;
+    box-sizing: border-box;
+    border-radius: 16px;
+    width: 550px;
+    height: 400px;
+    padding: 25px 20px; 
+    // display: flex;
+    // flex-direction: row;
+    h1 {
+        font-style: normal;
+        font-weight: bold;
+        font-size: 24px;
+        line-height: 28px;
+        color: #666666;
+        margin: 0;
+    }
+
+    carouselItem{
+        // position: relative;
+        // display: flex;
+        // flex-wrap: wrap;
+        // flex-direction: row;
+        margin-block-start: 2rem; 
+        margin-block-end: 4rem;
+        display: grid;
+        grid-template-columns: repeat(20, auto);
+        gap: 2rem;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+    }
+
+    item {
+        scroll-snap-align: center;
+    }
+}
+
+$paragraph-outer-width: 550px;
+$paragraph-outer-height: 400px;
+.paragraph-outer{
+    background-color: #FAFAFA;
+    padding: 10px 10px;
+    position: relative;
+
+    box-sizing: border-box;
+    border-radius: 16px;
+
+    width: $paragraph-outer-width;
+    min-height: $paragraph-outer-height;
+
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .paragraph-inner{
+        background-color: #F0F0F0;
+        box-sizing: border-box;
+        border-radius: 12px;
+        width: $paragraph-outer-width*.85;
+        min-height: $paragraph-outer-height*.85;
+        position: absolute;
+        left: 7.5%;
+        top: 7.5%;
+    }
+    .paragraph-box{
+        box-sizing: border-box;
+        border-radius: 8px;
+        background-color: #FAFAFA;
+        // width: $paragraph-outer-width*.4;
+        // height: $paragraph-outer-height*.4;
+        padding: 10px 10px;
+    }
+
+    .paragraph-user-box{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        background-color: transparent;
+        padding: 10px;
+        z-index: auto;
+        position:relative;
+
+    }
+
+    textarea{
+    position: inherit;
+    width: inherit;
+    height: inherit;
+    background: inherit;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border-radius: 8px;
+    // border: none;
+    overflow: auto;
+    outline: none;
+    left: 11.5%;
+
+    width: $paragraph-outer-width*.75;
+    height: $paragraph-outer-height*.2;
+
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+
+    resize: none; /*remove the resize handle on the bottom right*/
+
+    font-size: 16px;
+    font-family: Roboto;
+
+    z-index: auto;
+    position:relative;
+    }
+
+
+}
+
+.break{
+    flex-basis: 100%;
+    height: 0;
+}
+
 .questions {
     background-color: #FAFAFA;
     border: 4px solid #5B8AFD;
@@ -423,4 +555,13 @@ textarea {
     }
 }
 
+.lastPhase{
+    font-size: 50px;
+    color: #000000;
+    margin-bottom: 5px;
+}
 //EXCEPTION
+
+.testing {
+    padding: 100px 200px;
+}
