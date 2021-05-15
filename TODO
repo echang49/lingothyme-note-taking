@@ -1,9 +1,16 @@
 USERNAME: LingoThyme PASSWORD: IrisNanEdward (Basic security for now since we'll open it up later)
 
-BUG: TWO USERS CAN HAVE THE SAME NAME. THE SHOULD NOT HAVE THE SAME NAMES BECAUSE HARD TO DISTINGUISH AND ALSO IT WOULD BREAK THE SYSTEM
+BUG: 
 
 When the user presses the button to spawn a note, it spawns somewhere into the canvas. Must be for example 20 pixels away from any other object. Then, you can drag them wherever.
 When a keystroke is pressed, emit the new character 
 SETUP ADMIN PORTAL
 LOGGING STUFF ONTO THE DATABASE AND GETTING STUFF FROM THE DATABASE LAST => SOCKET IO FIRST. Set the question upon loading from MongoDB
 Start doing user acceptance testing later
+
+see how much voice chat costs
+
+
+BUGS
+Two users should not have the same name for ease of visibility
+EditorView.js the way new brainstorm blocks are made are very dirty. Try to fix.

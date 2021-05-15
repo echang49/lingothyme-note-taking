@@ -1,10 +1,20 @@
-import Flag from "../../assets/brainstorm_post_flag.svg";
+import { useRef } from "react";
+
 function Brainstorm(props) {
+    const textInput = useRef(null);
     let color = "color-"+props.userID;
+
+    function handleChange() {
+        let id = props.id;
+        props.setBrainstorm(textInput.current.value, id);
+    }
+
+
+
     return (
         <div>
             <div className={"brainstorming " + color} >
-                <textarea></textarea>
+                <textarea ref={textInput} value={props.value} onChange={() => handleChange()}></textarea>
             </div>
         </div>
     );

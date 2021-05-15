@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, createRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Redirect, useLocation, Link } from "react-router-dom"; 
 import io from "socket.io-client";
 import axios from "axios";
@@ -32,7 +32,6 @@ function EditorView() {
     const [userList, setUserList] = useState([]); //[name, id]
     const [userID, setUserID] = useState(); 
     const [brainstormList, setBrainstormList] = useState([]); //[value, userID, id]
-    const brainstormRefs = useRef(brainstormList.map(() => createRef()));
 
     useEffect(() => {
         socket = io("http://localhost:5000", {
@@ -40,41 +39,7 @@ function EditorView() {
             withCredentials: true
         });
 
-        //on connection, set the user list of people already connected
-        socket.on('connection', (data) => {
-            let tempUserList = userList;
-            for(let i in data) {
-                tempUserList.push(data[i]);
-            }
-            setUserList([...tempUserList]);
-        });
-    
-        //when a new user joins, add them to the user list
-        socket.on('user-connected', (data) => {
-            let tempUserList = userList;
-            tempUserList.push(data);
-            setUserList([...tempUserList]);
-        });
-
-        //when a user leaves, remove them from the user list
-        socket.on('user-disconnected', (data) => {
-            let slicedIndex = userList.findIndex((element) =>  JSON.stringify(element) === JSON.stringify(data));
-            let tempUserList = userList;
-            tempUserList.splice(slicedIndex,1);
-            setUserList([...tempUserList]);
-        });
-
-        //when a user creates a new brainstorming component
-        socket.on('new-brainstorm', (data) => {
-        });
-
-        //when a user edits a brainstorming component
-        socket.on('edit-brainstorm', (data) => {
-        });
-    
-        socket.on('phase_change', (data) =>  {
-            setPhase(data);
-        });
+        socketIO(socket);
 
         axios.post('/api/auth/verifyUser', {location})
         .then((res) => {
@@ -103,6 +68,45 @@ function EditorView() {
             socket.disconnect();
         }
     }, [location]);
+
+    function socketIO(socket) {
+        //on connection, set the user list of people already connected
+        socket.on('connection', (data) => {
+            let tempUserList = userList;
+            for(let i in data) {
+                tempUserList.push(data[i]);
+            }
+            setUserList([...tempUserList]);
+        });
+    
+        //when a new user joins, add them to the user list
+        socket.on('user-connected', (data) => {
+            let tempUserList = userList;
+            tempUserList.push(data);
+            setUserList([...tempUserList]);
+        });
+
+        //when a user leaves, remove them from the user list
+        socket.on('user-disconnected', (data) => {
+            let slicedIndex = userList.findIndex((element) =>  JSON.stringify(element) === JSON.stringify(data));
+            let tempUserList = userList;
+            tempUserList.splice(slicedIndex,1);
+            setUserList([...tempUserList]);
+        });
+
+        //when a user creates a new brainstorming component
+        socket.on('new-brainstorm', (data) => {
+            setBrainstormList(list => [...list, ["", data[0], data[1]]])
+        });
+
+        //when a user edits a brainstorming component
+        // socket.on('edit-brainstorm', (data) => {
+        // });
+    
+        socket.on('phase_change', (data) =>  {
+            setPhase(data);
+        });
+    }
 
     function renderProfilePicture(image){
         switch(image){
@@ -139,8 +143,14 @@ function EditorView() {
     function handleNoteClick () {
         //useRef. create a Brainstorming component under the testing area
         let tempBrainstormList = brainstormList;
-        console.log(userID);
         setBrainstormList([...tempBrainstormList, ["", userID, tempBrainstormList.length]]);
+        socket.emit('new-brainstorm', location.split("?id=")[1], userID, tempBrainstormList.length);
+    }
+
+    function setBrainstorm(value, id) {
+        let tempBrainstormList = brainstormList;
+        tempBrainstormList[id][0] = value;
+        setBrainstormList([...tempBrainstormList]);
     }
 
     if(nameState === true) {
@@ -214,7 +224,7 @@ function EditorView() {
                                             <div className="brainstorm-row">
                                                 {
                                                     brainstormList.map((data, index) => (
-                                                        <Brainstorm ref={brainstormRefs.current[data[2]]} key={"Brainstorming"+data[2]} userID={data[1]} /> //also need value and id passed down
+                                                        <Brainstorm key={"Brainstorming"+data[2]} userID={data[1]} value={data[0]} id={data[2]} setBrainstorm={setBrainstorm} />
                                                     ))
                                                 }
                                             </div>

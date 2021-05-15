@@ -94,6 +94,11 @@ io.on('connect', (socket) => {
         });
     })
 
+    //A new brainstorm component was created
+    socket.on('new-brainstorm', (room, userID, id) => {
+        socket.broadcast.to(room).emit('new-brainstorm', [userID, id]);
+    });
+
     // //disconnect the users from the room
     socket.on('disconnect', () => {
         let rawdata = fs.readFileSync('./config/rooms.json');
