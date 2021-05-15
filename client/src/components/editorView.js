@@ -2,8 +2,13 @@ import { useEffect, useState, useRef } from "react";
 import { Redirect, useLocation, Link } from "react-router-dom"; 
 import io from "socket.io-client";
 import axios from "axios";
+
 import Question from "./viewComponents/question";
 import User from "./viewComponents/users";
+import Brainstorm from "./viewComponents/brainstormResponse";
+import Carousel from "./viewComponents/carousel";
+import Paragraphs from "./viewComponents/paragraphResponse";
+
 
 import ColorLogo from "../assets/main-logo.png";
 import {ReactComponent as Logo} from "../assets/logo-white.svg";
@@ -18,9 +23,6 @@ import User5 from "../assets/users/Image5.webp";
 import User6 from "../assets/users/Image6.webp";
 import User7 from "../assets/users/Image7.webp";
 import User8 from "../assets/users/Image8.webp";
-import Brainstorm from "./viewComponents/brainstormResponse";
-import Carousel from "./viewComponents/carousel";
-import Paragraphs from "./viewComponents/paragraphs";
 
 let socket;
 
@@ -264,7 +266,24 @@ function EditorView() {
                 );
             case 4: 
                 return(
-                    <div>PHASE 4</div>
+                    <div>
+                        {
+                            bool ?
+                                <div className="userView">
+                                    <div className="lastPhase center">
+                                        <img src={Logo} alt="LingoThyme logo" height="250px"/>
+                                        <div className="lastPhase">
+                                            <p>The host has ended the meeting, thanks for joining.</p>
+                                            <div className="buttons">
+                                                <Link className="exit-button" to="/">Exit</Link>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            :
+                                <Redirect to="/" />
+                        }
+                    </div>
                 );
         }
     }
