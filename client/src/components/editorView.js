@@ -19,6 +19,8 @@ import User6 from "../assets/users/Image6.webp";
 import User7 from "../assets/users/Image7.webp";
 import User8 from "../assets/users/Image8.webp";
 import Brainstorm from "./viewComponents/brainstormResponse";
+import Carousel from "./viewComponents/carousel";
+import Paragraphs from "./viewComponents/paragraphs";
 
 function EditorView() {
     const nameInput = useRef(null);
@@ -113,7 +115,7 @@ function EditorView() {
                             bool ?
                                 <div className="userView">
                                     <div className="phase1 center">
-                                        <p className="title">The admin did not start the session yet.<br />Please hold tight while they prepare the session.</p>
+                                        <p className="title">The admin has not started the session yet.<br />Please hold tight while they prepare the session.</p>
                                     </div>
                                 </div>
                             :
@@ -149,8 +151,14 @@ function EditorView() {
                                     <div className="body">
                                         <div className="canvas">
                                             <div className="testing">
+                                                <Paragraphs />
+                                                <Carousel />
                                                 <Question />
                                                 <Brainstorm />
+                                                <div className="buttons">
+                                                    <Link className="exit-button" to="/lastPhase">lastPhaseTest</Link>
+                                                </div>
+                                                
                                             </div>
                                         </div>
                                         <div className="userList">
