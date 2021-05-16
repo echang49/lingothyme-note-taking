@@ -104,8 +104,12 @@ function EditorView() {
         });
 
         //when a user edits a brainstorming component
-        // socket.on('edit-brainstorm', (data) => {
-        // });
+        socket.on('edit-brainstorm', (data) => {
+            setBrainstormList(list => {
+                list[data[1]][0] = data[0];
+                return [...list];
+            });
+        });
     
         socket.on('phase_change', (data) =>  {
             setPhase(data);
@@ -155,6 +159,7 @@ function EditorView() {
         let tempBrainstormList = brainstormList;
         tempBrainstormList[id][0] = value;
         setBrainstormList([...tempBrainstormList]);
+        socket.emit('edit-brainstorm', location.split("?id=")[1], [value, id]);
     }
 
     if(nameState === true) {
@@ -225,7 +230,7 @@ function EditorView() {
                                     <div className="body">
                                         <div className="canvas">
                                             <Question />
-                                            <div className="brainstorm-row">
+                                            <div className="canvas-row">
                                                 {
                                                     brainstormList.map((data, index) => (
                                                         <Brainstorm key={"Brainstorming"+data[2]} userID={data[1]} value={data[0]} id={data[2]} setBrainstorm={setBrainstorm} />
@@ -254,14 +259,61 @@ function EditorView() {
                 );
             case 3:
                 return(
-                    <div className="testing">
-                        <Paragraphs />
-                        <Carousel />
-                        <Question />
-                        <Brainstorm />
-                        <div className="buttons">
-                            <Link className="exit-button" to="/lastPhase">lastPhaseTest</Link>
-                        </div>
+                    <div>
+                        {
+                            bool ?
+                                <div className="userView">
+                                    <nav>
+                                        <span className="nav-start">
+                                            <Logo />
+                                        </span>
+                                        <span className="nav-roomphase">
+                                             
+                                        </span>
+                                        <span className="nav-center">
+                                            <Note className="note-icon" onClick={() => handleNoteClick()} />
+                                        </span>
+                                        <span className="nav-end">
+                                            <Link to="/" style={{ textDecoration: 'none' }}>  {/* remove link styling */}
+                                                <button>
+                                                    <p>Leave </p>
+                                                    <Brace />
+                                                </button>
+                                            </Link>
+                                        </span>
+                                    </nav>
+                                    <div className="body">
+                                        <div className="canvas">
+                                            <div className="info-row">
+                                                <span><Question /></span>
+                                                
+                                                <Carousel />
+                                            </div>
+                                            <div className="canvas-row">
+                                                {
+                                                    brainstormList.map((data, index) => (
+                                                        <Paragraphs />
+                                                    ))
+                                                }
+                                            </div>
+                                        </div>
+                                        <div className="userList">
+                                            <div className="userList-header">
+                                                <p>Users</p>
+                                            </div>
+                                            <div className="userList-body">
+                                                {
+                                                    userList.map((data, index) => (
+                                                        <User key={"User"+data[1]} name={data[0]} picture={data[1]} />
+                                                    ))
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            :
+                                <Redirect to="/" />
+                        }
                     </div>
                 );
             case 4: 

@@ -8,16 +8,24 @@ function Brainstorm(props) {
         let id = props.id;
         props.setBrainstorm(textInput.current.value, id);
     }
-
-
-
-    return (
-        <div>
-            <div className={"brainstorming " + color} >
-                <textarea ref={textInput} value={props.value} onChange={() => handleChange()}></textarea>
+    if(typeof props.setBrainstorm === "function") {
+        return (
+            <div>
+                <div className={"brainstorming " + color} >
+                    <textarea ref={textInput} value={props.value} onChange={() => handleChange()}></textarea>
+                </div>
             </div>
-        </div>
-    );
+        );
+    }
+    else {
+        return(
+            <div>
+                <div className={"brainstorming " + color} >
+                    <textarea ref={textInput} value={props.value} readOnly></textarea>
+                </div>
+            </div>
+        );
+    }
 }
     
 export default Brainstorm;

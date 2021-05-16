@@ -366,7 +366,7 @@ textarea {
   overflow-y: scroll;
 }
 
-.userView .body .canvas .brainstorm-row {
+.userView .body .canvas .canvas-row {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -380,6 +380,19 @@ textarea {
       -ms-flex-pack: justify;
           justify-content: space-between;
   margin: 0 -20px;
+}
+
+.userView .body .canvas .info-row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
 }
 
 .userView .body .userList {
@@ -475,134 +488,10 @@ textarea {
   height: 100vh;
 }
 
-.carousel-container {
-  background-color: #FAFAFA;
-  border: 4px solid #5B8AFD;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  border-radius: 16px;
-  width: 550px;
-  height: 400px;
-  padding: 25px 20px;
-}
-
-.carousel-container h1 {
-  font-style: normal;
-  font-weight: bold;
-  font-size: 24px;
-  line-height: 28px;
-  color: #666666;
-  margin: 0;
-}
-
-.carousel-container carouselItem {
-  -webkit-margin-before: 2rem;
-          margin-block-start: 2rem;
-  -webkit-margin-after: 4rem;
-          margin-block-end: 4rem;
-  display: -ms-grid;
-  display: grid;
-  -ms-grid-columns: (auto)[20];
-      grid-template-columns: repeat(20, auto);
-  gap: 2rem;
-  overflow-x: auto;
-  -ms-scroll-snap-type: x mandatory;
-      scroll-snap-type: x mandatory;
-}
-
-.carousel-container item {
-  scroll-snap-align: center;
-}
-
-.paragraph-outer {
-  background-color: #FAFAFA;
-  padding: 10px 10px;
-  position: relative;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  border-radius: 16px;
-  width: 550px;
-  min-height: 400px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-}
-
-.paragraph-outer .paragraph-inner {
-  background-color: #F0F0F0;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  border-radius: 12px;
-  width: 467.5px;
-  min-height: 340px;
-  position: absolute;
-  left: 7.5%;
-  top: 7.5%;
-}
-
-.paragraph-outer .paragraph-box {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  border-radius: 8px;
-  background-color: #FAFAFA;
-  padding: 10px 10px;
-}
-
-.paragraph-outer .paragraph-user-box {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  background-color: transparent;
-  padding: 10px;
-  z-index: auto;
-  position: relative;
-}
-
-.paragraph-outer textarea {
-  position: inherit;
-  width: inherit;
-  height: inherit;
-  background: inherit;
-  margin: 0;
-  padding: 0;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  border-radius: 8px;
-  overflow: auto;
-  outline: none;
-  left: 11.5%;
-  width: 412.5px;
-  height: 80px;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  resize: none;
-  /*remove the resize handle on the bottom right*/
-  font-size: 16px;
-  font-family: Roboto;
-  z-index: auto;
-  position: relative;
-}
-
-.break {
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
-  height: 0;
+.userView .lastPhase {
+  font-size: 50px;
+  color: #000000;
+  margin-bottom: 5px;
 }
 
 .questions {
@@ -699,13 +588,122 @@ textarea {
   font-family: Roboto;
 }
 
-.lastPhase {
-  font-size: 50px;
-  color: #000000;
-  margin-bottom: 5px;
+.carousel {
+  background-color: #FAFAFA;
+  border: 4px solid #5B8AFD;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-radius: 16px;
+  width: 75vw;
+  padding: 25px 20px;
+  margin-left: 20px;
 }
 
-.testing {
-  padding: 100px 200px;
+.carousel h1 {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 28px;
+  color: #666666;
+  margin: 0;
+}
+
+.carousel .carousel-row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin: 0 -20px -20px -20px;
+  overflow-x: scroll;
+}
+
+.paragraph-outer {
+  background-color: #FAFAFA;
+  padding: 10px 10px;
+  position: relative;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-radius: 16px;
+  width: 550px;
+  min-height: 400px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.paragraph-outer .paragraph-inner {
+  background-color: #F0F0F0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-radius: 12px;
+  width: 467.5px;
+  min-height: 340px;
+  position: absolute;
+  left: 7.5%;
+  top: 7.5%;
+}
+
+.paragraph-outer .paragraph-box {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-radius: 8px;
+  background-color: #FAFAFA;
+  padding: 10px 10px;
+}
+
+.paragraph-outer .paragraph-user-box {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  background-color: transparent;
+  padding: 10px;
+  z-index: auto;
+  position: relative;
+}
+
+.paragraph-outer textarea {
+  position: inherit;
+  width: inherit;
+  height: inherit;
+  background: inherit;
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-radius: 8px;
+  overflow: auto;
+  outline: none;
+  left: 11.5%;
+  width: 412.5px;
+  height: 80px;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  resize: none;
+  /*remove the resize handle on the bottom right*/
+  font-size: 16px;
+  font-family: Roboto;
+  z-index: auto;
+  position: relative;
+}
+
+.break {
+  -ms-flex-preferred-size: 100%;
+      flex-basis: 100%;
+  height: 0;
 }
 /*# sourceMappingURL=style.css.map */
