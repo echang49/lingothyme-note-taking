@@ -483,7 +483,28 @@ textarea {
   border-radius: 16px;
   width: 550px;
   height: 400px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  overflow-x: scroll;
   padding: 25px 20px;
+}
+
+.carousel-container ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.carousel-container ::-webkit-scrollbar-thumb {
+  background: grey;
+}
+
+.carousel-container ::-webkit-scrollbar-track {
+  background: darkgray;
 }
 
 .carousel-container h1 {
@@ -493,21 +514,6 @@ textarea {
   line-height: 28px;
   color: #666666;
   margin: 0;
-}
-
-.carousel-container carouselItem {
-  -webkit-margin-before: 2rem;
-          margin-block-start: 2rem;
-  -webkit-margin-after: 4rem;
-          margin-block-end: 4rem;
-  display: -ms-grid;
-  display: grid;
-  -ms-grid-columns: (auto)[20];
-      grid-template-columns: repeat(20, auto);
-  gap: 2rem;
-  overflow-x: auto;
-  -ms-scroll-snap-type: x mandatory;
-      scroll-snap-type: x mandatory;
 }
 
 .carousel-container item {

@@ -366,9 +366,26 @@ textarea {
     border-radius: 16px;
     width: 550px;
     height: 400px;
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll;
     padding: 25px 20px; 
     // display: flex;
     // flex-direction: row;
+    ::-webkit-scrollbar{
+        width: 10px;
+        height: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb{
+        background: grey;
+    }
+
+    ::-webkit-scrollbar-track{
+        background: darkgray;
+    }
+
+
     h1 {
         font-style: normal;
         font-weight: bold;
@@ -376,20 +393,6 @@ textarea {
         line-height: 28px;
         color: #666666;
         margin: 0;
-    }
-
-    carouselItem{
-        // position: relative;
-        // display: flex;
-        // flex-wrap: wrap;
-        // flex-direction: row;
-        margin-block-start: 2rem; 
-        margin-block-end: 4rem;
-        display: grid;
-        grid-template-columns: repeat(20, auto);
-        gap: 2rem;
-        overflow-x: auto;
-        scroll-snap-type: x mandatory;
     }
 
     item {
