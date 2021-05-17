@@ -36,6 +36,7 @@ function EditorView() {
     const [userList, setUserList] = useState([]); //[name, id]
     const [userID, setUserID] = useState(); 
     const [brainstormList, setBrainstormList] = useState([]); //[value, userID, id]
+    const [paragraphList, setParagraphList] = useState([]); //[[paragraphx, paragraphx+1], id]
 
     useEffect(() => {
         socket = io("http://localhost:5000", {
@@ -149,10 +150,17 @@ function EditorView() {
     }
 
     function handleNoteClick () {
-        //useRef. create a Brainstorming component under the testing area
-        let tempBrainstormList = brainstormList;
-        setBrainstormList([...tempBrainstormList, ["", userID, tempBrainstormList.length]]);
-        socket.emit('new-brainstorm', location.split("?id=")[1], userID, tempBrainstormList.length);
+        if(phase === 2) {
+            //useRef. create a Brainstorming component under the testing area
+            let tempBrainstormList = brainstormList;
+            setBrainstormList([...tempBrainstormList, ["", userID, tempBrainstormList.length]]);
+            socket.emit('new-brainstorm', location.split("?id=")[1], userID, tempBrainstormList.length);
+        }
+        else { //phase === 3
+            let tempParagraphList = paragraphList;
+            setParagraphList([...tempParagraphList, [["", "", ""], tempParagraphList.length]]);
+            //socket.emit('new-paragraph', location.split("?id=")[1], tempBrainstormList.length);
+        }
     }
 
     function setBrainstorm(value, id) {
@@ -291,7 +299,7 @@ function EditorView() {
                                             </div>
                                             <div className="canvas-row">
                                                 {
-                                                    brainstormList.map((data, index) => (
+                                                    paragraphList.map((data, index) => (
                                                         <Paragraphs />
                                                     ))
                                                 }
