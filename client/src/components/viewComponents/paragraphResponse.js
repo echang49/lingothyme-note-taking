@@ -13,11 +13,7 @@ function Paragraphs() { // carousel for collaborative writing
         <div>
             <div className="paragraph-outer">
                 <div className="paragraph-inner"></div>
-                    <div className="paragraph-user-box">
-                        <User picture={User1}/>
-                        <User picture={User2}/>
-                        <User picture={User3}/>
-                    </div>
+
                 
                     <div className="break"></div>
 
