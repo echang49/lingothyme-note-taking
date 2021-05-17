@@ -18,6 +18,8 @@ Add loading screen when loading site
 Create a 1 sec delay for the system to get caught up
 How socketio emits information. Currently emitting the entire paragraph but should emit specific characters and index
 refactoring some code to make it cleaner, commenting code
+Make accessible
+Make responsive
 
 Maybe to sync up, make the new user request info from another client? Maybe first user of room?
 This way things only get moved to the database at the end of the phase.

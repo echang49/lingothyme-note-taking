@@ -616,94 +616,46 @@ textarea {
   overflow-x: scroll;
 }
 
-.paragraph-outer {
-  background-color: #FAFAFA;
-  padding: 10px 10px;
-  position: relative;
+.paragraph {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   border-radius: 16px;
-  width: 550px;
-  min-height: 400px;
+  background-color: #FAFAFA;
+  padding: 40px;
+  margin: 20px;
+  width: 40vw;
+}
+
+.paragraph .inner-box {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -webkit-box-orient: horizontal;
+  -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-}
-
-.paragraph-outer .paragraph-inner {
-  background-color: #F0F0F0;
+      -ms-flex-direction: column;
+          flex-direction: column;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   border-radius: 12px;
-  width: 467.5px;
-  min-height: 340px;
-  position: absolute;
-  left: 7.5%;
-  top: 7.5%;
+  background-color: #F0F0F0;
+  padding: 20px;
 }
 
-.paragraph-outer .paragraph-box {
+.paragraph .inner-box textarea {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   border-radius: 8px;
   background-color: #FAFAFA;
-  padding: 10px 10px;
-}
-
-.paragraph-outer .paragraph-user-box {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  background-color: transparent;
-  padding: 10px;
-  z-index: auto;
-  position: relative;
-}
-
-.paragraph-outer textarea {
   position: inherit;
   width: inherit;
-  height: inherit;
-  background: inherit;
+  height: 15vh;
   margin: 0;
   padding: 0;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  border-radius: 8px;
-  overflow: auto;
-  outline: none;
-  left: 11.5%;
-  width: 412.5px;
-  height: 80px;
-  -webkit-box-shadow: none;
-  box-shadow: none;
+  border: 0px solid black;
   resize: none;
-  /*remove the resize handle on the bottom right*/
   font-size: 16px;
   font-family: Roboto;
-  z-index: auto;
-  position: relative;
-}
-
-.break {
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
-  height: 0;
+  margin: 10px;
+  padding: 10px;
 }
 /*# sourceMappingURL=style.css.map */

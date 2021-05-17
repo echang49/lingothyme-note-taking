@@ -465,94 +465,36 @@ textarea {
 }
 
 .paragraph {
-    
-}
-
-$paragraph-outer-width: 550px;
-$paragraph-outer-height: 400px;
-.paragraph-outer{
-    background-color: #FAFAFA;
-    padding: 10px 10px;
-    position: relative;
-
     box-sizing: border-box;
     border-radius: 16px;
-
-    width: $paragraph-outer-width;
-    min-height: $paragraph-outer-height;
-
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: space-between;
-
-    .paragraph-inner{
-        background-color: #F0F0F0;
+    background-color: #FAFAFA;
+    padding: 40px;
+    margin: 20px;
+    width: 40vw;
+    .inner-box {
+        display: flex;
+        flex-direction: column;
         box-sizing: border-box;
         border-radius: 12px;
-        width: $paragraph-outer-width*.85;
-        min-height: $paragraph-outer-height*.85;
-        position: absolute;
-        left: 7.5%;
-        top: 7.5%;
+        background-color: #F0F0F0;
+        padding: 20px;
+        textarea{
+            box-sizing: border-box;
+            border-radius: 8px;
+            background-color: #FAFAFA;
+            position: inherit;
+            width: inherit;
+            height: 15vh;
+            margin: 0;
+            padding: 0;
+            border: 0px solid black;
+            resize: none;
+            font-size: 16px;
+            font-family: Roboto;
+            margin: 10px;
+            padding: 10px;
+        }
     }
-    .paragraph-box{
-        box-sizing: border-box;
-        border-radius: 8px;
-        background-color: #FAFAFA;
-        // width: $paragraph-outer-width*.4;
-        // height: $paragraph-outer-height*.4;
-        padding: 10px 10px;
-    }
-
-    .paragraph-user-box{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        background-color: transparent;
-        padding: 10px;
-        z-index: auto;
-        position:relative;
-
-    }
-
-    textarea{
-    position: inherit;
-    width: inherit;
-    height: inherit;
-    background: inherit;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    border-radius: 8px;
-    // border: none;
-    overflow: auto;
-    outline: none;
-    left: 11.5%;
-
-    width: $paragraph-outer-width*.75;
-    height: $paragraph-outer-height*.2;
-
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-
-    resize: none; /*remove the resize handle on the bottom right*/
-
-    font-size: 16px;
-    font-family: Roboto;
-
-    z-index: auto;
-    position:relative;
-    }
-
-
 }
-
-.break{
-    flex-basis: 100%;
-    height: 0;
-}
-
 
 //EXCEPTION

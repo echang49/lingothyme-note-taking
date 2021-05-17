@@ -11,17 +11,13 @@ import User8 from "../../assets/users/Image8.webp";
 function Paragraphs() { // carousel for collaborative writing
     return (
         <div>
-            <div className="paragraph-outer">
-                <div className="paragraph-inner"></div>
-
-                
-                    <div className="break"></div>
-
+            <div className="paragraph">
+                <div className="inner-box">
                     <textarea readonly>In this day and age, we are dealing with</textarea>
                     <textarea readonly>In this day and age, we are dealing with</textarea>
                     <textarea readonly>In this day and age, we are dealing with</textarea>
+                </div>
             </div>
-
         </div>
 
     );
