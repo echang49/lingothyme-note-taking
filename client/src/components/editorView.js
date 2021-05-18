@@ -35,7 +35,7 @@ function EditorView() {
     const [phase, setPhase] = useState(1);
     const [userList, setUserList] = useState([]); //[name, id]
     const [userID, setUserID] = useState(); 
-    const [brainstormList, setBrainstormList] = useState([]); //[value, userID, id]
+    const [brainstormList, setBrainstormList] = useState([["test", 1, 1]]); //[value, userID, id]
     const [paragraphList, setParagraphList] = useState([]); //[[paragraphx, paragraphx+1], id]
 
     useEffect(() => {
@@ -111,6 +111,19 @@ function EditorView() {
                 return [...list];
             });
         });
+
+        //when a user creates a new paragraph component
+        socket.on('new-paragraph', (data) => {
+            setParagraphList(list => [...list, [["", "", ""], data]]);
+        });
+
+        //when a user edits a paragraph component
+        socket.on('edit-paragraph', (data) => {
+            setParagraphList(list => {
+                list[data[1]][0] = data[0];
+                return [...list];
+            });
+        });
     
         socket.on('phase_change', (data) =>  {
             setPhase(data);
@@ -159,7 +172,7 @@ function EditorView() {
         else { //phase === 3
             let tempParagraphList = paragraphList;
             setParagraphList([...tempParagraphList, [["", "", ""], tempParagraphList.length]]);
-            //socket.emit('new-paragraph', location.split("?id=")[1], tempBrainstormList.length);
+            socket.emit('new-paragraph', location.split("?id=")[1], tempParagraphList.length);
         }
     }
 
@@ -168,6 +181,13 @@ function EditorView() {
         tempBrainstormList[id][0] = value;
         setBrainstormList([...tempBrainstormList]);
         socket.emit('edit-brainstorm', location.split("?id=")[1], [value, id]);
+    }
+
+    function setParagraph(value, id) {
+        let tempParagraphList = paragraphList;
+        tempParagraphList[id][0] = value;
+        setParagraphList([...tempParagraphList]);
+        socket.emit('edit-paragraph', location.split("?id=")[1], [value, id]);
     }
 
     if(nameState === true) {
@@ -294,13 +314,12 @@ function EditorView() {
                                         <div className="canvas">
                                             <div className="info-row">
                                                 <span><Question /></span>
-                                                
-                                                <Carousel />
+                                                <Carousel brainstormList={brainstormList} />
                                             </div>
                                             <div className="canvas-row">
                                                 {
-                                                    paragraphList.map((data, index) => (
-                                                        <Paragraphs />
+                                                    paragraphList.map((data) => (
+                                                        <Paragraphs key={"Paragraph"+data[1]} value={data[0]} id={data[1]} setParagraph={setParagraph} />
                                                     ))
                                                 }
                                             </div>

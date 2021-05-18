@@ -1,10 +1,8 @@
 USERNAME: LingoThyme PASSWORD: IrisNanEdward (Basic security for now since we'll open it up later)
 
-BUG: 
- 
-When a keystroke is pressed, emit the new character 
 SETUP ADMIN PORTAL
 LOGGING STUFF ONTO THE DATABASE AND GETTING STUFF FROM THE DATABASE LAST => SOCKET IO FIRST. Set the question upon loading from MongoDB
+Sync info when someone joins
 Start doing user acceptance testing later
 
 see how much voice chat costs
