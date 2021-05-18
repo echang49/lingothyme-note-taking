@@ -35,7 +35,7 @@ function EditorView() {
     const [phase, setPhase] = useState(1);
     const [userList, setUserList] = useState([]); //[name, id]
     const [userID, setUserID] = useState(); 
-    const [brainstormList, setBrainstormList] = useState([["test", 1, 1]]); //[value, userID, id]
+    const [brainstormList, setBrainstormList] = useState([]); //[value, userID, id]
     const [paragraphList, setParagraphList] = useState([]); //[[paragraphx, paragraphx+1], id]
 
     useEffect(() => {
