@@ -52,7 +52,7 @@ function AdminView() {
                         bool ?
                             <div className="userView">
                                 <div className="phase1 center">
-                                    <p className="title">The admin has not started the session yet.<br />Please hold tight while they prepare the session.</p>                              
+                                    <p className="title">The session has not started yet.<br />Press the button below to begin the session.</p>                              
                                 </div>
 
                                 <div className="center-button">
