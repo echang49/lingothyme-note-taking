@@ -104,6 +104,16 @@ io.on('connect', (socket) => {
         socket.broadcast.to(room).emit('edit-brainstorm', data);
     });
 
+    //A new paragraph component was created
+    socket.on('new-paragraph', (room, id) => {
+        socket.broadcast.to(room).emit('new-paragraph', id);
+    });
+
+    //A new paragraph component was created
+    socket.on('edit-paragraph', (room, data) => {
+        socket.broadcast.to(room).emit('edit-paragraph', data);
+    });
+
     // //disconnect the users from the room
     socket.on('disconnect', () => {
         let rawdata = fs.readFileSync('./config/rooms.json');

@@ -1,13 +1,14 @@
 import Brainstorm from "./brainstormResponse";
-function Carousel() { // carousel for collaborative writing
+function Carousel(props) { // carousel for collaborative writing
     return (
         <div className="carousel">
             <h1>Carousel</h1>
             <div class="carousel-row">
-                <Brainstorm userID="1" value="hello" id="1" />
-                <Brainstorm userID="1" value="hello" id="2"/>
-                <Brainstorm userID="1" value="hello" id="3"/>
-                <Brainstorm userID="1" value="hello" id="4"/>
+               {
+                    props.brainstormList.map((data) => (
+                        <Brainstorm key={"Brainstorming"+data[2]} userID={data[1]} value={data[0]} id={data[2]} />
+                    ))
+                }
             </div>
         </div>
 
