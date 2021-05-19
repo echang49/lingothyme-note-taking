@@ -25,25 +25,84 @@ import User6 from "../assets/users/Image6.webp";
 import User7 from "../assets/users/Image7.webp";
 import User8 from "../assets/users/Image8.webp";
 
+let socket;
 
 function AdminView() {
     const location = useLocation().search;
     const [bool, setBool] = useState(true);
+    const [phase, setPhase] = useState(1);
+    const [userList, setUserList] = useState([]); //[name, id]
+    const [userID, setUserID] = useState(); 
+    const [brainstormList, setBrainstormList] = useState([]); //[value, userID, id]
+    const [paragraphList, setParagraphList] = useState([]); //[[paragraphx, paragraphx+1], id]
 
     useEffect(() => {
         console.log(location);
+
+        socket = io("http://localhost:5000", {
+            reconnectionDelayMax: 10000,
+            withCredentials: true
+        });
+        socketIO(socket);
+
         axios.post('/api/auth/verifyAdmin', {location})
         .then((res) => {
-            if(!res.data) {
+            if(!res.data[0]) {
                 setBool(false);
             }
+            setPhase(res.data[1]);
         })
         .catch((err) => {
             alert(err);
         });
+
+        return () => {
+            socket.disconnect();
+        }
+
     }, [location]);
 
-    var phase = 1; // phase select for testing purposes (TODO: implement phase change)
+    function socketIO(socket) {
+        //on connection, set the user list of people already connected
+        socket.on('connection', (data) => {
+            let tempUserList = userList;
+            for(let i in data) {
+                tempUserList.push(data[i]);
+            }
+            setUserList([...tempUserList]);
+        });
+    
+        //when a new user joins, add them to the user list
+        socket.on('user-connected', (data) => {
+            let tempUserList = userList;
+            tempUserList.push(data);
+            setUserList([...tempUserList]);
+        });
+
+        //when a user leaves, remove them from the user list
+        socket.on('user-disconnected', (data) => {
+            let slicedIndex = userList.findIndex((element) =>  JSON.stringify(element) === JSON.stringify(data));
+            let tempUserList = userList;
+            tempUserList.splice(slicedIndex,1);
+            setUserList([...tempUserList]);
+        });
+    
+        socket.on('phase_change', (data) =>  {
+            setPhase(data);
+        });
+    }
+
+    function incrementPhase() {
+        var nextPhase = phase + 1;
+        alert("moving to phase " + (nextPhase));
+        socket.emit('phase-change', nextPhase);
+        //setPhase(nextPhase);
+        
+        
+    }
+
+
+    //var phase = 1; // phase select for testing purposes (TODO: implement phase change)
     switch(phase) {
         case 1: // meeting has not started yet, allow admin to start meeting
             return(
@@ -57,7 +116,7 @@ function AdminView() {
 
                                 <div className="center-button">
                                     <div className="buttons">
-                                        <button className="primary-button">START SESSION</button>
+                                        <button className="primary-button" onClick={() => incrementPhase()}>START SESSION</button>
                                     </div>
                                 </div>
 
@@ -87,7 +146,7 @@ function AdminView() {
                                         </span>
                                         <span className="nav-end">
                                             <Link to="/" style={{ textDecoration: 'none' }}>  {/* remove link styling */}
-                                                <button>
+                                                <button onClick={() => incrementPhase()}>
                                                     <p>Next Phase </p>
                                                     <Brace />
                                                 </button>
