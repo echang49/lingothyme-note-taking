@@ -34,7 +34,12 @@ function AdminView() {
         console.log(location);
         axios.post('/api/auth/verifyAdmin', {location})
         .then((res) => {
+<<<<<<< Updated upstream
             if(!res.data) {
+=======
+            console.log('res.data =', res.data);
+            if(!res.data[0]) {
+>>>>>>> Stashed changes
                 setBool(false);
             }
         })
@@ -43,7 +48,55 @@ function AdminView() {
         });
     }, [location]);
 
+<<<<<<< Updated upstream
     var phase = 1; // phase select for testing purposes (TODO: implement phase change)
+=======
+    function socketIO(socket) {
+        //on connection, set the user list of people already connected
+        socket.on('connection', (data) => {
+            let tempUserList = userList;
+            for(let i in data) {
+                tempUserList.push(data[i]);
+            }
+            setUserList([...tempUserList]);
+        });
+    
+        //when a new user joins, add them to the user list
+        socket.on('user-connected', (data) => {
+            let tempUserList = userList;
+            tempUserList.push(data);
+            setUserList([...tempUserList]);
+        });
+
+        //when a user leaves, remove them from the user list
+        socket.on('user-disconnected', (data) => {
+            let slicedIndex = userList.findIndex((element) =>  JSON.stringify(element) === JSON.stringify(data));
+            let tempUserList = userList;
+            tempUserList.splice(slicedIndex,1);
+            setUserList([...tempUserList]);
+        });
+
+        socket.on('phase_change', (data) =>  {
+            //console.log('phase before change: ', phase);
+            setPhase(data);
+            //console.log('phase after change: ', phase);
+        });
+
+    }
+
+    
+
+    function incrementPhase() {
+        var nextPhase = phase + 1;
+        console.log("moving to phase " + (nextPhase));
+        console.log('phase before change: ', phase);
+        socket.emit('phase-change', nextPhase);
+        console.log('phase after change: ', phase);
+        
+    }
+
+
+>>>>>>> Stashed changes
     switch(phase) {
         case 1: // meeting has not started yet, allow admin to start meeting
             return(
@@ -103,7 +156,7 @@ function AdminView() {
         
                                             </div>
                                         </div>
-                                        {/* <div className="userList">
+                                        <div className="userList">
                                             <div className="userList-header">
                                                 <p>Users</p>
                                             </div>
@@ -114,7 +167,7 @@ function AdminView() {
                                                     ))
                                                 }
                                             </div>
-                                        </div> */}
+                                        </div>
                                     </div>
                                 </div>
                             </div>

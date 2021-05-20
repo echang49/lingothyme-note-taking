@@ -125,7 +125,7 @@ router.post('/verifyAdmin', (req, res) => {
         Room.findOne({publicKey: normalCode, privateKey: adminCode})
         .then(room => {
             if(room) {
-                return res.send(true);
+                return res.send([true, room.phase]);
             }
             else {
                 return res.send(false);
