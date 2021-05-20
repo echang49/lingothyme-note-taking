@@ -125,15 +125,21 @@ router.post('/verifyAdmin', (req, res) => {
         Room.findOne({publicKey: normalCode, privateKey: adminCode})
         .then(room => {
             if(room) {
+                let rawdata = fs.readFileSync('./config/rooms.json');
+                let rooms = JSON.parse(rawdata);
+                if(rooms[normalCode] == null){
+                    rooms[normalCode] = { users: {} };
+                    fs.writeFileSync('config/rooms.json', JSON.stringify(rooms));
+                }
                 return res.send([true, room.phase]);
             }
             else {
-                return res.send(false);
+                return res.send([false]);
             }
         });
     }
     else {
-         return res.send(false);
+         return res.send([false]);
     }
  });
 

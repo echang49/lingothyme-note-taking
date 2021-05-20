@@ -123,6 +123,19 @@ io.on('connect', (socket) => {
         socket.broadcast.to(room).emit('edit-paragraph', data);
     });
 
+    //Room phase has been changed by admin
+    socket.on('phase-change', (room, phase, brainstormList, paragraphList) => {
+        console.log(brainstormList, paragraphList);
+        socket.broadcast.to(room).emit('phase-change', phase);
+        Room.findOne({publicKey: room})
+        .then(async (room) => {
+            room.phase = phase;
+            room.brainstormList = brainstormList;
+            room.paragraphList = paragraphList;
+            await room.save();
+        });
+    });
+
     // //disconnect the users from the room
     socket.on('disconnect', () => {
         let rawdata = fs.readFileSync('./config/rooms.json');
@@ -142,5 +155,5 @@ io.on('connect', (socket) => {
                 break;
             }
         }
-    })
+    });
 });

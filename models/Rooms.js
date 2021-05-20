@@ -29,6 +29,14 @@ const RoomSchema = new mongoose.Schema({
     phase: {
         type: Number,
         required: true
+    },
+    brainstormList: {
+        type: Array,
+        required: false
+    },
+    paragraphList: {
+        type: Array,
+        required: false
     }
 })
 
