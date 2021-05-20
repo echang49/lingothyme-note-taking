@@ -1,8 +1,6 @@
 USERNAME: LingoThyme PASSWORD: IrisNanEdward (Basic security for now since we'll open it up later)
 
-LOGGING STUFF ONTO THE DATABASE AND GETTING STUFF FROM THE DATABASE LAST
 Start doing user acceptance testing later
-Do the question component
 When room is done, delete from MongoDB once the email with notes has been sent
 
 see how much voice chat costs

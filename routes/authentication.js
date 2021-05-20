@@ -103,7 +103,7 @@ router.post('/verifyUser', (req, res) => {
                     rooms[code] = { users: {} };
                     fs.writeFileSync('config/rooms.json', JSON.stringify(rooms));
                 }
-                return res.send([true, room.phase]);
+                return res.send([true, room.phase, room.question]);
             }
             else {
                 return res.send([false]);
@@ -131,7 +131,7 @@ router.post('/verifyAdmin', (req, res) => {
                     rooms[normalCode] = { users: {} };
                     fs.writeFileSync('config/rooms.json', JSON.stringify(rooms));
                 }
-                return res.send([true, room.phase]);
+                return res.send([true, room.phase, room.question]);
             }
             else {
                 return res.send([false]);

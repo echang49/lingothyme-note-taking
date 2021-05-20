@@ -22,6 +22,7 @@ function AdminView() {
     const [bool, setBool] = useState(true);
     const [nameState, setNameState] = useState(true);
 
+    const [question, setQuestion] = useState("");
     const [phase, setPhase] = useState(1);
     const [userList, setUserList] = useState([]); //[name, id]
     const [userID, setUserID] = useState(); 
@@ -42,13 +43,14 @@ function AdminView() {
                 setBool(false);
             }
             setPhase(res.data[1]);
+            setQuestion(res.data[2]);
             const localStorageName = JSON.parse(localStorage.getItem('name'));
             const currentTime = Date.now();
             //see if name exists or is expired
             if(localStorageName !== null) {
                 if(new Date(localStorageName[1]).getTime() > currentTime) {
                     setNameState(false);
-                    socket.emit("new-user", location, localStorageName[0], (res) => {
+                    socket.emit("new-user", location.split("?id=")[1].split("-")[0], localStorageName[0], (res) => {
                         setUserID(res.id);
                     });
                 }
@@ -145,7 +147,7 @@ function AdminView() {
         tomorrow.setDate(tomorrow.getDate() + 1);
         localStorage.setItem('name', JSON.stringify([name, tomorrow]));
         setNameState(false);
-        socket.emit('new-user', location, name, (res) => {
+        socket.emit('new-user', location.split("?id=")[1].split("-")[0], name, (res) => {
             setUserID(res.id);
         });
     }
@@ -155,12 +157,12 @@ function AdminView() {
             //useRef. create a Brainstorming component under the testing area
             let tempBrainstormList = brainstormList;
             setBrainstormList([...tempBrainstormList, ["", userID, tempBrainstormList.length]]);
-            socket.emit('new-brainstorm', location.split("?id=")[1], userID, tempBrainstormList.length);
+            socket.emit('new-brainstorm', location.split("?id=")[1].split("-")[0], userID, tempBrainstormList.length);
         }
         else { //phase === 3
             let tempParagraphList = paragraphList;
             setParagraphList([...tempParagraphList, [["", "", ""], tempParagraphList.length]]);
-            socket.emit('new-paragraph', location.split("?id=")[1], tempParagraphList.length);
+            socket.emit('new-paragraph', location.split("?id=")[1].split("-")[0], tempParagraphList.length);
         }
     }
 
@@ -168,25 +170,18 @@ function AdminView() {
         let tempBrainstormList = brainstormList;
         tempBrainstormList[id][0] = value;
         setBrainstormList([...tempBrainstormList]);
-        socket.emit('edit-brainstorm', location.split("?id=")[1], [value, id]);
+        socket.emit('edit-brainstorm', location.split("?id=")[1].split("-")[0], [value, id]);
     }
 
     function setParagraph(value, id) {
         let tempParagraphList = paragraphList;
         tempParagraphList[id][0] = value;
         setParagraphList([...tempParagraphList]);
-        socket.emit('edit-paragraph', location.split("?id=")[1], [value, id]);
+        socket.emit('edit-paragraph', location.split("?id=")[1].split("-")[0], [value, id]);
     }
     
     function incrementPhase(data) {
         setPhase(data);
-        // setBrainstormList(x => {
-        //     setParagraphList(y => {
-        //         socket.emit('phase-change', location.split("?id=")[1].split("-")[0], data, x, y);
-        //         return [...y];
-        //     });
-        //     return [...x];
-        // })
         socket.emit('phase-change', location.split("?id=")[1].split("-")[0], data, brainstormList, paragraphList);
     }
 
@@ -260,7 +255,7 @@ function AdminView() {
                                     </nav>
                                     <div className="body">
                                         <div className="canvas">
-                                            <Question />
+                                            <Question question={question}/>
                                             <div className="canvas-row">
                                                 {
                                                     brainstormList.map((data, index) => (
@@ -314,7 +309,7 @@ function AdminView() {
                                     <div className="body">
                                         <div className="canvas">
                                             <div className="info-row">
-                                                <span><Question /></span>
+                                                <span><Question question={question}/></span>
                                                 <Carousel brainstormList={brainstormList} />
                                             </div>
                                             <div className="canvas-row">

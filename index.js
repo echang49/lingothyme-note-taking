@@ -73,7 +73,7 @@ io.on('connect', (socket) => {
     const ID = socket.id;
     
     socket.on('new-user', (location, name, callback) => {
-        let room = location.split("?id=")[1];
+        let room = location;
         socket.join(room);
         let rawdata = fs.readFileSync('./config/rooms.json');
         let rooms = JSON.parse(rawdata);
@@ -125,7 +125,6 @@ io.on('connect', (socket) => {
 
     //Room phase has been changed by admin
     socket.on('phase-change', (room, phase, brainstormList, paragraphList) => {
-        console.log(brainstormList, paragraphList);
         socket.broadcast.to(room).emit('phase-change', phase);
         Room.findOne({publicKey: room})
         .then(async (room) => {
