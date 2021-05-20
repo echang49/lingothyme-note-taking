@@ -124,6 +124,25 @@ function EditorView() {
                 return [...list];
             });
         });
+
+        //when another user requests for the info on the doc
+        socket.on('request-info', (data) => {
+            // console.log(brainstormList, paragraphList);
+            // socket.emit('resolve-info', data, brainstormList, paragraphList);
+            setBrainstormList(x => {
+                setParagraphList(y => {
+                    socket.emit('resolve-info', data, x, y);
+                    return [...y];
+                });
+                return [...x];
+            });
+        });
+
+        //when another user provides info on the doc
+        socket.on('resolve-info', (data) => {
+            setBrainstormList([...data[0]]);
+            setParagraphList([...data[1]]);
+        });
     
         socket.on('phase_change', (data) =>  {
             setPhase(data);
