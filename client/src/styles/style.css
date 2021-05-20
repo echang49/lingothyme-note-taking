@@ -41,23 +41,23 @@ textarea {
 }
 
 .color-1 {
-  background-color: #F8EAC6;
-}
-
-.color-2 {
-  background-color: #FCD4B7;
-}
-
-.color-3 {
   background-color: #FFCDCD;
 }
 
+.color-2 {
+  background-color: #FED283;
+}
+
+.color-3 {
+  background-color: #F9F6C1;
+}
+
 .color-4 {
-  background-color: #FBD8E9;
+  background-color: #DEF0A9;
 }
 
 .color-5 {
-  background-color: #B8E5F9;
+  background-color: #E3D9F4;
 }
 
 .color-6 {
@@ -65,11 +65,11 @@ textarea {
 }
 
 .color-7 {
-  background-color: #BDCBFC;
+  background-color: #C4E0F2;
 }
 
 .color-8 {
-  background-color: #D0CBF3;
+  background-color: #ADE8D6;
 }
 
 .center {

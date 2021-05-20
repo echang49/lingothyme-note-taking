@@ -2,6 +2,7 @@ USERNAME: LingoThyme PASSWORD: IrisNanEdward (Basic security for now since we'll
 
 Start doing user acceptance testing later
 When room is done, delete from MongoDB once the email with notes has been sent
+Implement hard cap. If someone joins a full room, tell them taht and bring them back to home page.
 
 see how much voice chat costs
 
