@@ -15,7 +15,7 @@ IMPROVEMENTS
 Add loading screen when loading site
 Create a 1 sec delay for the system to get caught up
 How socketio emits information. Currently emitting the entire paragraph but should emit specific characters and index
-refactoring some code to make it cleaner, commenting code
+refactoring some code to make it cleaner, commenting code (request-info is very nasty lol)
 Create more paragraphs for each paragraph component (if do this, each paragraph component starts with 1 block)
 Make accessible
 Make responsive

@@ -81,8 +81,12 @@ io.on('connect', (socket) => {
         //tell new user who's already in
         socket.emit('connection', rooms[room].users);
         let ids = [1,2,3,4,5,6,7,8]
+        let bool = true;
         //only unique ids left
         for(let i in rooms[room].users) {
+            if (bool){ //if this is the first user
+                io.to(i).emit('request-info', ID);
+            }
             ids.splice(ids.indexOf(rooms[room].users[i][1]),1);
         }
         rooms[room].users[ID] = [name, ids[0]];
@@ -93,6 +97,11 @@ io.on('connect', (socket) => {
             id: ids[0]
         });
     })
+
+    //User gives info to another user
+    socket.on('resolve-info', (socketID, brainstormList, paragraphList) => {
+        io.to(socketID).emit('resolve-info', [brainstormList, paragraphList]);
+    });
 
     //A new brainstorm component was created
     socket.on('new-brainstorm', (room, userID, id) => {
@@ -134,9 +143,4 @@ io.on('connect', (socket) => {
             }
         }
     })
-
-    // //emit message to all users in the chatroom
-    // socket.on('send_chat_message', (room, message) => {
-    //     io.in(room).emit('chat_message', { message: message, name: rooms[room].users[socket.id] });
-    // })
 });
