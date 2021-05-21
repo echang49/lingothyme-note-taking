@@ -30,7 +30,7 @@ function EditorView() {
     const [paragraphList, setParagraphList] = useState([]); //[[paragraphx, paragraphx+1], id]
 
     useEffect(() => {
-        socket = io("http://localhost:5000", {
+        socket = io(window.location.origin, {
             reconnectionDelayMax: 10000,
             withCredentials: true
         });
