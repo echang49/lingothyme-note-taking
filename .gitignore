@@ -1,2 +1,4 @@
 config/config.env
+config/lingothyme.pem
+config/aws notes.txt
 node_modules
