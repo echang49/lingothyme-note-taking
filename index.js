@@ -62,7 +62,7 @@ const job = schedule.scheduleJob('0 0 * * *', () => {
 
 var io = require('socket.io')(undefined, {
     cors: {
-      origin: "http://localhost:3000",
+      origin: process.env.SOCKET_ORIGIN,
       methods: ["GET", "POST"],
       credentials: true
     }
