@@ -17,8 +17,5 @@ refactoring some code to make it cleaner, commenting code (request-info is very 
 Create more paragraphs for each paragraph component (if do this, each paragraph component starts with 1 block)
 Make accessible
 Make responsive
-Change Phase dynamically based on array from MongoDB
-Update database every minute there's a change?
-
-Maybe to sync up, make the new user request info from another client? Maybe first user of room?
-This way things only get moved to the database at the end of the phase.
+Move stuff to database semi-frequently? Like once every 30 seconds?
+Make alert on create room text selectable
