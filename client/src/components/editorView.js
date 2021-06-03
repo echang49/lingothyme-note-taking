@@ -9,21 +9,11 @@ import Brainstorm from "./viewComponents/brainstormResponse";
 import Carousel from "./viewComponents/carousel";
 import Paragraphs from "./viewComponents/paragraphResponse";
 
-
 import ColorLogo from "../assets/main-logo.png";
 import {ReactComponent as Logo} from "../assets/logo-white.svg";
 import {ReactComponent as Brace} from "../assets/right-brace.svg";
 import {ReactComponent as Note} from "../assets/note-icon.svg";
 import {ReactComponent as Plus} from "../assets/plus-icon.svg"; // taken from https://iconmonstr.com/plus-6-svg/, replace with custom icon later
-
-import User1 from "../assets/users/Image1.webp";
-import User2 from "../assets/users/Image2.webp";
-import User3 from "../assets/users/Image3.webp";
-import User4 from "../assets/users/Image4.webp";
-import User5 from "../assets/users/Image5.webp";
-import User6 from "../assets/users/Image6.webp";
-import User7 from "../assets/users/Image7.webp";
-import User8 from "../assets/users/Image8.webp";
 
 let socket;
 
@@ -33,6 +23,7 @@ function EditorView() {
     const [bool, setBool] = useState(true);
     const [nameState, setNameState] = useState(true);
 
+    const [question, setQuestion] = useState("");
     const [phase, setPhase] = useState(1);
     const [userList, setUserList] = useState([]); //[name, id]
     const [userID, setUserID] = useState(); 
@@ -40,7 +31,7 @@ function EditorView() {
     const [paragraphList, setParagraphList] = useState([]); //[[paragraphx, paragraphx+1], id]
 
     useEffect(() => {
-        socket = io("http://localhost:5000", {
+        socket = io(window.location.origin, {
             reconnectionDelayMax: 10000,
             withCredentials: true
         });
@@ -53,13 +44,14 @@ function EditorView() {
                 setBool(false);
             }
             setPhase(res.data[1]);
+            setQuestion(res.data[2]);
             const localStorageName = JSON.parse(localStorage.getItem('name'));
             const currentTime = Date.now();
             //see if name exists or is expired
             if(localStorageName !== null) {
                 if(new Date(localStorageName[1]).getTime() > currentTime) {
                     setNameState(false);
-                    socket.emit("new-user", location, localStorageName[0], (res) => {
+                    socket.emit("new-user", location.split("?id=")[1], localStorageName[0], (res) => {
                         setUserID(res.id);
                     });
                 }
@@ -145,30 +137,9 @@ function EditorView() {
             setParagraphList([...data[1]]);
         });
     
-        socket.on('phase_change', (data) =>  {
+        socket.on('phase-change', (data) =>  {
             setPhase(data);
         });
-    }
-
-    function renderProfilePicture(image){
-        switch(image){
-            case 1:
-                return User1;
-            case 2:
-                return User2;
-            case 3:
-                return User3;
-            case 4:
-                return User4;
-            case 5:
-                return User5;
-            case 6:
-                return User6;
-            case 7:
-                return User7;
-            case 8:
-                return User8;
-        }
     }
 
     function setName(name) {
@@ -177,7 +148,7 @@ function EditorView() {
         tomorrow.setDate(tomorrow.getDate() + 1);
         localStorage.setItem('name', JSON.stringify([name, tomorrow]));
         setNameState(false);
-        socket.emit('new-user', location, name, (res) => {
+        socket.emit('new-user', location.split("?id=")[1], name, (res) => {
             setUserID(res.id);
         });
     }
@@ -277,7 +248,7 @@ function EditorView() {
                                     </nav>
                                     <div className="body">
                                         <div className="canvas">
-                                            <Question />
+                                            <Question question={question}/>
                                             <div className="canvas-row">
                                                 {
                                                     brainstormList.map((data, index) => (
@@ -333,7 +304,7 @@ function EditorView() {
                                     <div className="body">
                                         <div className="canvas">
                                             <div className="info-row">
-                                                <span><Question /></span>
+                                                <span><Question question={question}/></span>
                                                 <Carousel brainstormList={brainstormList} />
                                             </div>
                                             <div className="canvas-row">
@@ -369,13 +340,12 @@ function EditorView() {
                         {
                             bool ?
                                 <div className="userView">
-                                    <div className="lastPhase center">
-                                        <img src={Logo} alt="LingoThyme logo" height="250px"/>
-                                        <div className="lastPhase">
-                                            <p>The host has ended the meeting, thanks for joining.</p>
-                                            <div className="buttons">
-                                                <Link className="exit-button" to="/">Exit</Link>
-                                            </div>
+                                    <div className="phase1 center">
+                                        <p className="title">The host has ended the meeting, thanks for joining.</p>
+                                    </div>    
+                                    <div className="center-button">
+                                        <div className="buttons">
+                                            <Link to="/" className="primary-button">Exit</Link>
                                         </div>
                                     </div>
                                 </div>

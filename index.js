@@ -62,7 +62,7 @@ const job = schedule.scheduleJob('0 0 * * *', () => {
 
 var io = require('socket.io')(undefined, {
     cors: {
-      origin: "http://localhost:3000",
+      origin: process.env.SOCKET_ORIGIN,
       methods: ["GET", "POST"],
       credentials: true
     }
@@ -73,7 +73,7 @@ io.on('connect', (socket) => {
     const ID = socket.id;
     
     socket.on('new-user', (location, name, callback) => {
-        let room = location.split("?id=")[1];
+        let room = location;
         socket.join(room);
         let rawdata = fs.readFileSync('./config/rooms.json');
         let rooms = JSON.parse(rawdata);
@@ -123,6 +123,18 @@ io.on('connect', (socket) => {
         socket.broadcast.to(room).emit('edit-paragraph', data);
     });
 
+    //Room phase has been changed by admin
+    socket.on('phase-change', (room, phase, brainstormList, paragraphList) => {
+        socket.broadcast.to(room).emit('phase-change', phase);
+        Room.findOne({publicKey: room})
+        .then(async (room) => {
+            room.phase = phase;
+            room.brainstormList = brainstormList;
+            room.paragraphList = paragraphList;
+            await room.save();
+        });
+    });
+
     // //disconnect the users from the room
     socket.on('disconnect', () => {
         let rawdata = fs.readFileSync('./config/rooms.json');
@@ -142,5 +154,5 @@ io.on('connect', (socket) => {
                 break;
             }
         }
-    })
+    });
 });

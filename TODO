@@ -1,9 +1,8 @@
 USERNAME: LingoThyme PASSWORD: IrisNanEdward (Basic security for now since we'll open it up later)
 
-SETUP ADMIN PORTAL
-LOGGING STUFF ONTO THE DATABASE AND GETTING STUFF FROM THE DATABASE LAST => SOCKET IO FIRST. Set the question upon loading from MongoDB
-Sync info when someone joins
 Start doing user acceptance testing later
+When room is done, delete from MongoDB once the email with notes has been sent
+Implement hard cap. If someone joins a full room, tell them taht and bring them back to home page.
 
 see how much voice chat costs
 
@@ -13,12 +12,10 @@ Two users should not have the same name for ease of visibility
 
 IMPROVEMENTS
 Add loading screen when loading site
-Create a 1 sec delay for the system to get caught up
 How socketio emits information. Currently emitting the entire paragraph but should emit specific characters and index
-refactoring some code to make it cleaner, commenting code (request-info is very nasty lol)
+refactoring some code to make it cleaner, commenting code (request-info is very nasty lol, so is phase-change)
 Create more paragraphs for each paragraph component (if do this, each paragraph component starts with 1 block)
 Make accessible
 Make responsive
-
-Maybe to sync up, make the new user request info from another client? Maybe first user of room?
-This way things only get moved to the database at the end of the phase.
+Move stuff to database semi-frequently? Like once every 30 seconds?
+Make alert on create room text selectable

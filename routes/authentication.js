@@ -103,7 +103,7 @@ router.post('/verifyUser', (req, res) => {
                     rooms[code] = { users: {} };
                     fs.writeFileSync('config/rooms.json', JSON.stringify(rooms));
                 }
-                return res.send([true, room.phase]);
+                return res.send([true, room.phase, room.question]);
             }
             else {
                 return res.send([false]);
@@ -125,15 +125,21 @@ router.post('/verifyAdmin', (req, res) => {
         Room.findOne({publicKey: normalCode, privateKey: adminCode})
         .then(room => {
             if(room) {
-                return res.send([true, room.phase]);
+                let rawdata = fs.readFileSync('./config/rooms.json');
+                let rooms = JSON.parse(rawdata);
+                if(rooms[normalCode] == null){
+                    rooms[normalCode] = { users: {} };
+                    fs.writeFileSync('config/rooms.json', JSON.stringify(rooms));
+                }
+                return res.send([true, room.phase, room.question]);
             }
             else {
-                return res.send(false);
+                return res.send([false]);
             }
         });
     }
     else {
-         return res.send(false);
+         return res.send([false]);
     }
  });
 

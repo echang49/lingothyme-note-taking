@@ -1,8 +1,8 @@
-function Question() {
+function Question(props) {
     return (
         <div className="questions">
             <h1>Topic</h1>
-            <p>Universities and colleges are now offering qualifications through distance learning from the internet rather than teachers in the classroom. Do you think the advantages of this development outweigh the disadvantages?</p>
+            <p>{props.question}</p>
         </div>
     );
 }
