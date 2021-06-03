@@ -4,7 +4,7 @@ function Brainstorm(props) {
     const textInput = useRef(null);
     let color = "color-"+props.userID;
 
-    function handleChange() {
+    function handleChange() { // update contents of brainstorm response
         let id = props.id;
         props.setBrainstorm(textInput.current.value, id);
     }

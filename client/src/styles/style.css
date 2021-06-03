@@ -488,12 +488,6 @@ textarea {
   height: 100vh;
 }
 
-.userView .lastPhase {
-  font-size: 50px;
-  color: #000000;
-  margin-bottom: 5px;
-}
-
 .questions {
   background-color: #FAFAFA;
   border: 4px solid #5B8AFD;
@@ -657,6 +651,10 @@ textarea {
   font-family: Roboto;
   margin: 10px;
   padding: 10px;
+}
+
+.paragraph .inner-box .plus-icon:hover {
+  cursor: pointer;
 }
 
 .break {

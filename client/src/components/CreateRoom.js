@@ -18,7 +18,7 @@ function CreateRoom() {
   function handleFirstClick() {
     let user = userInput.current.value;
     let pass = passInput.current.value;
-    if(user === "LingoThyme" && pass === "IrisNanEdward") {
+    if(user === "LingoThyme" && pass === "IrisNanEdward") { // temp login
       setBool(true);
     }
     else {
