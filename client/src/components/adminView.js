@@ -211,7 +211,6 @@ function AdminView() {
     }
 
 
-    <div className="center-button">
     function setBrainstorm(value, id) {
         let tempBrainstormList = brainstormList;
         tempBrainstormList[id][0] = value;
