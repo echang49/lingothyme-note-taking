@@ -10,24 +10,40 @@ import User6 from "../../assets/users/Image6.webp";
 import User7 from "../../assets/users/Image7.webp";
 import User8 from "../../assets/users/Image8.webp";
 
+import {ReactComponent as Plus} from "../../assets/plus-icon.svg"; // taken from https://iconmonstr.com/plus-6-svg/, replace with custom icon later
+
 function Paragraphs(props) { // carousel for collaborative writing
     const elementsRef = useRef([]);
 
-    function handleChange(ref, index) {
+    function handleChange(ref, index) { // update paragraph response
         let value = props.value;
         value[index] = ref.value;
         props.setParagraph(value, props.id);
+        console.log("props.value type: ", typeof props.value);
+        console.log("props type:", typeof props);
+        console.log("props[0] type: ", typeof props[0]);
+        console.log("props.value[0] type", typeof props.value[0]);
+    }
+
+    function handlePlusClick () { // add text area to paragraph component
+        //props.value[0].push;
+        
+        console.log("add paragraph box");
+
+
     }
 
     return (
         <div>
             <div className="paragraph">
                 <div className="inner-box">
-                    {
-                        props.value.map((data, index) => (
+                    <Plus className="plus-icon" onClick={() => handlePlusClick()} />
+                    {   
+                        props.value.map((data, index) => ( // spawn paragraph response 
                             <textarea key={"ParagraphText"+index} ref={(el) => (elementsRef.current[index] = el)} value={data} onChange={() => handleChange(elementsRef.current[index], index)} />
                         ))
                     }
+                    
                 </div>
             </div>
         </div>

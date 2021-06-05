@@ -13,6 +13,8 @@ import ColorLogo from "../assets/main-logo.png";
 import {ReactComponent as Logo} from "../assets/logo-white.svg";
 import {ReactComponent as Brace} from "../assets/right-brace.svg";
 import {ReactComponent as Note} from "../assets/note-icon.svg";
+import {ReactComponent as Plus} from "../assets/plus-icon.svg"; // taken from https://iconmonstr.com/plus-6-svg/, replace with custom icon later
+
 
 let socket;
 
@@ -30,6 +32,7 @@ function AdminView() {
     const [paragraphList, setParagraphList] = useState([]); //[[paragraphx, paragraphx+1], id]
 
     useEffect(() => {
+        console.log(location);
         socket = io(window.location.origin, {
             reconnectionDelayMax: 10000,
             withCredentials: true
@@ -42,6 +45,7 @@ function AdminView() {
             if(!res.data[0]) {
                 setBool(false);
             }
+
             setPhase(res.data[1]);
             setQuestion(res.data[2]);
             const localStorageName = JSON.parse(localStorage.getItem('name'));
@@ -50,7 +54,7 @@ function AdminView() {
             if(localStorageName !== null) {
                 if(new Date(localStorageName[1]).getTime() > currentTime) {
                     setNameState(false);
-                    socket.emit("new-user", location.split("?id=")[1].split("-")[0], localStorageName[0], (res) => {
+                    socket.emit("new-user", location.split("?id=")[1].split("-")[0], localStorageName[0], (res) => { // create new user in room
                         setUserID(res.id);
                     });
                 }
@@ -95,6 +99,18 @@ function AdminView() {
         socket.on('new-brainstorm', (data) => {
             setBrainstormList(list => [...list, ["", data[0], data[1]]])
         });
+
+    // sets name, creates new user
+    function setName(name) {
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        localStorage.setItem('name', JSON.stringify([name, tomorrow]));
+        setNameState(false);
+        socket.emit('new-user', location.split("?id=")[1].split("-")[0], name, (res) => {
+            setUserID(res.id);
+        });
+    }
 
         //when a user edits a brainstorming component
         socket.on('edit-brainstorm', (data) => {
@@ -152,6 +168,14 @@ function AdminView() {
         });
     }
 
+    function incrementPhase() {
+        var nextPhase = phase + 1;
+        console.log("moving to phase " + (nextPhase));
+        console.log('phase before change: ', phase);
+        socket.emit('phase-change', nextPhase);
+        console.log('phase after change: ', phase);
+        
+
     function handleNoteClick () {
         if(phase === 2) {
             //useRef. create a Brainstorming component under the testing area
@@ -164,6 +188,7 @@ function AdminView() {
             setParagraphList([...tempParagraphList, [["", "", ""], tempParagraphList.length]]);
             socket.emit('new-paragraph', location.split("?id=")[1].split("-")[0], tempParagraphList.length);
         }
+
     }
 
     function setBrainstorm(value, id) {
@@ -185,7 +210,29 @@ function AdminView() {
         socket.emit('phase-change', location.split("?id=")[1].split("-")[0], data, brainstormList, paragraphList);
     }
 
-    if(nameState === true) {
+
+    function setBrainstorm(value, id) {
+        let tempBrainstormList = brainstormList;
+        tempBrainstormList[id][0] = value;
+        setBrainstormList([...tempBrainstormList]); // update brainstorm list
+        socket.emit('edit-brainstorm', location.split("?id=")[1].split("-")[0], [value, id]);
+    }
+
+    function setParagraph(value, id) {
+        let tempParagraphList = paragraphList;
+        tempParagraphList[id][0] = value;
+        setParagraphList([...tempParagraphList]); // update paragraph list
+        socket.emit('edit-paragraph', location.split("?id=")[1].split("-")[0], [value, id]);
+    }
+    
+    // change room phase to given phase number
+    function incrementPhase(data) {
+        setPhase(data);
+        socket.emit('phase-change', location.split("?id=")[1].split("-")[0], data, brainstormList, paragraphList);
+    }
+
+ 
+    if(nameState === true) { // if name has not been set yet, allow user to set name
         return(
             <div>
                 {
@@ -210,7 +257,7 @@ function AdminView() {
     }
     else {
         switch(phase) {
-            case 1:
+            case 1: // allow admin to start session
                 return(
                     <div>
                         {
@@ -230,7 +277,7 @@ function AdminView() {
                         }
                     </div>
                 );
-            case 2:
+            case 2: // session has started, in brainstorm phase
                 return(
                     <div>
                         {
@@ -283,7 +330,7 @@ function AdminView() {
                         }
                     </div>
                 );
-            case 3:
+           case 3: // continue session, paragraph phase
                 return(
                     <div>
                         {

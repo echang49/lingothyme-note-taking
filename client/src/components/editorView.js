@@ -13,6 +13,7 @@ import ColorLogo from "../assets/main-logo.png";
 import {ReactComponent as Logo} from "../assets/logo-white.svg";
 import {ReactComponent as Brace} from "../assets/right-brace.svg";
 import {ReactComponent as Note} from "../assets/note-icon.svg";
+import {ReactComponent as Plus} from "../assets/plus-icon.svg"; // taken from https://iconmonstr.com/plus-6-svg/, replace with custom icon later
 
 let socket;
 
