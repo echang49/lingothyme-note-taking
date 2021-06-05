@@ -18,4 +18,4 @@ Create more paragraphs for each paragraph component (if do this, each paragraph 
 Make accessible
 Make responsive
 Move stuff to database semi-frequently? Like once every 30 seconds?
-Make alert on create room text selectable
+Make alert on create room text selectable. Change alert text so that the private is set as public-private
