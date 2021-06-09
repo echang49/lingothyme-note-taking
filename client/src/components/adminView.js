@@ -8,13 +8,16 @@ import User from "./viewComponents/users";
 import Brainstorm from "./viewComponents/brainstormResponse";
 import Carousel from "./viewComponents/carousel";
 import Paragraphs from "./viewComponents/paragraphResponse";
+import OngoingCard from "./viewComponents/ongoingCard"; // DELETE
+import ScheduledCard from "./viewComponents/scheduledCard"; // DELETE
+
 
 import ColorLogo from "../assets/main-logo.png";
 import {ReactComponent as Logo} from "../assets/logo-white.svg";
 import {ReactComponent as Brace} from "../assets/right-brace.svg";
 import {ReactComponent as Note} from "../assets/note-icon.svg";
-import {ReactComponent as Plus} from "../assets/plus-icon.svg"; // taken from https://iconmonstr.com/plus-6-svg/, replace with custom icon later
-
+import {ReactComponent as Search} from "../assets/search-icon.svg"; // edit svg properties, change to camel case // DELETE
+import {ReactComponent as Notification} from "../assets/notification-icon.svg"; // edit svg properties, change to camel case // DELETE
 
 let socket;
 
@@ -32,7 +35,6 @@ function AdminView() {
     const [paragraphList, setParagraphList] = useState([]); //[[paragraphx, paragraphx+1], id]
 
     useEffect(() => {
-        console.log(location);
         socket = io(window.location.origin, {
             reconnectionDelayMax: 10000,
             withCredentials: true
@@ -45,7 +47,6 @@ function AdminView() {
             if(!res.data[0]) {
                 setBool(false);
             }
-
             setPhase(res.data[1]);
             setQuestion(res.data[2]);
             const localStorageName = JSON.parse(localStorage.getItem('name'));
@@ -54,7 +55,7 @@ function AdminView() {
             if(localStorageName !== null) {
                 if(new Date(localStorageName[1]).getTime() > currentTime) {
                     setNameState(false);
-                    socket.emit("new-user", location.split("?id=")[1].split("-")[0], localStorageName[0], (res) => { // create new user in room
+                    socket.emit("new-user", location.split("?id=")[1].split("-")[0], localStorageName[0], (res) => {
                         setUserID(res.id);
                     });
                 }
@@ -99,18 +100,6 @@ function AdminView() {
         socket.on('new-brainstorm', (data) => {
             setBrainstormList(list => [...list, ["", data[0], data[1]]])
         });
-
-    // sets name, creates new user
-    function setName(name) {
-        const today = new Date();
-        const tomorrow = new Date(today);
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        localStorage.setItem('name', JSON.stringify([name, tomorrow]));
-        setNameState(false);
-        socket.emit('new-user', location.split("?id=")[1].split("-")[0], name, (res) => {
-            setUserID(res.id);
-        });
-    }
 
         //when a user edits a brainstorming component
         socket.on('edit-brainstorm', (data) => {
@@ -168,14 +157,6 @@ function AdminView() {
         });
     }
 
-    function incrementPhase() {
-        var nextPhase = phase + 1;
-        console.log("moving to phase " + (nextPhase));
-        console.log('phase before change: ', phase);
-        socket.emit('phase-change', nextPhase);
-        console.log('phase after change: ', phase);
-        
-
     function handleNoteClick () {
         if(phase === 2) {
             //useRef. create a Brainstorming component under the testing area
@@ -188,7 +169,6 @@ function AdminView() {
             setParagraphList([...tempParagraphList, [["", "", ""], tempParagraphList.length]]);
             socket.emit('new-paragraph', location.split("?id=")[1].split("-")[0], tempParagraphList.length);
         }
-
     }
 
     function setBrainstorm(value, id) {
@@ -210,28 +190,6 @@ function AdminView() {
         socket.emit('phase-change', location.split("?id=")[1].split("-")[0], data, brainstormList, paragraphList);
     }
 
-
-    function setBrainstorm(value, id) {
-        let tempBrainstormList = brainstormList;
-        tempBrainstormList[id][0] = value;
-        setBrainstormList([...tempBrainstormList]); // update brainstorm list
-        socket.emit('edit-brainstorm', location.split("?id=")[1].split("-")[0], [value, id]);
-    }
-
-    function setParagraph(value, id) {
-        let tempParagraphList = paragraphList;
-        tempParagraphList[id][0] = value;
-        setParagraphList([...tempParagraphList]); // update paragraph list
-        socket.emit('edit-paragraph', location.split("?id=")[1].split("-")[0], [value, id]);
-    }
-    
-    // change room phase to given phase number
-    function incrementPhase(data) {
-        setPhase(data);
-        socket.emit('phase-change', location.split("?id=")[1].split("-")[0], data, brainstormList, paragraphList);
-    }
-
- 
     if(nameState === true) { // if name has not been set yet, allow user to set name
         return(
             <div>
@@ -330,7 +288,7 @@ function AdminView() {
                         }
                     </div>
                 );
-           case 3: // continue session, paragraph phase
+            case 3: // continue session, paragraph phase
                 return(
                     <div>
                         {
@@ -386,7 +344,66 @@ function AdminView() {
                         }
                     </div>
                 );
-            case 4: 
+            case 4: // MAIN HALL
+                return(
+                    <div>
+                        {
+                            bool ?
+                                <div className="MainHall">
+                                    <nav>
+                                        <span className="nav-start">
+                                            <img src={ColorLogo} alt="LingoThyme logo" height="50px"/>
+                                        </span>
+                                        <span></span>
+                                        <span className="nav-center">
+                                            <p><div className="current-tab"> Hall</div></p>
+                                            <div className="break"></div>
+                                            <p><div className="other-tab"> Schedule</div></p>
+                                            <div className="break"></div>
+                                            <p><div className="other-tab"> Academy</div></p>
+                                            <div className="break"></div>
+                                            <p><div className="other-tab"> Profile</div></p>
+                                        </span>
+
+                                        <span className="nav-end">
+                                            <button>
+                                                <Search />
+                                            </button>
+                                            
+                                            <button>
+                                                <Notification />
+                                            </button>
+
+                                            
+                                        </span>
+                                    </nav>
+                                    <div className="body">
+                                        <div className="canvas">
+                                            <div>
+                                                <h>main hall</h> <div className="break"></div>
+                                                <h>Ongoing</h> <div className="break"></div> 
+                                                <OngoingCard />
+                                                <h>Scheduled</h> <div className="break"></div>
+                                                <ScheduledCard />
+
+                                                <Link to="/" style={{ textDecoration: 'none' }}>  {/* remove link styling */}
+                                                    <button>
+                                                        <p>Leave </p>
+                                                        <Brace />
+                                                    </button>
+                                                </Link>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            :
+                                <Redirect to="/" />
+                        }
+                    </div>
+                );
+            // DELETE CASE 4 AFTER TESTING, CHANGE CASE 5 TO CASE 4 WHEN DONE
+            case 5: // meeting has ended screen 
                 return(
                     <div>
                         {

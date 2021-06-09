@@ -114,7 +114,8 @@ function CreateRoom() {
               <input type="date" ref={dateInput} onChange={() => changeDate()}/>
             </div>
             <div className="buttons">
-              <button className="primary-button" onClick={() => handleClick()}>CREATE</button>
+              {/* when admin clicks create, send to home page */}
+              <button className="primary-button" onClick={() => handleClick()}>CREATE</button> 
               <Link className="secondary-button" to="/">CANCEL</Link>
             </div>
           </div>
@@ -130,7 +131,7 @@ function CreateRoom() {
             <label>Password:</label>
             <input type="password" ref={passInput} />
             <div className="buttons">
-              <button className="primary-button" onClick={() => handleFirstClick()} >LOGIN</button>
+              <button className="primary-button" onClick={() => handleFirstClick()} >LOGIN</button> 
               <Link className="secondary-button" to="/">RETURN</Link>
             </div>
           </div>

@@ -513,4 +513,151 @@ textarea {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+.MainHall {
+    nav {
+        background-color: #FAFAFA;
+        height: 64px;
+        padding: 0 50px;
+        display: grid;
+        grid-template-columns: 10vw 20vw auto 20vw 10vw;
+        align-items: center;
+        p {
+            margin: 0;
+            color: #666666;
+            font-family: 'Roboto', sans-serif;
+            font-weight: lighter;
+            font-size:  1.7em;
+
+            .current-tab{
+                color: #467AFF !important;
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+
+            .other-tab{
+                color: #666666 !important;
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+        .nav-center {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+        .nav-end {
+            display: flex;
+            flex-direction: row;
+            grid-column-start: 5;
+            grid-column-end: 6;
+            justify-self: end;
+            button {
+                all: unset;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                background-color: #ffffff00;
+                font-size: 22px;
+                font-weight: 400;
+                color: #FAFAFA;
+                border: 2px solid #FAFAFA;
+                border-radius: 4px;
+                padding: 7px 15px;
+                p {
+                    margin-right: 10px;
+                }
+                &:hover {
+                    cursor: pointer;
+                    background-color: #FAFAFA;
+                    p {
+                        color: #666666;
+                    }
+                    svg path {
+                        stroke: #666666!important;
+                    }
+                }
+            }
+        }
+    }
+    .body {
+        display: grid;
+        grid-template-columns: auto 15vw;
+        height: calc(100vh - 64px);
+        background-color: #E9EDF5;
+        .canvas {
+            grid-column-start: 1;
+            grid-column-end: 2;
+            padding: 45px;
+            overflow-y: scroll;
+            .canvas-row {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                margin: 0 -20px;
+            }
+            .info-row {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            h {
+                font-family: 'Roboto', sans-serif;
+                font-size: 2.5em;
+            }
+
+            hr {
+                border-right: 350px solid #E6E6E6;
+                padding: 0px;
+                border-radius: 50px;
+            }
+
+            .card{
+                background-color: #FAFAFA;
+                box-sizing: border-box;
+                border-radius: 16px;
+                $card-width: 400px;
+                width: $card-width;
+                padding: 25px 20px; 
+                display: flex;
+                flex-direction: column;
+                margin: 30px;
+                p {
+                    font-style: normal;
+                    font-weight: normal;
+                    font-size: 18px;
+                    line-height: 23px;
+                    margin-bottom: 0;
+                    .time{
+                        font-size: 14px;
+                        color: gray;
+                        font-weight: lighter;
+                    }
+                }
+                h1 {
+                    font-style: normal;
+                    font-weight: bold;
+                    font-size: 24px;
+                    line-height: 28px;
+                    color: #666666;
+                    margin: 0;
+                }
+                
+            }
+        }
+    }
+
+    
+    .phase1 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;        
+    }
+}
+
 //EXCEPTION
