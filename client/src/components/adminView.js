@@ -386,9 +386,9 @@ function AdminView() {
                                                 <h>Scheduled</h> <div className="break"></div>
                                                 <ScheduledCard />
 
-                                                <Link to="/" style={{ textDecoration: 'none' }}>  {/* remove link styling */}
+                                                <Link to="/mainHall" style={{ textDecoration: 'none' }}>  {/* remove link styling */}
                                                     <button>
-                                                        <p>Leave </p>
+                                                        <p>go to main hall </p>
                                                         <Brace />
                                                     </button>
                                                 </Link>

@@ -9,33 +9,47 @@ import User from "./viewComponents/users";
 import {ReactComponent as Logo} from "../assets/main-logo.svg";
 import {ReactComponent as Search} from "../assets/search-icon.svg"; // edit svg properties, change to camel case 
 import {ReactComponent as Notification} from "../assets/notification-icon.svg"; // edit svg properties, change to camel case 
+import firebase from "../firebase.js";
 
 
 function MainHall() {
     const nameInput = useRef(null);
     const [bool, setBool] = useState(true);
-    const [nameState, setNameState] = useState(true);
+    const [loggedIn, setLoggedIn] = useState(false);
+    const emailInput = useRef(null);
+    const passInput = useRef(null);
 
-    if(nameState === true) {
+    async function handleLogin() { // setup firebase auth
+        let email = emailInput.current.value;
+        let pass = passInput.current.value;
+        try {
+            await firebase.auth().signInWithEmailAndPassword(email, pass);
+            setLoggedIn(true);
+            window.location.href = '/mainHall';
+        } catch (error) {
+            alert("Wrong Credentials. If you're interested in using this service to create rooms, please email our lead developer at echang49@uwo.ca");
+        }
+    }
+
+    if(loggedIn === false) {
         return(
-            <div>
-                {
-                    bool ?
-                        <div className="userView">
-                            <div className="nameState center">
-                                <img src={ColorLogo} alt="LingoThyme logo" height="250px"/>
-                                <div className="input">
-                                    <label>Please Enter Your Name:</label>
-                                    <input type="text" ref={nameInput} />
-                                    <div className="buttons">
-                                        <button className="primary-button" onClick={() => setName(nameInput.current.value)}>Continue</button>
-                                    </div>
-                                    </div>
-                            </div>
-                        </div>
-                    :
-                        <Redirect to="/" />
-                }
+            <div className="enterRoom center">
+                <img src={Logo} alt="LingoThyme Logo" height="250px"/>
+                <div className="input">
+                    <label>Email:</label>
+                    <input type="text" ref={emailInput} />
+
+                    <label>Password:</label>
+                    <input type="password" ref={passInput} />
+                    
+                    <Link to="/signup">Sign up</Link>
+                    <Link to="/passwordReset">Forgot passowrd?</Link>
+                    <div className="buttons">
+                        <button className="primary-button" onClick={() => handleLogin()} >LOGIN</button> 
+                        <Link className="secondary-button" to="/">RETURN</Link>
+                    </div>
+
+                </div>
             </div>
         );
     }
