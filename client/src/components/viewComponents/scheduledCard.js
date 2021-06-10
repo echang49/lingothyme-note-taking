@@ -3,7 +3,7 @@ function scheduledCard(props) { // same as ongoingCard, with added number of cur
         <div className="card">
             <h1>Idea Brainstorming</h1>
             <hr></hr>
-            <p>ooga booga</p>
+            <p>test text</p>
             <p><div className="time"> 20min 01s</div></p>
         </div>
     );
