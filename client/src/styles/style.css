@@ -22,6 +22,16 @@
   src: local(""), url("../fonts/roboto-v20-latin-900.woff2") format("woff2");
 }
 
+html {
+  -webkit-print-color-adjust: exact;
+}
+
+@media print {
+  div {
+    page-break-inside: avoid;
+  }
+}
+
 body {
   background-color: #E9EDF5;
   font-family: 'Roboto', sans-serif;
@@ -657,6 +667,12 @@ textarea {
   cursor: pointer;
 }
 
+.paragraph p {
+  word-break: break-all;
+  font-size: 16px;
+  font-family: Roboto;
+}
+
 .break {
   -ms-flex-preferred-size: 100%;
       flex-basis: 100%;
@@ -675,5 +691,31 @@ textarea {
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
+}
+
+.pdfView {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.pdfView span {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin: 0 -20px;
 }
 /*# sourceMappingURL=style.css.map */

@@ -1,23 +1,24 @@
 const express = require('express')
 const router  = express.Router();
+const Room = require('../models/Rooms');
 
-//if meetings started, go to next phase.
-// router.get('/userList', (req, res) => {
-//     let { location } = req.params;
-//     console.log(location);
-//     console.log(req.body);
-//     console.log(req.params);
-//     console.log(req.query);
-
-//     // let rawdata = fs.readFileSync('./config/rooms.json');
-//     // let rooms = JSON.parse(rawdata);
-//     //             if(rooms[code] == null){
-//     //                 rooms[code] = { users: {} };
-//     //                 fs.writeFileSync('config/rooms.json', JSON.stringify(rooms));
-//     //             }
-//     //             return res.send([true, room.phase]);
-//     res.end();
-// });
-//
+//return meeting details in PDF Format
+router.post('/pdf', (req, res) => {
+    let { location } = req.body;
+    if(location !== undefined && location.length === 5) {
+        Room.findOne({publicKey: location})
+        .then(room => {
+            if(room) {
+                return res.send([true, room.question, room.brainstormList, room.paragraphList]);
+            }
+            else {
+                return res.send([false]);
+            }
+        });
+   }
+   else {
+        return res.send([false]);
+   }
+});
 
 module.exports = router;

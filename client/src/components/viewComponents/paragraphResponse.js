@@ -19,10 +19,6 @@ function Paragraphs(props) { // carousel for collaborative writing
         let value = props.value;
         value[index] = ref.value;
         props.setParagraph(value, props.id);
-        console.log("props.value type: ", typeof props.value);
-        console.log("props type:", typeof props);
-        console.log("props[0] type: ", typeof props[0]);
-        console.log("props.value[0] type", typeof props.value[0]);
     }
 
     function handlePlusClick () { // add text area to paragraph component
@@ -33,22 +29,36 @@ function Paragraphs(props) { // carousel for collaborative writing
 
     }
 
-    return (
-        <div>
-            <div className="paragraph">
-                <div className="inner-box">
-                    <Plus className="plus-icon" onClick={() => handlePlusClick()} />
-                    {   
-                        props.value.map((data, index) => ( // spawn paragraph response 
-                            <textarea key={"ParagraphText"+index} ref={(el) => (elementsRef.current[index] = el)} value={data} onChange={() => handleChange(elementsRef.current[index], index)} />
-                        ))
-                    }
-                    
+    if(typeof props.setBrainstorm === "function") {
+        return (
+            <div>
+                <div className="paragraph">
+                    <div className="inner-box">
+                        <Plus className="plus-icon" onClick={() => handlePlusClick()} />
+                        {   
+                            props.value.map((data, index) => ( // spawn paragraph response 
+                                <textarea key={"ParagraphText"+index} ref={(el) => (elementsRef.current[index] = el)} value={data} onChange={() => handleChange(elementsRef.current[index], index)} />
+                            ))
+                        }
+                        
+                    </div>
                 </div>
             </div>
-        </div>
-
-    );
+        );
+    }
+    else {
+        return(
+            <div>
+                    <div className="paragraph">
+                        {   
+                            props.value.map((data, index) => ( // spawn paragraph response 
+                                <p key={"ParagraphText"+index}>{data}</p>
+                            ))
+                        }
+                </div>
+            </div>
+        );
+    }
 }
     
 export default Paragraphs;

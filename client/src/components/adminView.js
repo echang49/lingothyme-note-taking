@@ -174,7 +174,7 @@ function AdminView() {
         console.log('phase before change: ', phase);
         socket.emit('phase-change', nextPhase);
         console.log('phase after change: ', phase);
-        
+    }
 
     function handleNoteClick () {
         if(phase === 2) {
@@ -190,26 +190,6 @@ function AdminView() {
         }
 
     }
-
-    function setBrainstorm(value, id) {
-        let tempBrainstormList = brainstormList;
-        tempBrainstormList[id][0] = value;
-        setBrainstormList([...tempBrainstormList]);
-        socket.emit('edit-brainstorm', location.split("?id=")[1].split("-")[0], [value, id]);
-    }
-
-    function setParagraph(value, id) {
-        let tempParagraphList = paragraphList;
-        tempParagraphList[id][0] = value;
-        setParagraphList([...tempParagraphList]);
-        socket.emit('edit-paragraph', location.split("?id=")[1].split("-")[0], [value, id]);
-    }
-    
-    function incrementPhase(data) {
-        setPhase(data);
-        socket.emit('phase-change', location.split("?id=")[1].split("-")[0], data, brainstormList, paragraphList);
-    }
-
 
     function setBrainstorm(value, id) {
         let tempBrainstormList = brainstormList;
@@ -231,7 +211,6 @@ function AdminView() {
         socket.emit('phase-change', location.split("?id=")[1].split("-")[0], data, brainstormList, paragraphList);
     }
 
- 
     if(nameState === true) { // if name has not been set yet, allow user to set name
         return(
             <div>

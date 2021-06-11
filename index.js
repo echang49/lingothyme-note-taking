@@ -8,6 +8,7 @@ const fs = require('fs');
 const cors = require('cors'); //cross origin resource sharing
 const schedule = require('node-schedule'); //for cron jobs
 const Room = require('./models/Rooms');
+const puppeteer = require('puppeteer') //for creating the PDF
 
 //Load config
 dotenv.config({path: './config/config.env'});
@@ -132,6 +133,25 @@ io.on('connect', (socket) => {
             room.brainstormList = brainstormList;
             room.paragraphList = paragraphList;
             await room.save();
+            if(phase === 4) { //if the meeting is finished, create PDF
+                const browser = await puppeteer.launch({ headless: true });
+                const page = await browser.newPage();
+                //await page.goto('https://www.lingothyme.com/pdf?id='.concat(room.publicKey), {waitUntil: 'networkidle0'});
+                await page.goto('http://localhost:3000/pdf?id=12345', {waitUntil: 'networkidle0'});
+                let date = new Date();
+                const pdf = await page.pdf({ 
+                    format: 'A4', 
+                    path: "./PDFS/".concat(date.toISOString().split('T')[0] + "-" + room.publicKey).concat(".pdf"),
+                    margin: {
+                        top: "20px",
+                        bottom: "20px",
+                        left: "20px",
+                        right: "20px"
+                    } 
+                });
+                await browser.close();
+                return pdf
+            }
         });
     });
 

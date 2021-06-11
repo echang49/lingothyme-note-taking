@@ -4,6 +4,7 @@ import CreateRoom from "./components/CreateRoom";
 import EnterRoom from "./components/EnterRoom";
 import EditorView from "./components/editorView";
 import AdminView from "./components/adminView";
+import PDFView from "./components/pdfView";
 
 function App() {
   return (
@@ -18,6 +19,9 @@ function App() {
           </Route>
           <Route path="/room">
             <EditorView />
+          </Route>
+          <Route path="/pdf">
+            <PDFView />
           </Route>
           <Route path="/">
             <EnterRoom />
