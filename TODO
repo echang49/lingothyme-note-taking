@@ -1,7 +1,6 @@
 USERNAME: LingoThyme PASSWORD: IrisNanEdward (Basic security for now since we'll open it up later)
 
 Start doing user acceptance testing later
-When room is done, delete from MongoDB once the email with notes has been sent (LAST)
 Implement hard cap. If someone joins a full room, tell them taht and bring them back to home page.
 
 see how much voice chat costs
@@ -13,11 +12,10 @@ Two users should not have the same name for ease of visibility
 IMPROVEMENTS
 Add loading screen when loading site
 How socketio emits information. Currently emitting the entire paragraph but should emit specific characters and index
-refactoring some code to make it cleaner, commenting code (request-info is very nasty lol, so is phase-change)
 Create more paragraphs for each paragraph component (if do this, each paragraph component starts with 1 block)
-Make accessible
 Make responsive
 Move stuff to database semi-frequently? Like once every 30 seconds?
 Make alert on create room text selectable. Change alert text so that the private is set as public-private
 Make sure only to number of participants selected
 Make it open to everyone?? (Upon being sent the validation of the room, see how many people in the room there are. If more than the max allowed, leave)
+if last person leaves, should push data to server?

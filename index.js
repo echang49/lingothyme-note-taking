@@ -9,6 +9,7 @@ const cors = require('cors'); //cross origin resource sharing
 const schedule = require('node-schedule'); //for cron jobs
 const Room = require('./models/Rooms');
 const puppeteer = require('puppeteer') //for creating the PDF
+const sgMail = require('@sendgrid/mail'); //for sending email TWILIO SENDGRID API
 
 //Load config
 dotenv.config({path: './config/config.env'});
@@ -136,8 +137,8 @@ io.on('connect', (socket) => {
             if(phase === 4) { //if the meeting is finished, create PDF
                 const browser = await puppeteer.launch({ headless: true });
                 const page = await browser.newPage();
-                //await page.goto('https://www.lingothyme.com/pdf?id='.concat(room.publicKey), {waitUntil: 'networkidle0'});
-                await page.goto('http://localhost:3000/pdf?id=12345', {waitUntil: 'networkidle0'});
+                await page.goto('https://www.lingothyme.com/pdf?id='.concat(room.publicKey), {waitUntil: 'networkidle0'});
+                //await page.goto('http://localhost:3000/pdf?id=12345', {waitUntil: 'networkidle0'});
                 let date = new Date();
                 const pdf = await page.pdf({ 
                     format: 'A4', 
@@ -150,7 +151,34 @@ io.on('connect', (socket) => {
                     } 
                 });
                 await browser.close();
-                return pdf
+
+                const sgMail = require('@sendgrid/mail');
+                sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+                const msg = {
+                    to: room.email,
+                    from: 'lingopal2020@gmail.com',
+                    subject: 'Meeting Notes for ' + date.toISOString().split('T')[0] + "-" + room.publicKey,
+                    html: '<p>Dear Admin, <br><br>' +
+                        'Thanks for hosting your meeting on LingoThyme. Attached are the meeting notes from your prior meeting. Use them for internal record keeping or share them with other participants. <br><br>' +
+                        'NOTE: This is an automated email that is sent to the admin after each meeting. <br><br>' +
+                        'Sincerely,<br>' +
+                        'The LingoThyme Team</p>',
+                    attachments: [
+                      {
+                        content: Buffer.from(pdf).toString('base64'),
+                        filename: "attachment.pdf",
+                        type: "application/pdf",
+                        disposition: "attachment"
+                      }
+                    ]
+                };
+
+                sgMail.send(msg).catch(err => {
+                    console.log(err);
+                });
+
+                room.remove();
             }
         });
     });

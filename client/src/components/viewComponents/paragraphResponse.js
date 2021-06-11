@@ -29,7 +29,7 @@ function Paragraphs(props) { // carousel for collaborative writing
 
     }
 
-    if(typeof props.setBrainstorm === "function") {
+    if(typeof props.setParagraph === "function") {
         return (
             <div>
                 <div className="paragraph">
