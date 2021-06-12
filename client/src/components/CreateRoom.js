@@ -13,18 +13,6 @@ function CreateRoom() {
   const numberValue = useRef(null);
   const questionInput = useRef(null);
   const dateInput = useRef(null);
-  const [bool, setBool] = useState(false);
-
-  function handleFirstClick() {
-    let user = userInput.current.value;
-    let pass = passInput.current.value;
-    if(user === "LingoThyme" && pass === "IrisNanEdward") { // temp login
-      setBool(true);
-    }
-    else {
-      alert("Wrong Credentials. If you're interested in using this service to create rooms, please email our lead developer at echang49@uwo.ca");
-    }
-  }
 
   function handleClick() {
     let emailBool = emailIsValid(emailInput.current.value);
@@ -83,9 +71,6 @@ function CreateRoom() {
   }
 
   return (
-    <div>
-      {
-        bool ?
         <div className="createRoom">
           <img src={Logo} alt="LingoThyme Logo" height="100px"/>
           <p className="title">New Room</p>
@@ -98,7 +83,7 @@ function CreateRoom() {
               <label>Participant Number:</label>
               <div className="range">
                 <input type="range" min="1" max="8" step="1" ref={numberInput} onChange={() => changeNumber()}/>
-                <span class="range-value" ref={numberValue}>8</span>
+                <span className="range-value" ref={numberValue}>8</span>
               </div>
             </div>
             <div className="input">
@@ -119,25 +104,6 @@ function CreateRoom() {
             </div>
           </div>
         </div>
-        :
-        <div className="enterRoom center">
-          <img src={Logo} alt="LingoThyme Logo" height="250px"/>
-          <p>NOTE: Creating rooms are currently reserved only for LingoThyme staff. <br />
-          We are looking at publicizing this service for everyone to use soon.</p>
-          <div className="input">
-            <label>Username:</label>
-            <input type="text" ref={userInput} />
-            <label>Password:</label>
-            <input type="password" ref={passInput} />
-            <div className="buttons">
-              <button className="primary-button" onClick={() => handleFirstClick()} >LOGIN</button>
-              <Link className="secondary-button" to="/">RETURN</Link>
-            </div>
-          </div>
-        </div>
-      }
-    </div>
-
     );
   }
   
