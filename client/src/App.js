@@ -4,6 +4,11 @@ import CreateRoom from "./components/CreateRoom";
 import EnterRoom from "./components/EnterRoom";
 import EditorView from "./components/editorView";
 import AdminView from "./components/adminView";
+import MainHall from "./components/mainHall";
+import Signup from "./components/signup";
+import Schedule from "./components/schedule";
+import Academy from "./components/academy";
+import Profile from "./components/profile";
 
 function App() {
   return (
@@ -15,6 +20,21 @@ function App() {
           </Route>
           <Route exact path="/admin/room">
             <AdminView />
+          </Route>
+          <Route exact path="/mainHall">
+            <MainHall />
+          </Route>
+          <Route exact path="/schedule">
+            <Schedule />
+          </Route>
+          <Route exact path="/academy">
+            <Academy />
+          </Route>
+          <Route exact path="/profile">
+            <Profile />
+          </Route>
+          <Route exact path="/signup">
+            <Signup />
           </Route>
           <Route path="/room">
             <EditorView />
