@@ -130,6 +130,10 @@ textarea {
             background-color: #087539;
         }
     }
+
+    .logout-button{
+        
+    }
 }
 
 .title {
@@ -533,6 +537,7 @@ textarea {
                 color: #467AFF !important;
                 &:hover {
                     text-decoration: underline;
+                    cursor: pointer;
                 }
             }
 
@@ -540,6 +545,7 @@ textarea {
                 color: #666666 !important;
                 &:hover {
                     text-decoration: underline;
+                    cursor: pointer;
                 }
             }
         }

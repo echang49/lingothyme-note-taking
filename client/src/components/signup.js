@@ -11,42 +11,32 @@ import firebase from "../firebase.js";
 
 function SignUp() {
     const nameInput = useRef(null);
-    const [bool, setBool] = useState(true);
-    const [loggedIn, setLoggedIn] = useState(false);
     const emailInput = useRef(null);
     const passInput = useRef(null);
     const confirmPassInput = useRef(null);
     const auth = firebase.auth();
-    const db = firebase.firestore();
-    const [ url, setURL ] = useState("/signup");
 
     async function handleSubmit() { // signup
         let email = emailInput.current.value;
         let pass = passInput.current.value;
         let confirmPass = confirmPassInput.current.value;
 
-        // let code = textInput.current.value;
-        // axios.post("/api/auth/enterRoom", {code})
-        // .then((res) => {
-        //   if(res.data[0]) {
-        //     if(res.data[1]) {
-        //       setURL("/admin/room?id=".concat(code));
-        //     }
-        //     else {
-        //       setURL("/room?id=".concat(code));
-        //     }
-        //     setBool(false);
-        //   }
-        //   else {
-        //     alert("Incorrect code. Ensure you have the proper room code.");
-        //   }
-        // })
-        // .catch((err) => {
-        //   alert(err);
-        // });
-        
+        var actionCodeSettings = { // used for sending email verification link? 
+            // URL you want to redirect back to. The domain (www.example.com) for this
+            // URL must be in the authorized domains list in the Firebase Console.
+            url: 'www.google.com',
+            handleCodeInApp: true, // This must be true.
+            iOS: { // WIP
+
+            },
+            android: { // WIP
+
+            },
+            dynamicLinkDomain: 'localhost:3000/mainHall'
+          };
+
         if(pass === confirmPass){ // check to see if passwords match
-            firebase.auth().createUserWithEmailAndPassword(email, password)
+            firebase.auth().createUserWithEmailAndPassword(email, pass)
             .catch(function(error) { 
                 // if email or password not valid, throw error
                 var errorCode = error.code;
@@ -61,102 +51,52 @@ function SignUp() {
                     alert(errorCode);
                 }
                 console.log(error);
-            });
-            // if no errors thrown, send user to mainHall
-            setURL("/mainHall");
-            <Redirect push to={url} />;
+            }).then(() => {
+                // if no errors thrown for signup, send user an email verification link, then send to mainHall
+                firebase.auth().currentUser.sendEmailVerification(actionCodeSettings)
+               .then(() => {
+                   alert("A verification link has been sent to your email.");
+                   <Redirect to="/mainHall" />
+               }).catch((error) => {
+                   
+                   var errorCode = error.code;
+                   var errorMessage = error.message;
+                   alert("ErrorCode: " + errorCode + "error message: " + errorMessage);
+                   // ...
+               });
+               alert("Verification link was not sent, sending to mainHall.");
+               <Redirect to="/mainHall" />
+           });
+            
+           
         }else{
             alert("passwords do not match, please try again");
         }
     }
-    if(loggedIn === false) {
-        return(
-            <div className="enterRoom center">
-                <img src={Logo} alt="LingoThyme Logo" height="250px"/>
-                <div className="input">
-                    <label>Email:</label>
-                    <input type="email" ref={emailInput} />
+    return(
+        <div className="enterRoom center">
+            <img src={ColorLogo} alt="LingoThyme Logo" height="250px"/>
+            <div className="input">
+                <label>Name:</label>
+                <input type="name" ref={nameInput} />
 
-                    <label>Password:</label>
-                    <input type="password" ref={passInput} />
+                <label>Email:</label>
+                <input type="email" ref={emailInput} />
 
-                    <label>Confirm Password:</label>
-                    <input type="password" ref={confirmPassInput} />
+                <label>Password:</label>
+                <input type="password" ref={passInput} />
 
-                    <div className="buttons">
-                        <button className="primary-button" onClick={() => handleSubmit()} >SUBMIT</button> 
-                        <Link className="secondary-button" to="/">CANCEL</Link>
-                    </div>
+                <label>Confirm Password:</label>
+                <input type="password" ref={confirmPassInput} />
 
+                <div className="buttons">
+                    <button className="primary-button" onClick={() => handleSubmit()} >SUBMIT</button> 
+                    <Link className="secondary-button" to="/">CANCEL</Link>
                 </div>
+
             </div>
-        );
-    }
-    else {
-        switch(phase) {
-            case 1:
-                return(
-                    <div>
-                        {
-                            bool ?
-                                <div className="MainHall">
-                                    <nav>
-                                        <span className="nav-start">
-                                            <img src={ColorLogo} alt="LingoThyme logo" height="50px"/>
-                                        </span>
-                                        <span></span>
-                                        <span className="nav-center">
-                                            <p><div className="current-tab"> Hall</div></p>
-                                            <div className="break"></div>
-                                            <p><div className="other-tab"> Schedule</div></p>
-                                            <div className="break"></div>
-                                            <p><div className="other-tab"> Academy</div></p>
-                                            <div className="break"></div>
-                                            <p><div className="other-tab"> Profile</div></p>
-                                        </span>
-
-                                        <span className="nav-end">
-                                            <button>
-                                                <Search />
-                                            </button>
-                                            
-                                            <button>
-                                                <Notification />
-                                            </button>
-
-                                            
-                                        </span>
-                                    </nav>
-                                    <div className="body">
-                                        <div className="canvas">
-                                            <div>
-                                                <h>main hall</h> <div className="break"></div>
-                                                <h>Ongoing</h> <div className="break"></div> 
-                                                <OngoingCard />
-                                                <h>Scheduled</h> <div className="break"></div>
-                                                <ScheduledCard />
-
-                                                <Link to="/" style={{ textDecoration: 'none' }}>  {/* remove link styling */}
-                                                    <button>
-                                                        <p>Leave </p>
-                                                        <Brace />
-                                                    </button>
-                                                </Link>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            :
-                                <Redirect to="/" />
-                        }
-                    </div>
-                );
-        }
-    }
+        </div>
+    );
 }
     
 export default SignUp;
-
-//components are question component, editor list component, pt 1 response, pt 2 response
-//Three different stages : Brainstorming, pargraph writing, finish

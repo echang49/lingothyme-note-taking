@@ -704,6 +704,7 @@ textarea {
 
 .MainHall nav p .current-tab:hover {
   text-decoration: underline;
+  cursor: pointer;
 }
 
 .MainHall nav p .other-tab {
@@ -712,6 +713,7 @@ textarea {
 
 .MainHall nav p .other-tab:hover {
   text-decoration: underline;
+  cursor: pointer;
 }
 
 .MainHall nav .nav-center {
