@@ -344,66 +344,7 @@ function AdminView() {
                         }
                     </div>
                 );
-            case 4: // MAIN HALL
-                return(
-                    <div>
-                        {
-                            bool ?
-                                <div className="MainHall">
-                                    <nav>
-                                        <span className="nav-start">
-                                            <img src={ColorLogo} alt="LingoThyme logo" height="50px"/>
-                                        </span>
-                                        <span></span>
-                                        <span className="nav-center">
-                                            <p><div className="current-tab"> Hall</div></p>
-                                            <div className="break"></div>
-                                            <p><div className="other-tab"> Schedule</div></p>
-                                            <div className="break"></div>
-                                            <p><div className="other-tab"> Academy</div></p>
-                                            <div className="break"></div>
-                                            <p><div className="other-tab"> Profile</div></p>
-                                        </span>
-
-                                        <span className="nav-end">
-                                            <button>
-                                                <Search />
-                                            </button>
-                                            
-                                            <button>
-                                                <Notification />
-                                            </button>
-
-                                            
-                                        </span>
-                                    </nav>
-                                    <div className="body">
-                                        <div className="canvas">
-                                            <div>
-                                                <h>main hall</h> <div className="break"></div>
-                                                <h>Ongoing</h> <div className="break"></div> 
-                                                <OngoingCard />
-                                                <h>Scheduled</h> <div className="break"></div>
-                                                <ScheduledCard />
-
-                                                <Link to="/mainHall" style={{ textDecoration: 'none' }}>  {/* remove link styling */}
-                                                    <button>
-                                                        <p>go to main hall </p>
-                                                        <Brace />
-                                                    </button>
-                                                </Link>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            :
-                                <Redirect to="/" />
-                        }
-                    </div>
-                );
-            // DELETE CASE 4 AFTER TESTING, CHANGE CASE 5 TO CASE 4 WHEN DONE
-            case 5: // meeting has ended screen 
+            case 4: // meeting has ended screen 
                 return(
                     <div>
                         {
