@@ -30,8 +30,8 @@ function CreateRoom() {
           axios.post('/api/auth/createRoom', data)
             .then((res) => {
               let { publicKey, privateKey } = res.data;
-              alert("Your public key is: " + publicKey + ". \nYour private key is: " + privateKey + ". \n\nYour public key is for the participants of the room and the private key is for you." +
-              " To use the private key on the home page, enter the code as \"" + publicKey + "-" + privateKey + "\". \n\n NOTE: YOUR ROOM EXPIRES " + (date.getMonth() + 1) + "-" + (date.getDate() + 1) + "-" + date.getFullYear() + " AT MIDNIGHT EST/EDT.");
+              alert("Your public key is: " + publicKey + ". Your private key is: " + publicKey + "-" + privateKey + ". The public key is for participants of the room and the private key is for you. " +
+                "The room expires " + (date.getMonth() + 1) + "-" + (date.getDate() + 1) + "-" + date.getFullYear() + " at midnight EST/EDT.");
             })
             .catch((err) => {
               alert(err);
