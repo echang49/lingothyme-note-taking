@@ -1,21 +1,18 @@
 USERNAME: LingoThyme PASSWORD: IrisNanEdward (Basic security for now since we'll open it up later)
 
-Start doing user acceptance testing later
-Implement hard cap. If someone joins a full room, tell them taht and bring them back to home page.
-
-see how much voice chat costs
-
-
 BUGS
 Two users should not have the same name for ease of visibility
 
 IMPROVEMENTS
-Add loading screen when loading site
-How socketio emits information. Currently emitting the entire paragraph but should emit specific characters and index
-Create more paragraphs for each paragraph component (if do this, each paragraph component starts with 1 block)
-Make responsive
-Move stuff to database semi-frequently? Like once every 30 seconds?
-Make alert on create room text selectable. Change alert text so that the private is set as public-private
-Make sure only to number of participants selected
-Make it open to everyone?? (Upon being sent the validation of the room, see how many people in the room there are. If more than the max allowed, leave)
-if last person leaves, should push data to server?
+1. How socketio emits information. Currently emitting the entire paragraph but should emit specific characters and index
+2. Move stuff to database semi-frequently? Like once every 30 seconds?
+3. Create more paragraphs for each paragraph component (if do this, each paragraph component starts with 1 block)
+4. Make alert on create room text selectable. Change alert text so that the private is set as public-private
+6. Make sure only to number of participants selected
+7. Add loading screen when loading site
+8. Make responsive
+9. if last person leaves, should push data to server?
+10. Go back to home page after clicking ok to the alert
+
+
+add delete
