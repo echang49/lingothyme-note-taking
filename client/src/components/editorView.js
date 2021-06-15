@@ -100,34 +100,8 @@ function EditorView() {
         //when a user edits a brainstorming component
         socket.on('edit-brainstorm', (data) => {
             setBrainstormList(list => {
-                //[start, stop, type, data, id]
-                let str = Object.assign([], list[data[4]][0]).join("");
-                // str = list[data[4]][0];
-                switch(data[2]) {
-                    case "insertText": //character
-                        // let temp = str.substring(0, data[0]) + "\r" + str.substring(data[1]);
-                        // list[data[4]][0] = temp.replace("\r\r", data[3]);
-                        list[data[4]][0] = str.substring(0, data[0]) + data[3] + str.substring(data[1], str.length);
-                        
-                        break;
-                    case "deleteContentBackward": //backspace
-                        if(data[0] === data[1]) { //no highlighted text
-                            var tmp = str.split(''); // convert to an array
-                            tmp.splice(data[0] , 1); // remove 1 element from the array (adjusting for non-zero-indexed counts)
-                            list[data[4]][0] = tmp.join(''); // reconstruct the string
-                            //list[data[4]][0] = str.substring(0, data[0] - 1) + str.substring(data[0], str.length);
-                            //list[data[4]][0] = str.slice(data[0]);
-                        }
-                        else {
-                            list[data[4]][0] = str.substring(0, data[0]) + str.substring(data[1], str.length);
-                        }  
-                        break;
-                    case "insertLineBreak": //enter
-                        list[data[4]][0] = str.substring(0, data[0]) + "\n" + str.substring(data[1], str.length);
-                        break;
-                }
-
-                return [list];
+                list[data[1]][0] = data[0];
+                return [...list];
             });
         });
 
@@ -193,30 +167,11 @@ function EditorView() {
         }
     }
 
-    //function setBrainstorm(value, id) {
-    function setBrainstorm(start, stop, type, data, id) {
+    function setBrainstorm(value, id) {
         let tempBrainstormList = brainstormList;
-        let str = tempBrainstormList[id][0];
-
-        switch(type) {
-            case "insertText": //character
-                tempBrainstormList[id][0] = str.substring(0, start) + data + str.substring(stop, str.length);
-                break;
-            case "deleteContentBackward": //backspace
-                if(start === stop) { //no highlighted text
-                    tempBrainstormList[id][0] = str.substring(0, start - 1) + str.substring(start, str.length);
-                }
-                else {
-                    tempBrainstormList[id][0] = str.substring(0, start) + str.substring(stop, str.length);
-                }  
-                break;
-            case "insertLineBreak": //enter
-                tempBrainstormList[id][0] = str.substring(0, start) + "\n" + str.substring(stop, str.length);
-                break;
-        }
-
+        tempBrainstormList[id][0] = value;
         setBrainstormList([...tempBrainstormList]);
-        socket.emit('edit-brainstorm', location.split("?id=")[1], [start, stop, type, data, id]);
+        socket.emit('edit-brainstorm', location.split("?id=")[1], [value, id]);
     }
 
     function setParagraph(value, id) {
