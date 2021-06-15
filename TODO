@@ -1,15 +1,7 @@
-USERNAME: LingoThyme PASSWORD: IrisNanEdward (Basic security for now since we'll open it up later)
-
 BUGS
 Two users should not have the same name for ease of visibility
 
 IMPROVEMENTS
-3. Create more paragraphs for each paragraph component (if do this, each paragraph component starts with 1 block)
-6. Make sure only to number of participants selected
-7. Add loading screen when loading site
-8. Make responsive
-10. Go back to home page after clicking ok to the alert
-
-
-add delete
-
+1. Create more paragraphs for each paragraph component (if do this, each paragraph component starts with 1 block)
+2. Make sure only to number of participants selected
+3. Make responsive

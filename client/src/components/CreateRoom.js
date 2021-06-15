@@ -1,10 +1,11 @@
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { withRouter } from "react-router";
 import axios from "axios";
 import "../styles/style.css";
 import Logo from "../assets/main-logo.png";
 
-function CreateRoom() {
+function CreateRoom(props) {
   const userInput = useRef(null);
   const passInput = useRef(null);
 
@@ -32,6 +33,7 @@ function CreateRoom() {
               let { publicKey, privateKey } = res.data;
               alert("Your public key is: " + publicKey + ". Your private key is: " + publicKey + "-" + privateKey + ". The public key is for participants of the room and the private key is for you. " +
                 "The room expires " + (date.getMonth() + 1) + "-" + (date.getDate() + 1) + "-" + date.getFullYear() + " at midnight EST/EDT.");
+              props.history.push('/');
             })
             .catch((err) => {
               alert(err);
@@ -107,4 +109,4 @@ function CreateRoom() {
     );
   }
   
-  export default CreateRoom;
+  export default withRouter(CreateRoom);
