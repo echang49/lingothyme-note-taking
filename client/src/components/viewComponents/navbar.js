@@ -4,6 +4,7 @@ import ColorLogo from "../../assets/main-logo.png";
 import {ReactComponent as Search} from "../../assets/search-icon.svg"; // edit svg properties, change to camel case 
 import {ReactComponent as Notification} from "../../assets/notification-icon.svg"; // edit svg properties, change to camel case 
 import firebase from "../../firebase.js";
+import ProfilePic from "../../assets/users/Profile1.webp";
 
 function Navbar(props) {
     const [loggedIn, setLoggedIn] = useState(false);
@@ -62,6 +63,7 @@ function Navbar(props) {
                                 <Notification />
                             </button>
 
+                            <img src={ProfilePic} height="35px" width="35px" alt="User profile pic" />
                             <div className="center"><p>UserName</p></div>
                         </span>
                     </nav>
@@ -101,6 +103,9 @@ function Navbar(props) {
                             <button onClick={() => showNotifications()}>
                                 <Notification />
                             </button>
+
+                            <img src={ProfilePic} height="35px" width="35px" alt="User profile pic" />
+                            <div className="center"><p>UserName</p></div>
                         </span>
                     </nav>
                 </div>
@@ -140,6 +145,9 @@ function Navbar(props) {
                             <button onClick={() => showNotifications()}>
                                 <Notification />
                             </button>
+
+                            <img src={ProfilePic} height="35px" width="35px" alt="User profile pic" />
+                            <div className="center"><p>UserName</p></div>
                         </span>
                     </nav>
                 </div>
@@ -178,6 +186,9 @@ function Navbar(props) {
                                 <button onClick={() => showNotifications()}>
                                     <Notification />
                                 </button>
+
+                                <img src={ProfilePic} height="35px" width="35px" alt="User profile pic" />
+                                <div className="center"><p>UserName</p></div>
                             </span>
                         </nav>
                     </div>
