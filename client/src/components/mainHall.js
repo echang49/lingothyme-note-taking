@@ -116,7 +116,6 @@ function MainHall() {
                             bool ?
                                 <div className="MainHall">
                                     <Navbar />
-
                                     <div className="body">
                                         <div className="canvas">
                                             <div>
