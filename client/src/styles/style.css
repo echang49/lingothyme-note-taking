@@ -37,7 +37,6 @@ textarea {
   -webkit-box-shadow: none;
   box-shadow: none;
   resize: none;
-  /*remove the resize handle on the bottom right*/
 }
 
 .color-1 {
@@ -690,6 +689,10 @@ textarea {
           align-items: center;
 }
 
+.MainHall nav img {
+  margin: 5px 10px 0px 0px;
+}
+
 .MainHall nav p {
   margin: 0;
   color: #666666;
@@ -795,7 +798,7 @@ textarea {
       grid-column-start: 1;
   grid-column-end: 2;
   padding: 45px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .MainHall .body .canvas .canvas-row {
@@ -842,7 +845,7 @@ textarea {
   background-color: #FAFAFA;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  border-radius: 16px;
+  border-radius: 25px;
   width: 400px;
   padding: 25px 20px;
   display: -webkit-box;
@@ -869,13 +872,307 @@ textarea {
   font-weight: lighter;
 }
 
-.MainHall .body .canvas .card h1 {
+.MainHall .body .canvas .card .card-header h1 {
   font-style: normal;
   font-weight: bold;
   font-size: 24px;
   line-height: 28px;
   color: #666666;
   margin: 0;
+}
+
+.MainHall .body .canvas .card .card-bottom {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: auto auto auto auto auto;
+      grid-template-columns: auto auto auto auto auto;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-top: 50px;
+}
+
+.MainHall .body .canvas .card .card-bottom .card-bottom-left-ongoing {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-grid-column: 1;
+      grid-column-start: 1;
+  grid-column-end: 2;
+  justify-self: end;
+}
+
+.MainHall .body .canvas .card .card-bottom .card-bottom-left-ongoing img {
+  margin: 15px 20px 0px -25px;
+}
+
+.MainHall .body .canvas .card .card-bottom .card-bottom-right-ongoing {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-grid-column: 3;
+      grid-column-start: 3;
+  grid-column-end: 5;
+  justify-self: end;
+}
+
+.MainHall .body .canvas .card .card-bottom .card-bottom-right-ongoing img {
+  margin: 25px 0px 0px 10px;
+}
+
+.MainHall .body .canvas .card .card-bottom .card-bottom-left-scheduled {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-grid-column: 1;
+      grid-column-start: 1;
+  grid-column-end: 2;
+  justify-self: end;
+}
+
+.MainHall .body .canvas .card .card-bottom .card-bottom-left-scheduled img {
+  margin: 15px 5px 5px -20px;
+}
+
+.MainHall .body .canvas .card .card-bottom .card-bottom-right-scheduled {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-grid-column: 3;
+      grid-column-start: 3;
+  grid-column-end: 5;
+  justify-self: end;
+}
+
+.MainHall .body .canvas .card .card-bottom .card-bottom-right-scheduled img {
+  margin: 25px 0px 5px 10px;
+}
+
+.MainHall .body .canvas .card .join-button-ongoing {
+  all: unset;
+  font-size: 18px;
+  letter-spacing: 1px;
+  padding: 10px 20px 10px 20px;
+  color: #FFFFFF;
+  cursor: pointer;
+  margin: 0px -20px 0px 10px;
+  border-radius: 25px;
+  background-color: #5B8AFD;
+}
+
+.MainHall .body .canvas .card .join-button-ongoing:hover {
+  background-color: #3564da;
+}
+
+.MainHall .body .canvas .card .join-button-scheduled {
+  all: unset;
+  font-size: 18px;
+  letter-spacing: 1px;
+  padding: 10px 20px 10px 20px;
+  color: #FFFFFF;
+  cursor: pointer;
+  margin: 0px -20px 0px 100px;
+  border-radius: 25px;
+  background-color: #5B8AFD;
+}
+
+.MainHall .body .canvas .card .join-button-scheduled:hover {
+  background-color: #3564da;
+}
+
+.MainHall .profile-container {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 5fr 5fr 3fr;
+      grid-template-columns: 5fr 5fr 3fr;
+  grid-column-gap: 50px;
+  grid-row-gap: 50px;
+  margin: 40px 50px 40px 50px;
+}
+
+.MainHall .profile-container h {
+  font-family: 'Roboto', sans-serif;
+  font-size: 25px;
+  color: #333333;
+}
+
+.MainHall .profile-container .remind {
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 2;
+  grid-column: 1/3;
+  -ms-grid-row: 1;
+  -ms-grid-row-span: 1;
+  grid-row: 1/2;
+  background-color: #FAFAFA;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-radius: 10px;
+  width: 69.5vw;
+  height: 7vw;
+  padding: 25px 20px;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  padding: 30px 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: start;
+}
+
+.MainHall .profile-container .achievments {
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 1;
+  grid-column: 1/2;
+  -ms-grid-row: 2;
+  -ms-grid-row-span: 2;
+  grid-row: 2/4;
+  background-color: #FAFAFA;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-radius: 15px;
+  width: 32vw;
+  height: 34vw;
+  justify-self: left;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  padding: 30px 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: start;
+}
+
+.MainHall .profile-container .friends {
+  -ms-grid-column: 2;
+  -ms-grid-column-span: 1;
+  grid-column: 2/3;
+  -ms-grid-row: 2;
+  -ms-grid-row-span: 2;
+  grid-row: 2/4;
+  background-color: #FAFAFA;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-radius: 15px;
+  width: 32vw;
+  height: 34vw;
+  justify-self: left;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  padding: 30px 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: start;
+}
+
+.MainHall .profile-container .profile-box {
+  -ms-grid-column: 3;
+  -ms-grid-column-span: 1;
+  grid-column: 3/4;
+  -ms-grid-row: 1;
+  -ms-grid-row-span: 2;
+  grid-row: 1/3;
+  background-color: #FAFAFA;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-radius: 15px;
+  width: 17.5vw;
+  height: 17.5vw;
+  padding: 25px 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.MainHall .profile-container .profile-box img {
+  margin: 0px 0px 15px 0px;
+  border-radius: 50%;
+}
+
+.MainHall .profile-container .about-me {
+  -ms-grid-column: 3;
+  -ms-grid-column-span: 1;
+  grid-column: 3/4;
+  -ms-grid-row: 2;
+  -ms-grid-row-span: 1;
+  grid-row: 2/3;
+  background-color: #FAFAFA;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-radius: 15px;
+  width: 18vw;
+  height: 24.5vw;
+  padding: 25px 20px;
+  justify-self: start;
+  margin-top: 9.5vw;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: start;
+}
+
+.MainHall .profile-container .profile-right-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row nowrap;
+          flex-flow: row nowrap;
+  -ms-grid-column: 2;
+      grid-column-start: 2;
+  grid-column-end: 2;
+  justify-self: center;
 }
 
 .MainHall .phase1 {
