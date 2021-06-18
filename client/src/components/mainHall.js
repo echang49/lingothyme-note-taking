@@ -6,10 +6,6 @@ import OngoingCard from "./viewComponents/ongoingCard";
 import ScheduledCard from "./viewComponents/scheduledCard";
 import Navbar from "./viewComponents/navbar"; 
 
-
-import {ReactComponent as Logo} from "../assets/main-logo.svg";
-import {ReactComponent as Search} from "../assets/search-icon.svg"; // edit svg properties, change to camel case 
-import {ReactComponent as Notification} from "../assets/notification-icon.svg"; // edit svg properties, change to camel case 
 import firebase from "../firebase.js";
 
 

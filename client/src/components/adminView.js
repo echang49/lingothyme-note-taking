@@ -8,16 +8,11 @@ import User from "./viewComponents/users";
 import Brainstorm from "./viewComponents/brainstormResponse";
 import Carousel from "./viewComponents/carousel";
 import Paragraphs from "./viewComponents/paragraphResponse";
-import OngoingCard from "./viewComponents/ongoingCard"; // DELETE
-import ScheduledCard from "./viewComponents/scheduledCard"; // DELETE
-
 
 import ColorLogo from "../assets/main-logo.png";
 import {ReactComponent as Logo} from "../assets/logo-white.svg";
 import {ReactComponent as Brace} from "../assets/right-brace.svg";
 import {ReactComponent as Note} from "../assets/note-icon.svg";
-import {ReactComponent as Search} from "../assets/search-icon.svg"; // edit svg properties, change to camel case // DELETE
-import {ReactComponent as Notification} from "../assets/notification-icon.svg"; // edit svg properties, change to camel case // DELETE
 
 let socket;
 
