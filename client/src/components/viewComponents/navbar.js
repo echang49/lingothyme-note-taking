@@ -1,4 +1,4 @@
-import { Redirect, Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import ColorLogo from "../../assets/main-logo.png";
 import {ReactComponent as Search} from "../../assets/search-icon.svg"; // edit svg properties, change to camel case 
