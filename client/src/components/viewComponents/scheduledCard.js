@@ -4,24 +4,32 @@ function scheduledCard(props) { // same as ongoingCard, with added number of cur
     return (
         <div className="card">
             <div className="card-header"> 
-             <h1>Idea Brainstorming</h1>
+                {/* add icon here  */}
+                <h1>Idea Brainstorming</h1>
             </div>
-
             <hr></hr>
-
-            <p>test text</p>
-
-            <div className="card-bottom">
-                <div className="card-bottom-left-scheduled">
-                    <img src={Calendar} alt="calendar icon" height="30px"/>
-                    <p><div className="time"> 06_July_2021_10:00</div></p>
-                </div>
-                <div className="card-bottom-right-scheduled">
-                    <img src={People} alt="add people icon" height="30px"/>
-                    <p>6/8</p>
-                    <button className="join-button-scheduled">Join</button>
-                </div>       
+            <div className="card-content">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada massa odio, sed 
+                    sagittis justo vehicula eget. In pharetra auctor purus, et pretium urna dictum quis.</p>
             </div>
+
+            <div className="icon1">
+                <img src={Calendar} alt="calendar icon" height="30px"/>
+            </div>
+
+            <div className="date-text">
+                <p><div className="time"> 06 July 2021 10:00</div></p>
+            </div>
+
+            <div className="icon2-scheduled">
+                <img src={People} alt="add people icon" height="30px"/>
+            </div>
+
+            <div className="room-size-text-scheduled">
+                <p>6/8</p>
+            </div>
+
+            <button className="join-button-scheduled">Join</button>
         </div>
         
         
