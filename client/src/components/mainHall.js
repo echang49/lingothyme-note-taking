@@ -15,7 +15,6 @@ function MainHall() {
     const nameInput = useRef(null);
     const [bool, setBool] = useState(true);
     const [user, setUser] = useState({ loggedIn: false });
-    const userInput = useRef(null);
     const emailInput = useRef(null);
     const passInput = useRef(null);
     const [phase, setPhase] = useState(1);
