@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom"; 
 import firebase from "../firebase.js";
 
@@ -12,11 +12,38 @@ function Profile() {
     const [bool, setBool] = useState(true);
     const [loggedIn, setLoggedIn] = useState(false);
     const [phase, setPhase] = useState(1);
+    const [user, setUser] = useState({ loggedIn: false });
+    const auth = firebase.auth();
+    //setBool(loggedIn); // if logged in, render profile page, else redirect to /mainHall
+
+    function onAuthStateChange(callback) {
+        return firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                console.log("logged in =)")
+                callback({loggedIn: true});
+            } else {
+                console.log("logging out...");
+                callback({loggedIn: false});
+                console.log("logged out");
+                
+            }
+        });
+      }
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChange(setUser);
+        return () => {
+          unsubscribe();
+        };
+      }, []);
+
 
     function handleEditClick(){
         
     }
-
+    
+    // TODO: make sure user cannot access profile page when not logged in
+    //if(loggedIn){
         return(
             <div>
                 {
@@ -67,10 +94,13 @@ function Profile() {
                             </div>
                         </div>
                     :
-                        <Redirect to="/" />
+                        <Redirect to="/mainHall" />
                 }
             </div>
         );
+
+    //}
+        
 }
     
 export default Profile;
