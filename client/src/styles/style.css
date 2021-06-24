@@ -700,8 +700,8 @@ textarea {
           align-items: center;
 }
 
-.MainHall nav img {
-  margin: 5px 10px 0px 0px;
+.MainHall nav .logo img {
+  margin: 5px 10px 5px 0px;
 }
 
 .MainHall nav p {
@@ -731,6 +731,9 @@ textarea {
 }
 
 .MainHall nav .nav-center {
+  -ms-grid-column: 3;
+  -ms-grid-column-span: 1;
+  grid-column: 3/4;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -752,9 +755,13 @@ textarea {
       -ms-flex-direction: row;
           flex-direction: row;
   -ms-grid-column: 5;
-      grid-column-start: 5;
-  grid-column-end: 6;
+  -ms-grid-column-span: 1;
+  grid-column: 5/6;
   justify-self: end;
+}
+
+.MainHall nav .nav-end img {
+  margin: 10px 10px 0px 0px;
 }
 
 .MainHall nav .nav-end button {
@@ -806,20 +813,33 @@ textarea {
 
 .MainHall .body .canvas {
   -ms-grid-column: 1;
-      grid-column-start: 1;
-  grid-column-end: 5;
+  -ms-grid-column-span: 4;
+  grid-column: 1/5;
+  -ms-grid-row: 1;
+  -ms-grid-row-span: 5;
+  grid-row: 1/6;
   padding: 45px;
   overflow-y: auto;
 }
 
-.MainHall .body .canvas h {
+.MainHall .body .canvas h1 {
+  -ms-grid-row: 1;
+  -ms-grid-row-span: 1;
+  grid-row: 1/2;
+  -ms-grid-column-align: start;
+      justify-self: start;
   font-family: 'Roboto', sans-serif;
   font-size: 2.5em;
 }
 
-.MainHall .body .canvas hr {
-  border-right: 350px solid #E6E6E6;
-  border-radius: 50px;
+.MainHall .body .canvas h2 {
+  -ms-grid-row: 3;
+  -ms-grid-row-span: 1;
+  grid-row: 3/4;
+  -ms-grid-column-align: start;
+      justify-self: start;
+  font-family: 'Roboto', sans-serif;
+  font-size: 2.5em;
 }
 
 .MainHall .body .canvas .card {
@@ -830,6 +850,9 @@ textarea {
   width: 400px;
   padding: 25px 20px;
   margin: 20px;
+  -ms-grid-column: 2;
+  -ms-grid-column-span: 1;
+  grid-column: 2/3;
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: (1fr)[3];
@@ -860,6 +883,8 @@ textarea {
   -ms-grid-row-span: 1;
   grid-row: 1/2;
   margin-top: 3vw;
+  border-right: 350px solid #E6E6E6;
+  border-radius: 50px;
 }
 
 .MainHall .body .canvas .card .card-header {
