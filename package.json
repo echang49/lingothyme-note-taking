@@ -26,7 +26,10 @@
     "firebase": "^8.6.5",
     "mongoose": "^5.11.15",
     "node-schedule": "^2.0.0",
-    "socket.io": "^4.0.2"
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "socket.io": "^4.0.2",
+    "styled-components": "^5.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"
