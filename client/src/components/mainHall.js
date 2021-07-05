@@ -12,19 +12,18 @@ import axios from "axios";
 
 
 function MainHall() {
+    const nameInput = useRef(null);
     const [bool, setBool] = useState(true);
     const [user, setUser] = useState({ loggedIn: false });
     const emailInput = useRef(null);
     const passInput = useRef(null);
     const [phase, setPhase] = useState(1);
     const auth = firebase.auth();
-    const [ url, setURL ] = useState("/");
 
     const numberInput = useRef(null);
     const numberValue = useRef(null);
     const questionInput = useRef(null);
     const dateInput = useRef(null);
-    const textInput = useRef(null);
 
     async function handleLogin() { 
         let email = emailInput.current.value;
@@ -96,23 +95,21 @@ function MainHall() {
               let date = new Date(dateInput.current.value);
               date.setDate(date.getDate() + 1); //add 1 day to the date of discussion for leeway
               let data = {
+                email: emailInput.current.value,
                 number: numberInput.current.value,
                 question: questionInput.current.value,
                 date: date
               }
-              let expirationMonth = date.getMonth() + 1;
-              let expirationDate = date.getDate() + 1;
-              let expirationYear = date.getFullYear();
-              axios.post('/api/auth/mainhall_createRoom', data)
+              axios.post('/api/auth/createRoom', data)
                 .then((res) => {
-                    let { roomKey } = res.data;
-                    alert(`Your room key is: ${roomKey}. NOTE: YOUR ROOM EXPIRES ${expirationMonth} - ${expirationDate} - ${expirationYear} AT MIDNIGHT EST/EDT.` );  
-                    setPhase(1); // send user back to mainhall  
+                  let { publicKey, privateKey } = res.data;
+                  alert("Your public key is: " + publicKey + ". \nYour private key is: " + privateKey + ". \n\nYour public key is for the participants of the room and the private key is for you." +
+                  " To use the private key on the home page, enter the code as \"" + publicKey + "-" + privateKey + "\". \n\n NOTE: YOUR ROOM EXPIRES " + (date.getMonth() + 1) + "-" + (date.getDate() + 1) + "-" + date.getFullYear() + " AT MIDNIGHT EST/EDT.");
                 })
                 .catch((err) => {
                   alert(err);
-                })
-                
+              })
+              setPhase(1);
             }
             else {
               alert("The maximum length allowed for questions is 240 characters.");
@@ -123,56 +120,16 @@ function MainHall() {
           }
     }
 
-    function addRoom() { // add room to user profile list of rooms
-        let code = textInput.current.value;
-        axios.post("/api/auth/mainhall_enterRoom", {code})
-        .then((res) => {
-            if(res.data[0]) {
-                if(res.data[1]) {
-                    setURL("/room?id=".concat(code));
-                }
-                else {
-                    
-                }
-                setBool(false);
-            }
-            else {
-                alert("Incorrect code. Ensure you have the proper room code.");
-            }
-        })
-        .catch((err) => {
-            alert(err);
-        });
+    function joinRoom() {
         setPhase(1);
-    }
+      }
 
-    function joinRoom() { // join room
-        let code = textInput.current.value;
-        axios.post("/api/auth/mainhall_enterRoom", {code})
-        .then((res) => {
-            if(res.data[0]) {
-                if(res.data[1]) {
-                    setURL("/room?id=".concat(code));
-                }
-                else {
-                    
-                }
-                setBool(false);
-            }
-            else {
-                alert("Incorrect code. Ensure you have the proper room code.");
-            }
-        })
-        .catch((err) => {
-            alert(err);
-        });
-        setPhase(1);
-    }
+    //firebase WIP 3
 
-
-
-    //firebase WIP 
-
+    // const user = auth.currentUser;
+    // if (user === null){
+    //     sleep(500);
+    // }
     if(user.loggedIn === null) { // TODO: add loading screen before render here
         return(
             <div>
@@ -211,20 +168,24 @@ function MainHall() {
                         bool ?
                             <div className="MainHall">
                                 <Navbar />
-                                <div className="mainhall-body">
+                                <div className="body">
                                     <div className="canvas">
-                                        <h1>Ongoing</h1> <div className="break"></div> 
-                                        <OngoingCard />
-                                        <h2>Scheduled</h2> <div className="break"></div>
-                                        <ScheduledCard />
-                                        
-                                        <button onClick={() => setPhase(2)}>
-                                            <p>Create Room</p>
-                                        </button>
-                                        
-                                        <button onClick={() => setPhase(3)}>
-                                            <p>Join Room</p>
-                                        </button>
+                                        <div classname="canvas-inner">
+                                            <h1>Ongoing</h1> <div className="break"></div> 
+                                            <OngoingCard />
+                                            <h2>Scheduled</h2> <div className="break"></div>
+                                            <ScheduledCard />
+                                            
+                                            <button onClick={() => setPhase(2)}>
+                                                <p>Create Room</p>
+                                            </button>
+                                            
+                                            <button onClick={() => setPhase(3)}>
+                                                <p>Join Room</p>
+                                            </button>
+
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -276,17 +237,16 @@ function MainHall() {
                 </div>
             
             );
-        case 3: // add room
+        case 3: // join room
             return( // TODO: store user's joined rooms in db for mainhall render
                 <div>
                     <div className="enterRoom center">
                         <img src={Logo} alt="LingoThyme logo" height="250px"/>
                         <div className="input">
                             <label>Room Code:</label>
-                            <input type="text" ref={textInput} />
+                            <input type="text" ref={nameInput} />
                             <div className="buttons">
-                                <button className="primary-button" onClick={() => addRoom()} >ENTER</button>
-                                <button className="primary-button" onClick={() => setPhase(1)} >CANCEL</button>
+                                <button className="primary-button" onClick={() => joinRoom()}>ENTER</button>
                             </div>
                         </div>
                     </div>

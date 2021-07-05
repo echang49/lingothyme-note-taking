@@ -7,11 +7,10 @@ import ScheduledCard from "./viewComponents/scheduledCard"; // DELETE
 
 import {ReactComponent as Logo} from "../assets/main-logo.svg";
 import firebase from "../firebase.js";
-import axios from "axios";
 
 
 function SignUp() {
-    const userNameInput = useRef(null);
+    const nameInput = useRef(null);
     const emailInput = useRef(null);
     const passInput = useRef(null);
     const confirmPassInput = useRef(null);
@@ -21,18 +20,19 @@ function SignUp() {
         let email = emailInput.current.value;
         let pass = passInput.current.value;
         let confirmPass = confirmPassInput.current.value;
-        let username = userNameInput.current.value;
 
-        let data = {
-            email: email,
-            username: username
-        }
         var actionCodeSettings = { // used for sending email verification link? 
             // URL you want to redirect back to. The domain (www.example.com) for this
             // URL must be in the authorized domains list in the Firebase Console.
-            url: 'https://www.lingothyme.com/',
+            url: 'www.google.com',
             handleCodeInApp: true, // This must be true.
-            // dynamicLinkDomain: 'https://www.lingothyme.com/'
+            iOS: { // WIP
+
+            },
+            android: { // WIP
+
+            },
+            dynamicLinkDomain: 'localhost:3000/mainHall'
           };
 
         if(pass === confirmPass){ // check to see if passwords match
@@ -40,6 +40,7 @@ function SignUp() {
             .catch(function(error) { 
                 // if email or password not valid, throw error
                 var errorCode = error.code;
+                //var errorMessage = error.message;
                 if (errorCode == 'auth/weak-password') {
                     alert('The password is too weak, please try again.');
                 } else if(errorCode == 'auth/email-already-in-use') {
@@ -51,30 +52,20 @@ function SignUp() {
                 }
                 console.log(error);
             }).then(() => {
-                // if no errors thrown for signup,  create profile in db
-                console.log("creating profile...");
-                axios.post('/api/auth/mainhall_createProfile', data) // 
-                .then((res) => {
-                    console.log("data: " + data);
-                    let { email, username, roomList } = res.data;
-                    console.log(`profile created with email: ${email}, username: ${username}, roomList: ${roomList}.`); 
-                })
-                .catch((err) => {
-                    console.log("error found: ");
-                    alert(err);
-                })
-
-            //     firebase.auth().currentUser.sendEmailVerification(actionCodeSettings) // send user an email verification link, then send to main hall
-            //    .then(() => {
-            //        alert("A verification link has been sent to your email.");
-            //        <Redirect to="/mainHall" />
-            //    }).catch((error) => {
-            //        var errorCode = error.code;
-            //        var errorMessage = error.message;
-            //        alert("ErrorCode: " + errorCode + "error message: " + errorMessage);
-            //    });
-            //    alert("Verification link was not sent, sending to mainHall."); 
-            //    <Redirect to="/mainHall" />
+                // if no errors thrown for signup, send user an email verification link, then send to mainHall
+                firebase.auth().currentUser.sendEmailVerification(actionCodeSettings)
+               .then(() => {
+                   alert("A verification link has been sent to your email.");
+                   <Redirect to="/mainHall" />
+               }).catch((error) => {
+                   
+                   var errorCode = error.code;
+                   var errorMessage = error.message;
+                   alert("ErrorCode: " + errorCode + "error message: " + errorMessage);
+                   // ...
+               });
+               alert("Verification link was not sent, sending to mainHall.");
+               <Redirect to="/mainHall" />
            });
             
            
@@ -86,8 +77,8 @@ function SignUp() {
         <div className="enterRoom center">
             <img src={ColorLogo} alt="LingoThyme Logo" height="250px"/>
             <div className="input">
-                <label>UserName:</label>
-                <input type="name" ref={userNameInput} />
+                <label>Name:</label>
+                <input type="name" ref={nameInput} />
 
                 <label>Email:</label>
                 <input type="email" ref={emailInput} />
