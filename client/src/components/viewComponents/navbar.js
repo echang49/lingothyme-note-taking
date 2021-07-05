@@ -7,15 +7,23 @@ import firebase from "../../firebase.js";
 import ProfilePic from "../../assets/users/Profile1.webp";
 import { Dropdown, Option } from "./dropdown.js";
 
-
 function Navbar(props) {
     const [loggedIn, setLoggedIn] = useState(false);
     const location = useLocation().pathname; // current path (e.g. /mainHall)
     const [user, setUser] = useState({ loggedIn: false });
     const auth = firebase.auth();
     const [dropdownState, setDropdownState] = useState(false);
+    const [email, setEmail] = useState("");
 
-    async function handleSearch(){
+    // get users email to search db for their info
+    const currentUser = firebase.auth().currentUser;
+    useEffect(() => { 
+        if (currentUser !== null) {
+            setEmail(currentUser.email);
+          }
+      });
+
+    function handleSearch(){
 
     }
     
@@ -24,24 +32,16 @@ function Navbar(props) {
     }
 
     const handleProfileDropdown = (e) => {
-        console.log("e --> target --> value:" + e.target.value);
-        // setDropdownState(e.target.value);
-        console.log("handling profile click...!");
         setDropdownState(!dropdownState); // toggle menu state
-
         if(e.target.value === "Profile"){ // redirect to profile page
-            console.log("e --> target --> value was:" + e.target.value);
-            //location.href = "http://localhost:3000/profile";
             window.open('/profile', '_self');
-            // <Redirect to="/profile" />
-
         }else if(e.target.value === "Logout"){ // logout user
             setUser({ loggedIn: false });
             return auth.signOut();
         }
 
     };
-    var userName = "Carrot Grace";
+
     switch(location) { 
         case '/mainHall': 
             return (
@@ -231,4 +231,5 @@ export default Navbar;
     
     
     
+     
     

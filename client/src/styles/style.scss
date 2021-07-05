@@ -615,14 +615,14 @@ textarea {
         }
         
     }
-    .body {
+    .mainhall-body {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         //grid-template-rows: 1fr 1fr 1fr 1fr;
         height: calc(100vh - 64px);
         background-color: #E9EDF5;
         .canvas {
-            grid-column: 1/5;
+            grid-column: 1/6;
             grid-row: 1/6;
             padding: 45px;
             overflow-y: auto;
@@ -816,6 +816,25 @@ textarea {
         align-items: center;
         justify-content: center;
         height: 100vh;        
+    }
+
+    .join-room{
+        input {
+            width: 100%;
+            padding-right: 40px;
+        }
+
+        button {
+        width: 40px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        }
+        img{
+            text-align: center;
+            margin-left: 100px;
+        }
+
     }
 }
 

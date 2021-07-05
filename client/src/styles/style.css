@@ -802,7 +802,7 @@ textarea {
   stroke: #666666 !important;
 }
 
-.MainHall .body {
+.MainHall .mainhall-body {
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: (1fr)[5];
@@ -811,10 +811,10 @@ textarea {
   background-color: #E9EDF5;
 }
 
-.MainHall .body .canvas {
+.MainHall .mainhall-body .canvas {
   -ms-grid-column: 1;
-  -ms-grid-column-span: 4;
-  grid-column: 1/5;
+  -ms-grid-column-span: 5;
+  grid-column: 1/6;
   -ms-grid-row: 1;
   -ms-grid-row-span: 5;
   grid-row: 1/6;
@@ -822,7 +822,7 @@ textarea {
   overflow-y: auto;
 }
 
-.MainHall .body .canvas h1 {
+.MainHall .mainhall-body .canvas h1 {
   -ms-grid-row: 1;
   -ms-grid-row-span: 1;
   grid-row: 1/2;
@@ -832,7 +832,7 @@ textarea {
   font-size: 2.5em;
 }
 
-.MainHall .body .canvas h2 {
+.MainHall .mainhall-body .canvas h2 {
   -ms-grid-row: 3;
   -ms-grid-row-span: 1;
   grid-row: 3/4;
@@ -842,7 +842,7 @@ textarea {
   font-size: 2.5em;
 }
 
-.MainHall .body .canvas .card {
+.MainHall .mainhall-body .canvas .card {
   background-color: #FAFAFA;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
@@ -861,7 +861,7 @@ textarea {
   grid-row-gap: 10px;
 }
 
-.MainHall .body .canvas .card p {
+.MainHall .mainhall-body .canvas .card p {
   font-style: normal;
   font-weight: normal;
   font-size: 18px;
@@ -869,13 +869,13 @@ textarea {
   margin-bottom: 0;
 }
 
-.MainHall .body .canvas .card p .time {
+.MainHall .mainhall-body .canvas .card p .time {
   font-size: 14px;
   color: #aaa5a5;
   font-weight: lighter;
 }
 
-.MainHall .body .canvas .card hr {
+.MainHall .mainhall-body .canvas .card hr {
   -ms-grid-column: 1;
   -ms-grid-column-span: 2;
   grid-column: 1/3;
@@ -887,7 +887,7 @@ textarea {
   border-radius: 50px;
 }
 
-.MainHall .body .canvas .card .card-header {
+.MainHall .mainhall-body .canvas .card .card-header {
   -ms-grid-column: 1;
   -ms-grid-column-span: 2;
   grid-column: 1/3;
@@ -896,7 +896,7 @@ textarea {
   grid-row: 1/2;
 }
 
-.MainHall .body .canvas .card .card-header h1 {
+.MainHall .mainhall-body .canvas .card .card-header h1 {
   font-style: normal;
   font-weight: bold;
   font-size: 24px;
@@ -905,7 +905,7 @@ textarea {
   margin: 0;
 }
 
-.MainHall .body .canvas .card .card-header .icon {
+.MainHall .mainhall-body .canvas .card .card-header .icon {
   -ms-grid-column: 1;
   -ms-grid-column-span: 1;
   grid-column: 1/2;
@@ -914,7 +914,7 @@ textarea {
   grid-row: 1/2;
 }
 
-.MainHall .body .canvas .card .card-content {
+.MainHall .mainhall-body .canvas .card .card-content {
   -ms-grid-column: 1;
   -ms-grid-column-span: 2;
   grid-column: 1/3;
@@ -926,7 +926,7 @@ textarea {
   word-break: break-word;
 }
 
-.MainHall .body .canvas .card .icon1 {
+.MainHall .mainhall-body .canvas .card .icon1 {
   -ms-grid-column: 1;
   -ms-grid-column-span: 1;
   grid-column: 1/2;
@@ -940,7 +940,7 @@ textarea {
       justify-self: start;
 }
 
-.MainHall .body .canvas .card .time-text {
+.MainHall .mainhall-body .canvas .card .time-text {
   -ms-grid-column: 1;
   -ms-grid-column-span: 1;
   grid-column: 1/2;
@@ -954,7 +954,7 @@ textarea {
   white-space: nowrap;
 }
 
-.MainHall .body .canvas .card .date-text {
+.MainHall .mainhall-body .canvas .card .date-text {
   -ms-grid-column: 1;
   -ms-grid-column-span: 1;
   grid-column: 1/2;
@@ -968,7 +968,7 @@ textarea {
   white-space: nowrap;
 }
 
-.MainHall .body .canvas .card .icon2-ongoing {
+.MainHall .mainhall-body .canvas .card .icon2-ongoing {
   -ms-grid-column: 2;
   -ms-grid-column-span: 1;
   grid-column: 2/3;
@@ -983,7 +983,7 @@ textarea {
   margin-right: -98px;
 }
 
-.MainHall .body .canvas .card .room-size-text-ongoing {
+.MainHall .mainhall-body .canvas .card .room-size-text-ongoing {
   -ms-grid-column: 2;
   -ms-grid-column-span: 1;
   grid-column: 2/3;
@@ -999,7 +999,7 @@ textarea {
   margin-right: -37px;
 }
 
-.MainHall .body .canvas .card .join-button-ongoing {
+.MainHall .mainhall-body .canvas .card .join-button-ongoing {
   all: unset;
   -ms-grid-row: 3;
   -ms-grid-row-span: 1;
@@ -1022,11 +1022,11 @@ textarea {
   background-color: #5B8AFD;
 }
 
-.MainHall .body .canvas .card .join-button-ongoing:hover {
+.MainHall .mainhall-body .canvas .card .join-button-ongoing:hover {
   background-color: #3564da;
 }
 
-.MainHall .body .canvas .card .icon2-scheduled {
+.MainHall .mainhall-body .canvas .card .icon2-scheduled {
   -ms-grid-column: 2;
   -ms-grid-column-span: 1;
   grid-column: 2/3;
@@ -1041,7 +1041,7 @@ textarea {
   margin-right: -38px;
 }
 
-.MainHall .body .canvas .card .room-size-text-scheduled {
+.MainHall .mainhall-body .canvas .card .room-size-text-scheduled {
   -ms-grid-column: 2;
   -ms-grid-column-span: 1;
   grid-column: 2/3;
@@ -1057,7 +1057,7 @@ textarea {
   margin-right: -17px;
 }
 
-.MainHall .body .canvas .card .join-button-scheduled {
+.MainHall .mainhall-body .canvas .card .join-button-scheduled {
   all: unset;
   -ms-grid-row: 3;
   -ms-grid-row-span: 1;
@@ -1080,7 +1080,7 @@ textarea {
   background-color: #5B8AFD;
 }
 
-.MainHall .body .canvas .card .join-button-scheduled:hover {
+.MainHall .mainhall-body .canvas .card .join-button-scheduled:hover {
   background-color: #3564da;
 }
 
@@ -1095,6 +1095,23 @@ textarea {
       -ms-flex-pack: center;
           justify-content: center;
   height: 100vh;
+}
+
+.MainHall .join-room input {
+  width: 100%;
+  padding-right: 40px;
+}
+
+.MainHall .join-room button {
+  width: 40px;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.MainHall .join-room img {
+  text-align: center;
+  margin-left: 100px;
 }
 
 .profile .profile-container {
