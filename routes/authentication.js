@@ -204,7 +204,7 @@ function mainhall_makeRoom(roomKey, number, question, date, res) {
     });
 }
 
-function mainhall_editAboutMe(email, username, aboutMeText){
+function mainhall_editAboutMe(email, aboutMeText){
     Profile.findOne({email: email})
     .then(profile => {
         if(profile.aboutMe) {
@@ -226,8 +226,8 @@ router.post('/mainhall_createProfile', (req, res) => {
 });
 
 router.post('/mainhall_editAboutMe', (req, res) => {
-    let { email, username, about_me } = req.body;
-    editAboutMe(email, username, about_me);   
+    let { email, aboutMe } = req.body;
+    editAboutMe(email, aboutMe);   
     res.send({aboutMe});
 });
 
@@ -268,6 +268,7 @@ router.post('/mainhall_addRoom', (req, res) => { // add room to users list of ro
     
 });
 
+// change to get request?
 router.post('/mainhall_getRoomList', (req, res) => { // add room to users list of rooms
     let { email } = req.body;
     Profile.findOne({email: email})
@@ -282,19 +283,19 @@ router.post('/mainhall_getRoomList', (req, res) => { // add room to users list o
     });    
 });
 
+// change to get request?
 router.post('/getAboutMeText', (req, res) => { // return user's about me section text
-    console.log(req.body)
     let { email } = req.body;
     console.log("authentication js - email: " + email);
     Profile.findOne({email: email})
     .then(profile => {
         if(profile) {
-            console.log("profile found")
+            //console.log("profile found, getting aboutMe text")
             aboutMeText = profile.aboutMe;
-            return res.send(aboutMeText); // send about me text string
+            return res.send(aboutMeText); // return about me text string for profile page render
         }
         else {
-            console.log("profile not found");
+            console.log("profile not found"); // TODO: res.send error
             //res.send()
         }
     });    
