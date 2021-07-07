@@ -8,6 +8,7 @@ const fs = require('fs');
 const cors = require('cors'); //cross origin resource sharing
 const schedule = require('node-schedule'); //for cron jobs
 const Room = require('./models/Rooms');
+const MainHallRoom = require('./models/mainhall_rooms');
 
 //Load config
 dotenv.config({path: './config/config.env'});
@@ -51,6 +52,26 @@ const job = schedule.scheduleJob('0 0 * * *', () => {
         rooms.map(room => {
             if(date > room.date.getTime()) {
                 Room.deleteOne({_id: room._id}, (err) => {
+                    if(err) {
+                        console.log(err);
+                    }
+                });
+            }
+        })
+    })
+});
+
+//CRON JOB FOR MAINHALL DONE EVERYDAY AT MIDNIGHT TO ENSURE ALL THE EXPIRED ROOMS ARE DELETED
+const job = schedule.scheduleJob('0 0 * * *', () => {
+    //get date as of right now. If this is older than the one posted, deleted the posted ones
+    let date = Date.now();
+    MainHallRoom.find({} , (err, rooms) => {
+        if(err) {
+            console.log(err);
+        }
+        rooms.map(room => {
+            if(date > room.date.getTime()) {
+                MainHallRoom.deleteOne({_id: room._id}, (err) => {
                     if(err) {
                         console.log(err);
                     }
