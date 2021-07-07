@@ -124,21 +124,30 @@ function MainHall() {
     }
 
     function addRoom() { // add room to user profile list of rooms
-        let code = textInput.current.value;
-        axios.post("/api/auth/mainhall_enterRoom", {code})
+        let roomKey = textInput.current.value;
+        let email = auth.currentUser.email;
+        let data = {
+            roomKey: roomKey,
+            email: email
+        }
+        axios.post("/api/auth/mainhall_addRoom", data)
         .then((res) => {
-            if(res.data[0]) {
-                if(res.data[1]) {
-                    setURL("/room?id=".concat(code));
-                }
-                else {
+            let { roomKeyList } = res.data;
+            console.log("room added to profile" + JSON.stringify(roomKeyList));
+            //console.log("user has access to rooms: " + roomKeyList[]);
+            // console.log("res.data[0]: " + res.data[0] + "res.data[1]: " + res.data[1]);
+            // if(res.data[0]) {
+            //     if(res.data[1]) {
+            //         setURL("/room?id=".concat(code));
+            //     }
+            //     else {
                     
-                }
-                setBool(false);
-            }
-            else {
-                alert("Incorrect code. Ensure you have the proper room code.");
-            }
+            //     }
+            //     setBool(false);
+            // }
+            // else {
+            //     alert("Incorrect code. Ensure you have the proper room code.");
+            // }
         })
         .catch((err) => {
             alert(err);
@@ -148,7 +157,7 @@ function MainHall() {
 
     function joinRoom() { // join room
         let code = textInput.current.value;
-        axios.post("/api/auth/mainhall_enterRoom", {code})
+        axios.post("/api/auth/mainhall_joinRoom", {code})
         .then((res) => {
             if(res.data[0]) {
                 if(res.data[1]) {
@@ -223,7 +232,7 @@ function MainHall() {
                                         </button>
                                         
                                         <button onClick={() => setPhase(3)}>
-                                            <p>Join Room</p>
+                                            <p>Add Room</p>
                                         </button>
                                     </div>
                                 </div>
