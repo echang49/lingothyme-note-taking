@@ -62,7 +62,7 @@ const job = schedule.scheduleJob('0 0 * * *', () => {
 });
 
 //CRON JOB FOR MAINHALL DONE EVERYDAY AT MIDNIGHT TO ENSURE ALL THE EXPIRED ROOMS ARE DELETED
-const job = schedule.scheduleJob('0 0 * * *', () => {
+const mainHalljob = schedule.scheduleJob('0 0 * * *', () => {
     //get date as of right now. If this is older than the one posted, deleted the posted ones
     let date = Date.now();
     MainHallRoom.find({} , (err, rooms) => {
