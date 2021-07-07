@@ -27,7 +27,7 @@ function Profile() {
                 callback({loggedIn: true}); // set user login state to true
                 const res = await axios.post('/api/auth/getAboutMeText', {email: user.email})
                 setAboutMeText(res.data);  
-                console.log(aboutMeText);
+                //console.log(aboutMeText);
             } else {
                 callback({loggedIn: false});
             }
@@ -62,7 +62,8 @@ function Profile() {
     }
 
     function handleEditClick(){
-        
+        console.log("handling edit click");
+        //axios.post('/api/auth/mainhall_editAboutme', {email: user.email, aboutMeText: "this is the replacement text"})
     }
     
     if(!user.loggedIn) { // user not logged in, prompt them to login or signup
@@ -128,9 +129,9 @@ function Profile() {
                                     <div className="about-me-inner">
                                         <Edit className="edit-icon" onclick={()=> handleEditClick}/>
                                         <div className="title"><h>About Me</h></div>
-                                        <diV className="content"><p>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Neque aliquam vestibulum morbi blandit cursus. Dignissim convallis aenean et tortor at risus viverra adipiscing at. Varius vel pharetra vel turpis nunc eget lorem dolor. Suscipit tellus mauris a diam maecenas sed enim.
-                                            </p></diV>
+                                        <diV className="content">
+                                            <p>{aboutMeText}</p>
+                                        </diV>
                                     </div>
                                 </div>
 
