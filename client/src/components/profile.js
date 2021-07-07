@@ -61,11 +61,16 @@ function Profile() {
         });     
     }
 
-    function handleEditClick(){
-        console.log("handling edit click");
+    function handleProfileEdit(){
+        console.log("handling profile edit");
         //axios.post('/api/auth/mainhall_editAboutme', {email: user.email, aboutMeText: "this is the replacement text"})
     }
-    
+
+    function handleAboutMeEdit(){
+        console.log("handling aboutMe edit");
+        //axios.post('/api/auth/mainhall_editAboutme', {email: user.email, aboutMeText: "this is the replacement text"})
+    }
+    // TODO: add loading screen using react-loading package here so login screen isn't shown on page reload while logged in
     if(!user.loggedIn) { // user not logged in, prompt them to login or signup
         return(
             <div className="enterRoom center">
@@ -88,7 +93,7 @@ function Profile() {
             </div>
         );
     }
-
+    
     return(
         <div>
             {
@@ -118,7 +123,7 @@ function Profile() {
                                         <div className="profile-pic">
                                             <img src={ProfilePic} height="75px" width="75px" alt="User profile pic" />
                                         </div>
-                                        <Edit className="edit-icon" onclick={()=> handleEditClick}/>
+                                        <Edit className="edit-icon" onClick={() => handleProfileEdit()} />
                                         <div className="username"><h>UserName</h></div>
                                         
                                     </div>
@@ -127,7 +132,7 @@ function Profile() {
 
                                 <div className="about-me">
                                     <div className="about-me-inner">
-                                        <Edit className="edit-icon" onclick={()=> handleEditClick}/>
+                                        <Edit className="edit-icon" onClick={() => handleAboutMeEdit()} />
                                         <div className="title"><h>About Me</h></div>
                                         <diV className="content">
                                             <p>{aboutMeText}</p>
