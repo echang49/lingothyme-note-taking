@@ -210,11 +210,12 @@ function mainhall_editAboutMe(email, username, aboutMeText){
         if(profile.aboutMe) {
             console.log("profile has an existing about me section, editing...")
             profile.update({email: email}, {$set : {aboutMe: aboutMeText}});
+            profile.save().then().catch(err => console.log(err));
         }
         else {
-            profile.update()
-            newProfile.save().then().catch(err => console.log(err));
-            res.send({aboutMe});
+            profile.aboutMe = aboutMeText;
+            profile.save().then().catch(err => console.log(err));
+            
         }
     });
 }
@@ -227,6 +228,7 @@ router.post('/mainhall_createProfile', (req, res) => {
 router.post('/mainhall_editAboutMe', (req, res) => {
     let { email, username, about_me } = req.body;
     editAboutMe(email, username, about_me);   
+    res.send({aboutMe});
 });
 
 router.post('/mainhall_createRoom', (req, res) => {
@@ -238,22 +240,64 @@ router.post('/mainhall_createRoom', (req, res) => {
 
 
 router.post('/mainhall_addRoom', (req, res) => { // add room to users list of rooms
-    let { code } = req.body;
-    let roomKey = code;
-    //if code not of proper length 
-    if(roomKey.length !== 7) {
-        return res.send([false]);
-    }
-    Room.findOne({roomKey: roomKey})
+    let { roomKey, email } = req.body;
+    MainhallRoom.findOne({roomKey: roomKey})
     .then(room => {
-        if(room) {
-            return res.send([true, true]);
-        }
-        else {
-            return res.send([false]);
+        if(room) { // roomKey found in mainHallRooms 
+            Profile.findOne({email: email})
+            .then(profile => {
+                if(profile) {
+                    //profile.roomList.push(roomKey);
+
+                    // if roomKey does not already exist in users roomKeyList, push, else do not push
+                    profile.roomList.indexOf(roomKey) === -1 ? profile.roomList.push(roomKey):console.log("This item already exists");
+                    profile.save().then().catch(err => console.log(err));
+                    roomKeyList = profile.roomKeyList;
+                    return res.send(roomKeyList);
+                }
+                else {
+                    console.log("profile not found, cannot insert");
+                }
+                console.log("Room has been added.")
+                
+            });    
+        }else{ // roomKey not found
+            console.log("incorrect room key, please try again");
         }
     });
     
+});
+
+router.post('/mainhall_getRoomList', (req, res) => { // add room to users list of rooms
+    let { email } = req.body;
+    Profile.findOne({email: email})
+    .then(profile => {
+        if(profile) {
+            roomKeyList = profile.roomKeyList;
+            return res.send(roomkeyList); // send roomKeyList array
+        }
+        else {
+            console.log("profile not found, cannot insert");
+        }
+    });    
+});
+
+router.post('/getAboutMeText', (req, res) => { // return user's about me section text
+    console.log(req.body)
+    let { email } = req.body;
+    console.log("authentication js - email: " + email);
+    Profile.findOne({email: email})
+    .then(profile => {
+        if(profile) {
+            console.log("profile found")
+            aboutMeText = profile.aboutMe;
+            return res.send(aboutMeText); // send about me text string
+        }
+        else {
+            console.log("profile not found");
+            //res.send()
+        }
+    });    
 });
 
 router.post('/mainhall_joinRoom', (req, res) => { // join the room (send user to new url of room)
@@ -263,7 +307,7 @@ router.post('/mainhall_joinRoom', (req, res) => { // join the room (send user to
     if(roomKey.length !== 7) {
         return res.send([false]);
     }
-    Room.findOne({roomKey: roomKey})
+    MainhallRoom.findOne({roomKey: roomKey})
     .then(room => {
         if(room) {
             return res.send([true, true]);
