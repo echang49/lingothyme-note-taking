@@ -78,7 +78,7 @@ function Navbar(props) {
 
                             <img src={ProfilePic} height="35px" width="35px" alt="User profile pic" />
                             <Dropdown onChange={handleProfileDropdown}>
-                                <Option selected value="UserName" />
+                                <Option value="UserName" />
                                 <Option value="Profile" />
                                 <Option value="Logout" />
                             </Dropdown>
