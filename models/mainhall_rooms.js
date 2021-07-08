@@ -29,7 +29,14 @@ const MainhallRoomSchema = new mongoose.Schema({
     paragraphList: {
         type: Array,
         required: false
+    },
+
+    createdBy: { // userName (or uid) of user that the room was created by
+        type: String,
+        required: false
     }
+
+
 })
 
 const MainhallRoom = mongoose.model('MainhallRoom', MainhallRoomSchema);
