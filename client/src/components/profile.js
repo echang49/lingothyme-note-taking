@@ -18,6 +18,7 @@ function Profile() {
     //const [phase, setPhase] = useState(1);
     const [user, setUser] = useState({ loggedIn: false });
     const [aboutMeText, setAboutMeText] = useState("");
+    const [userEmail, setUserEmail] = useState(undefined);
     const auth = firebase.auth();
     //setBool(loggedIn); // if logged in, render profile page, else redirect to /mainHall
 
@@ -25,14 +26,17 @@ function Profile() {
         return firebase.auth().onAuthStateChanged(async user => {
             if (user) {
                 callback({loggedIn: true}); // set user login state to true
+                setUserEmail(user.email);
+                //const res = await axios.post('/api/auth/getAboutMeText', {email: userEmail})
                 const res = await axios.post('/api/auth/getAboutMeText', {email: user.email})
+                console.log("res.data = " + res.data);
                 setAboutMeText(res.data);  
-                //console.log(aboutMeText);
+                console.log("about me text: " + aboutMeText);
             } else {
                 callback({loggedIn: false});
             }
         });
-      }
+    }
 
     useEffect(() => {
         const unsubscribe = onAuthStateChange(setUser);
@@ -40,6 +44,12 @@ function Profile() {
           unsubscribe();
         };
     }, []);
+
+    // useEffect(() => {
+    //     console.log("updating about me text...");
+    //     axios.post('/api/auth/getAboutMeText', {email: userEmail})
+    // }, [aboutMeText]);
+
 
     async function handleLogin() { 
         let email = emailInput.current.value;
@@ -66,10 +76,12 @@ function Profile() {
         //axios.post('/api/auth/mainhall_editAboutme', {email: user.email, aboutMeText: "this is the replacement text"})
     }
 
-    function handleAboutMeEdit(){
-        console.log("handling aboutMe edit");
-        //axios.post('/api/auth/mainhall_editAboutme', {email: user.email, aboutMeText: "this is the replacement text"})
+    async function handleAboutMeEdit(){
+        await setAboutMeText("this is the replacement text");
+        console.log("handling aboutMe edit, saving text as: " + aboutMeText);
+        await axios.post('/api/auth/mainhall_editAboutme', {email: userEmail, aboutMeText: aboutMeText});
     }
+
     // TODO: add loading screen using react-loading package here so login screen isn't shown on page reload while logged in
     if(!user.loggedIn) { // user not logged in, prompt them to login or signup
         return(
@@ -136,7 +148,10 @@ function Profile() {
                                         <div className="title"><h>About Me</h></div>
                                         <diV className="content">
                                             <p>{aboutMeText}</p>
+                                            <label>Edit:</label>
+                                            <input type="text" ref={emailInput} />
                                         </diV>
+                                        
                                     </div>
                                 </div>
 
