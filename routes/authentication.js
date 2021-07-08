@@ -174,7 +174,8 @@ function mainhall_makeRoom(roomKey, number, question, date, res) {
                 capacity: number,
                 question,
                 date,
-                "phase": 1
+                "phase": 1,
+                createdBy: ""
             });
         
             newMainhallRoom.save().then().catch(err => console.log(err));
@@ -205,18 +206,27 @@ function mainhall_makeRoom(roomKey, number, question, date, res) {
 }
 
 function mainhall_editAboutMe(email, aboutMeText){
+    console.log("searching for profile: " + email + " for edit about me, with new text: " + aboutMeText);
     Profile.findOne({email: email})
     .then(profile => {
-        if(profile.aboutMe) {
-            console.log("profile has an existing about me section, editing...")
-            profile.update({email: email}, {$set : {aboutMe: aboutMeText}});
-            profile.save().then().catch(err => console.log(err));
+        // if(profile.aboutMe !== null) {
+        if(profile == null){
+            console.log("profile is null");
+        }else{
+            console.log("profile is not null");
+            if( profile.aboutMe !== null) {
+                console.log("profile has an existing about me section, editing...")
+                profile.update({email: email}, {$set : {aboutMe: aboutMeText}});
+                profile.save().then().catch(err => console.log(err));
+            }
+            else {
+                console.log("profile.aboutMe is null.");
+                // profile.aboutMe = aboutMeText;
+                // profile.save().then().catch(err => console.log(err));
+                
+            }
         }
-        else {
-            profile.aboutMe = aboutMeText;
-            profile.save().then().catch(err => console.log(err));
-            
-        }
+        
     });
 }
 
@@ -227,8 +237,9 @@ router.post('/mainhall_createProfile', (req, res) => {
 
 router.post('/mainhall_editAboutMe', (req, res) => {
     let { email, aboutMe } = req.body;
-    editAboutMe(email, aboutMe);   
-    res.send({aboutMe});
+    mainhall_editAboutMe(email, aboutMe);   
+    // set up useEffect hook so we can just run getAboutMeText again after edit
+    //res.send({aboutMe});
 });
 
 router.post('/mainhall_createRoom', (req, res) => {
@@ -286,7 +297,7 @@ router.post('/mainhall_getRoomList', (req, res) => { // add room to users list o
 // change to get request?
 router.post('/getAboutMeText', (req, res) => { // return user's about me section text
     let { email } = req.body;
-    console.log("authentication js - email: " + email);
+    console.log("/getAboutMeText - email: " + email);
     Profile.findOne({email: email})
     .then(profile => {
         if(profile) {
@@ -295,7 +306,25 @@ router.post('/getAboutMeText', (req, res) => { // return user's about me section
             return res.send(aboutMeText); // return about me text string for profile page render
         }
         else {
-            console.log("profile not found"); // TODO: res.send error
+            console.log("profile not found - /getAboutMeText"); // TODO: res.send error
+            //res.send()
+        }
+    });    
+});
+
+// change to get request?
+router.post('/getUsername', (req, res) => { // return user's username
+    let { email } = req.body;
+    console.log("finding username for email: " + email);
+    Profile.findOne({email: email})
+    .then(profile => {
+        if(profile) {
+            //console.log("profile found, getting aboutMe text")
+            userName = profile.username;
+            return res.send(userName); // return about me text string for profile page render
+        }
+        else {
+            console.log("profile not found - /getUsername"); // TODO: res.send error
             //res.send()
         }
     });    
