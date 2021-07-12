@@ -205,28 +205,24 @@ function mainhall_makeRoom(roomKey, number, question, date, res) {
     });
 }
 
-function mainhall_editAboutMe(email, aboutMeText){
-    console.log("searching for profile: " + email + " for edit about me, with new text: " + aboutMeText);
+function mainhall_editAboutMe(email, aboutMe){
+    console.log("searching for profile: " + email + " for edit about me, with new text: " + aboutMe);
     Profile.findOne({email: email})
     .then(profile => {
-        // if(profile.aboutMe !== null) {
         if(profile == null){
             console.log("profile is null");
-        }else{
-            console.log("profile is not null");
+        }else{ // profile is found
             if( profile.aboutMe !== null) {
-                console.log("profile has an existing about me section, editing...")
-                profile.update({email: email}, {$set : {aboutMe: aboutMeText}});
-                profile.save().then().catch(err => console.log(err));
-            }
-            else {
-                console.log("profile.aboutMe is null.");
-                // profile.aboutMe = aboutMeText;
-                // profile.save().then().catch(err => console.log(err));
+                console.log("current about me text of this profile is: " + profile.aboutMe);
+                profile.aboutMe = aboutMe; // set new about me section
+                profile.save().then().catch(err => console.log(err)); // update about me section 
+                console.log("new about me text of this profile is: " + profile.aboutMe);
                 
             }
-        }
-        
+            else {
+                console.log("profile.aboutMe is null."); 
+            }
+        }    
     });
 }
 
@@ -238,8 +234,9 @@ router.post('/mainhall_createProfile', (req, res) => {
 router.post('/mainhall_editAboutMe', (req, res) => {
     let { email, aboutMe } = req.body;
     mainhall_editAboutMe(email, aboutMe);   
-    // set up useEffect hook so we can just run getAboutMeText again after edit
+    // set up useEffect hook so we can just run getAboutMe text again after edit
     //res.send({aboutMe});
+    res.send(true);
 });
 
 router.post('/mainhall_createRoom', (req, res) => {
@@ -258,8 +255,6 @@ router.post('/mainhall_addRoom', (req, res) => { // add room to users list of ro
             Profile.findOne({email: email})
             .then(profile => {
                 if(profile) {
-                    //profile.roomList.push(roomKey);
-
                     // if roomKey does not already exist in users roomKeyList, push, else do not push
                     profile.roomList.indexOf(roomKey) === -1 ? profile.roomList.push(roomKey):console.log("This item already exists");
                     profile.save().then().catch(err => console.log(err));
@@ -280,18 +275,28 @@ router.post('/mainhall_addRoom', (req, res) => { // add room to users list of ro
 });
 
 // change to get request?
-router.post('/mainhall_getRoomList', (req, res) => { // add room to users list of rooms
-    let { email } = req.body;
-    Profile.findOne({email: email})
-    .then(profile => {
-        if(profile) {
-            roomKeyList = profile.roomKeyList;
-            return res.send(roomkeyList); // send roomKeyList array
-        }
-        else {
-            console.log("profile not found, cannot insert");
-        }
-    });    
+router.post('/mainhall_getRoomList',async (req, res) => { // get list of all rooms to display in main hall
+    const roomList = [];
+    const mainHallrooms = await MainhallRoom.find({})
+    mainHallrooms.forEach(room =>{
+        roomList.push(room)
+        // console.log("hi")
+    })
+
+
+    return res.send(roomList);
+    
+    // let { email } = req.body;
+    // MainHallRoom.findOne({email: email})
+    // .then(profile => {
+    //     if(profile) {
+    //         roomKeyList = profile.roomKeyList;
+    //         return res.send(roomkeyList); // send roomKeyList array
+    //     }
+    //     else {
+    //         console.log("profile not found, cannot insert");
+    //     }
+    // });    
 });
 
 // change to get request?
@@ -302,8 +307,8 @@ router.post('/getAboutMeText', (req, res) => { // return user's about me section
     .then(profile => {
         if(profile) {
             //console.log("profile found, getting aboutMe text")
-            aboutMeText = profile.aboutMe;
-            return res.send(aboutMeText); // return about me text string for profile page render
+            aboutMe = profile.aboutMe;
+            return res.send(aboutMe); // return about me text string for profile page render
         }
         else {
             console.log("profile not found - /getAboutMeText"); // TODO: res.send error
