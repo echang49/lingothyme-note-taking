@@ -26,6 +26,11 @@ function MainHall() {
     const dateInput = useRef(null);
     const textInput = useRef(null);
 
+    const roomList = useRef([]);
+    const ongoingRoomList = useRef([]);
+    const scheduledRoomlist = useRef([]);
+    
+
     async function handleLogin() { 
         let email = emailInput.current.value;
         let pass = passInput.current.value;
@@ -46,22 +51,24 @@ function MainHall() {
         });     
     }
 
-    async function handleLogout() { 
-        setUser({ loggedIn: false });
-        return auth.signOut();
-    }
-
-    function sleep(ms) {
-        console.log("sleeping for " + ms/1000 + "sec");
-        return new Promise((resolve) => {
-            setTimeout(resolve, ms);
-        });
-    }
-
     function onAuthStateChange(callback) {
-        return firebase.auth().onAuthStateChanged(user => {
+        return firebase.auth().onAuthStateChanged(async user => {
             if (user) {
                 callback({loggedIn: true});
+                const res = await axios.post('/api/auth/mainhall_getRoomList');
+                console.log("type of res.data mainHall get room list: " +  res.data);
+                roomList.current = res.data; // list of all rooms from mainhallrooms collection 
+                console.log("roomList: " + JSON.stringify(roomList.current) );
+
+                roomList.current.forEach(element => {
+                    let elementdate = new Date(element.date);
+                    let now = new Date();
+                    if (elementdate >= now) { // room has date in future
+                        scheduledRoomlist.current.push(element);
+                   } else{ // room is currently ongoing
+                        ongoingRoomList.current.push(element);
+                   }
+                });
             } else {
                 callback({loggedIn: false});
             }
@@ -121,38 +128,6 @@ function MainHall() {
           else {
             alert("Please enter a question.");
           }
-    }
-
-    function addRoom() { // add room to user profile list of rooms
-        let roomKey = textInput.current.value;
-        let email = auth.currentUser.email;
-        let data = {
-            roomKey: roomKey,
-            email: email
-        }
-        axios.post("/api/auth/mainhall_addRoom", data)
-        .then((res) => {
-            let { roomKeyList } = res.data;
-            console.log("room added to profile" + JSON.stringify(roomKeyList));
-            //console.log("user has access to rooms: " + roomKeyList[]);
-            // console.log("res.data[0]: " + res.data[0] + "res.data[1]: " + res.data[1]);
-            // if(res.data[0]) {
-            //     if(res.data[1]) {
-            //         setURL("/room?id=".concat(code));
-            //     }
-            //     else {
-                    
-            //     }
-            //     setBool(false);
-            // }
-            // else {
-            //     alert("Incorrect code. Ensure you have the proper room code.");
-            // }
-        })
-        .catch((err) => {
-            alert(err);
-        });
-        setPhase(1);
     }
 
     function joinRoom() { // join room
@@ -225,14 +200,19 @@ function MainHall() {
                                         <h1>Ongoing</h1> <div className="break"></div> 
                                         <OngoingCard />
                                         <h2>Scheduled</h2> <div className="break"></div>
-                                        <ScheduledCard />
+                                        {roomList.current.map(element => {
+                                            // const monthNames = ["January", "February", "March", "April", "May", "June",
+                                            // "July", "August", "September", "October", "November", "December"];
+                                            // const day = String(element.date.getDate()).padStart(2, '0');
+                                            // const month = monthNames[element.date.getMonth()];
+                                            // const year = element.date.getFullYear();
+                                            return <ScheduledCard title="Idea Brainstorming" card_content={element.question} time={element.date.toString().substring(0, 10)} capacity={element.capacity} />
+                                            })
+                                        }
+                                        {/* card_content, time, capacity */}
                                         
                                         <button onClick={() => setPhase(2)}>
                                             <p>Create Room</p>
-                                        </button>
-                                        
-                                        <button onClick={() => setPhase(3)}>
-                                            <p>Add Room</p>
                                         </button>
                                     </div>
                                 </div>
@@ -243,7 +223,7 @@ function MainHall() {
                 </div>
             );
         case 2: // room creation
-            return ( // TODO: store user's created rooms in db for mainhall render
+            return ( 
                 <div>
                     {
                         bool ?
@@ -284,22 +264,6 @@ function MainHall() {
                     }
                 </div>
             
-            );
-        case 3: // add room
-            return( // TODO: store user's joined rooms in db for mainhall render
-                <div>
-                    <div className="enterRoom center">
-                        <img src={Logo} alt="LingoThyme logo" height="250px"/>
-                        <div className="input">
-                            <label>Room Code:</label>
-                            <input type="text" ref={textInput} />
-                            <div className="buttons">
-                                <button className="primary-button" onClick={() => addRoom()} >ENTER</button>
-                                <button className="primary-button" onClick={() => setPhase(1)} >CANCEL</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             );
     }
 }
