@@ -14,24 +14,22 @@ function Profile() {
     const [bool, setBool] = useState(true);
     const emailInput = useRef(null);
     const passInput = useRef(null);
-    //const [loggedIn, setLoggedIn] = useState(false);
-    //const [phase, setPhase] = useState(1);
     const [user, setUser] = useState({ loggedIn: false });
     const [aboutMeText, setAboutMeText] = useState("");
-    const [userEmail, setUserEmail] = useState(undefined);
+    const userEmail = useRef("placeholder");
+    const aboutMeTextRef = useRef("");
     const auth = firebase.auth();
-    //setBool(loggedIn); // if logged in, render profile page, else redirect to /mainHall
 
     function onAuthStateChange(callback) {
         return firebase.auth().onAuthStateChanged(async user => {
             if (user) {
                 callback({loggedIn: true}); // set user login state to true
-                setUserEmail(user.email);
-                //const res = await axios.post('/api/auth/getAboutMeText', {email: userEmail})
+                userEmail.current = user.email;
+
                 const res = await axios.post('/api/auth/getAboutMeText', {email: user.email})
-                console.log("res.data = " + res.data);
-                setAboutMeText(res.data);  
-                console.log("about me text: " + aboutMeText);
+                aboutMeTextRef.current = res.data;
+
+                setAboutMeText(aboutMeTextRef.current);
             } else {
                 callback({loggedIn: false});
             }
@@ -44,12 +42,6 @@ function Profile() {
           unsubscribe();
         };
     }, []);
-
-    // useEffect(() => {
-    //     console.log("updating about me text...");
-    //     axios.post('/api/auth/getAboutMeText', {email: userEmail})
-    // }, [aboutMeText]);
-
 
     async function handleLogin() { 
         let email = emailInput.current.value;
@@ -71,15 +63,25 @@ function Profile() {
         });     
     }
 
-    function handleProfileEdit(){
-        console.log("handling profile edit");
-        //axios.post('/api/auth/mainhall_editAboutme', {email: user.email, aboutMeText: "this is the replacement text"})
+    async function handleProfileEdit(){
+        console.log("getting room list...")
+        const res = await axios.post('/api/auth/mainhall_getRoomList');
+        console.log("finished getting room list");
+        const roomList = res.data;
+        JSON.stringify(roomList);
+        console.log("printing room list... " + typeof roomList);
     }
 
     async function handleAboutMeEdit(){
-        await setAboutMeText("this is the replacement text");
-        console.log("handling aboutMe edit, saving text as: " + aboutMeText);
-        await axios.post('/api/auth/mainhall_editAboutme', {email: userEmail, aboutMeText: aboutMeText});
+        aboutMeTextRef.current = "this is the replacement text";
+        console.log("aboutMeTextRef.current: " + aboutMeTextRef.current);
+
+        let data = {
+            email: userEmail.current,
+            aboutMe: aboutMeTextRef.current
+        }
+        console.log("data.email: " + data.email + "data.aboutMe" + data.aboutMe);
+        await axios.post('/api/auth/mainhall_editAboutme', data);
     }
 
     // TODO: add loading screen using react-loading package here so login screen isn't shown on page reload while logged in
@@ -106,7 +108,7 @@ function Profile() {
         );
     }
     
-    return(
+    return( // user is logged in, display main hall
         <div>
             {
                 bool ?
@@ -147,9 +149,12 @@ function Profile() {
                                         <Edit className="edit-icon" onClick={() => handleAboutMeEdit()} />
                                         <div className="title"><h>About Me</h></div>
                                         <diV className="content">
-                                            <p>{aboutMeText}</p>
+                                            {/* <p ref={aboutMeTextRef}>placeholder text</p> */}
+                                            <p>{aboutMeTextRef.current}</p>
+
+
                                             <label>Edit:</label>
-                                            <input type="text" ref={emailInput} />
+                                            <input type="text" ref={aboutMeTextRef} />
                                         </diV>
                                         
                                     </div>
