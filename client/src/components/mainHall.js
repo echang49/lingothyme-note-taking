@@ -6,6 +6,7 @@ import OngoingCard from "./viewComponents/ongoingCard";
 import ScheduledCard from "./viewComponents/scheduledCard";
 import Navbar from "./viewComponents/navbar"; 
 import Logo from "../assets/main-logo.png";
+import CreateMainHallRoom from "./createMainHallRoom";
 
 import firebase from "../firebase.js";
 import axios from "axios";
@@ -82,79 +83,6 @@ function MainHall() {
         };
       }, []);
 
-      function changeNumber() {
-        let number = numberInput.current.value;
-        numberValue.current.innerHTML = number;
-      }
-    
-      function changeDate() {
-        let date = dateInput.current.valueAsDate;
-        let d = new Date();
-        d.setMonth(d.getMonth() + 1);
-        if(date > d) {
-          alert("We only support creating rooms to 1 month from now.");
-          dateInput.current.valueAsDate = new Date();
-        }
-      }
-
-    function createRoom(){
-        if(questionInput.current.value !== "") {
-            if(questionInput.current.value.length <= 240) {
-              let date = new Date(dateInput.current.value);
-              date.setDate(date.getDate() + 1); //add 1 day to the date of discussion for leeway
-              let data = {
-                number: numberInput.current.value,
-                question: questionInput.current.value,
-                date: date
-              }
-              let expirationMonth = date.getMonth() + 1;
-              let expirationDate = date.getDate() + 1;
-              let expirationYear = date.getFullYear();
-              axios.post('/api/auth/mainhall_createRoom', data)
-                .then((res) => {
-                    let { roomKey } = res.data;
-                    alert(`Your room key is: ${roomKey}. NOTE: YOUR ROOM EXPIRES ${expirationMonth} - ${expirationDate} - ${expirationYear} AT MIDNIGHT EST/EDT.` );  
-                    setPhase(1); // send user back to mainhall  
-                })
-                .catch((err) => {
-                  alert(err);
-                })
-                
-            }
-            else {
-              alert("The maximum length allowed for questions is 240 characters.");
-            }
-          }
-          else {
-            alert("Please enter a question.");
-          }
-    }
-
-    function joinRoom() { // join room
-        let code = textInput.current.value;
-        axios.post("/api/auth/mainhall_joinRoom", {code})
-        .then((res) => {
-            if(res.data[0]) {
-                if(res.data[1]) {
-                    setURL("/room?id=".concat(code));
-                }
-                else {
-                    
-                }
-                setBool(false);
-            }
-            else {
-                alert("Incorrect code. Ensure you have the proper room code.");
-            }
-        })
-        .catch((err) => {
-            alert(err);
-        });
-        setPhase(1);
-    }
-
-
-
     //firebase WIP 
 
     if(user.loggedIn === null) { // TODO: add loading screen before render here
@@ -201,19 +129,12 @@ function MainHall() {
                                         <OngoingCard />
                                         <h2>Scheduled</h2> <div className="break"></div>
                                         {roomList.current.map(element => {
-                                            // const monthNames = ["January", "February", "March", "April", "May", "June",
-                                            // "July", "August", "September", "October", "November", "December"];
-                                            // const day = String(element.date.getDate()).padStart(2, '0');
-                                            // const month = monthNames[element.date.getMonth()];
-                                            // const year = element.date.getFullYear();
-                                            return <ScheduledCard title="Idea Brainstorming" card_content={element.question} time={element.date.toString().substring(0, 10)} capacity={element.capacity} />
+                                            return <ScheduledCard title="Idea Brainstorming" roomKey={element.roomKey} card_content={element.question} time={element.date.toString().substring(0, 10)} capacity={element.capacity} />
                                             })
                                         }
-                                        {/* card_content, time, capacity */}
-                                        
-                                        <button onClick={() => setPhase(2)}>
-                                            <p>Create Room</p>
-                                        </button>
+                                        <div className="buttons">
+                                            <Link to="/mainhall/roomCreation" className="primary-button">Create Room</Link>
+                                        </div> 
                                     </div>
                                 </div>
                             </div>
@@ -221,49 +142,6 @@ function MainHall() {
                             <Redirect to="/" />
                     }
                 </div>
-            );
-        case 2: // room creation
-            return ( 
-                <div>
-                    {
-                        bool ?
-                            <div className="createRoom">
-                                <img src={Logo} alt="LingoThyme Logo" height="100px"/>
-                                <div className="flex-column">
-                                    <div className="input">
-                                        <label>Participant Number:</label>
-                                        <div className="range">
-                                            <input type="range" min="2" max="8" step="1" ref={numberInput} onChange={() => changeNumber()}/>
-                                            <span class="range-value" ref={numberValue}>8</span>
-                                        </div>
-                                    </div>
-
-                                    <div className="input">
-                                        <label>Question Field:</label>
-                                        <textarea rows="5" type="text" ref={questionInput} />
-                                    </div>
-
-                                    <div className="input">
-                                        <label>Flow of Events:</label>
-                                        <p className="flow">Changing flow of events is currently not supported. The current flow is 'brainstorming', 'paragraph writing', and then 'end'.</p>
-                                    </div>
-
-                                    <div className="input">
-                                        <label>Date of discussion</label>
-                                        <input type="date" ref={dateInput} onChange={() => changeDate()}/>
-                                    </div>
-
-                                    <div className="buttons">
-                                        <button className="primary-button" onClick={() => createRoom()}>CREATE</button>
-                                        <button className="secondary-button" onClick={() => setPhase(1)}>CANCEL</button>
-                                    </div>
-                                </div>
-                            </div>
-                        :
-                        <Redirect to="/" />
-                    }
-                </div>
-            
             );
     }
 }
