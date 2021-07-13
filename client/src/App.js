@@ -9,6 +9,7 @@ import Signup from "./components/signup";
 import Schedule from "./components/schedule";
 import Academy from "./components/academy";
 import Profile from "./components/profile";
+import CreateMainHallRoom from "./components/createMainHallRoom";
 
 function App() {
   return (
@@ -18,27 +19,39 @@ function App() {
           <Route exact path="/admin/newRoom">
             <CreateRoom />
           </Route>
+
           <Route exact path="/admin/room">
             <AdminView />
           </Route>
+
           <Route exact path="/mainHall">
             <MainHall />
           </Route>
+
+          <Route exact path="/mainHall/roomCreation"> 
+            <CreateMainHallRoom />
+          </Route>
+
           <Route exact path="/schedule">
             <Schedule />
           </Route>
+
           <Route exact path="/academy">
             <Academy />
           </Route>
+
           <Route exact path="/profile">
             <Profile />
           </Route>
+
           <Route exact path="/signup">
             <Signup />
           </Route>
+
           <Route path="/room">
             <EditorView />
           </Route>
+
           <Route path="/">
             <EnterRoom />
           </Route>
