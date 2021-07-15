@@ -161,12 +161,12 @@ function mainhall_makeid(length) {
 }
 
 //utility function to help /createRoom to make room
-function mainhall_makeRoom(roomKey, number, question, date, res) {
+function mainhall_makeRoom(roomKey, number, question, date, createdBy, res) {
     MainhallRoom.findOne({roomKey: roomKey})
     .then(room => {
         if(room) {
             roomKey = mainhall_makeid(7);
-            mainhall_makeRoom(roomKey, number, question, date, res);
+            mainhall_makeRoom(roomKey, number, question, date, createdBy, res);
         }
         else {
             const newMainhallRoom = new MainhallRoom({
@@ -175,7 +175,7 @@ function mainhall_makeRoom(roomKey, number, question, date, res) {
                 question,
                 date,
                 "phase": 1,
-                createdBy: ""
+                createdBy
             });
         
             newMainhallRoom.save().then().catch(err => console.log(err));
@@ -240,10 +240,10 @@ router.post('/mainhall_editAboutMe', (req, res) => {
 });
 
 router.post('/mainhall_createRoom', (req, res) => {
-    let { number, question, date } = req.body;
+    let { number, question, date, createdBy } = req.body;
     let roomKey = mainhall_makeid(7);
     //If publicKey is taken, redo
-    mainhall_makeRoom(roomKey, number, question, date, res);   
+    mainhall_makeRoom(roomKey, number, question, date, createdBy, res);   
 });
 
 
@@ -282,27 +282,12 @@ router.post('/mainhall_getRoomList',async (req, res) => { // get list of all roo
         roomList.push(room)
         // console.log("hi")
     })
-
-
-    return res.send(roomList);
-    
-    // let { email } = req.body;
-    // MainHallRoom.findOne({email: email})
-    // .then(profile => {
-    //     if(profile) {
-    //         roomKeyList = profile.roomKeyList;
-    //         return res.send(roomkeyList); // send roomKeyList array
-    //     }
-    //     else {
-    //         console.log("profile not found, cannot insert");
-    //     }
-    // });    
+    return res.send(roomList);  
 });
 
 // change to get request?
 router.post('/getAboutMeText', (req, res) => { // return user's about me section text
     let { email } = req.body;
-    console.log("/getAboutMeText - email: " + email);
     Profile.findOne({email: email})
     .then(profile => {
         if(profile) {
@@ -320,13 +305,12 @@ router.post('/getAboutMeText', (req, res) => { // return user's about me section
 // change to get request?
 router.post('/getUsername', (req, res) => { // return user's username
     let { email } = req.body;
-    console.log("finding username for email: " + email);
+    //console.log("finding username for email: " + email);
     Profile.findOne({email: email})
     .then(profile => {
         if(profile) {
-            //console.log("profile found, getting aboutMe text")
             userName = profile.username;
-            return res.send(userName); // return about me text string for profile page render
+            return res.send(userName); // return username for profile page render
         }
         else {
             console.log("profile not found - /getUsername"); // TODO: res.send error
@@ -352,6 +336,47 @@ router.post('/mainhall_joinRoom', (req, res) => { // join the room (send user to
         }
     });
     
+});
+
+router.post('/enterRoom', (req, res) => {
+    let { code } = req.body;
+    let normalCode, adminCode;
+    //if code has - go to admin half, if it doesn't continue on normal
+    if(code.includes("-")) {
+        code = code.split("-");
+        normalCode = code[0];
+        adminCode = code[1];
+    }
+    else {
+        normalCode = code;
+    }
+    //if code not of proper length or it is an admin and that code is not of proper length.
+    if((normalCode.length !== 5) || (adminCode !== undefined && adminCode.length !== 5)) {
+        return res.send([false]);
+    }
+    //not an admin
+    if(adminCode === undefined) {
+        Room.findOne({publicKey: normalCode})
+        .then(room => {
+            if(room) {
+                return res.send([true, false]);
+            }
+            else {
+                return res.send([false]);
+            }
+        });
+    }
+    else {
+        Room.findOne({publicKey: normalCode, privateKey: adminCode})
+        .then(room => {
+            if(room) {
+                return res.send([true, true]);
+            }
+            else {
+                return res.send([false]);
+            }
+        });
+    }
 });
 
 module.exports = router;
