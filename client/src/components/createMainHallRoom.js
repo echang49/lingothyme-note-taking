@@ -35,7 +35,8 @@ function CreateMainHallRoom(props) {
               let data = {
                 number: numberInput.current.value,
                 question: questionInput.current.value,
-                date: date
+                date: date,
+                createdBy: "user"
               }
               let expirationMonth = date.getMonth() + 1;
               let expirationDate = date.getDate() + 1;
