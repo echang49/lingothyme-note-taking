@@ -22,13 +22,17 @@ function ScheduledCard({roomKey, title, card_content, time, capacity }) { // sam
         axios.post("/api/auth/mainhall_joinRoom", {code})
         .then((res) => {
             if(res.data[0]) {
-                if(res.data[1]) {
-                    setURL("/room?id=".concat(code));
-                    console.log("sending to room...");
-                    <Redirect push to={url} />
+                if(res.data[1]) { // admin mode
+                    setURL("/admin/room?id=".concat(code));
+                    console.log("admin view: sending to room " + code);
+
+                    // TODO: change this to not use window.location.href, insecure
+                    window.location.href = url;
                 }
                 else {
-                    
+                    setURL("/room?id=".concat(code));
+                    console.log("user view: sending to room " + code);
+                    window.location.href = url;   
                 }
                 setBool(false);
             }
