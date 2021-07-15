@@ -1,23 +1,26 @@
 import Clock from "../../assets/time-icon.svg";
 import People from "../../assets/people-icon.svg";
 import {ReactComponent as Brace} from "../../assets/note-icon.svg";
-function ongoingCard(props) {
+function ongoingCard({title, card_content, time, capacity }) {
     return (
         <div className="card">
             <div className="card-header">
                 {/* add icon here  */}
                 <h1>Idea Brainstorming</h1>
+                <h1>{title}</h1>
             </div>
             <hr></hr>
 
-            <div className="card-content"><p>1324567984132464988465468465465466545646541231312</p></div>
+            <div className="card-content">
+                <p>{card_content}</p>
+            </div>
 
             <div className="icon1">
                 <img src={Clock} alt="clock icon" height="30px"/>
             </div>
 
-            <div className="time-text">
-                <p><div className="time"> 20min 01s</div></p>
+            <div className="date-text">
+                <p><div className="time"> {time}</div></p>
             </div>
 
             <div className="icon2-ongoing">
