@@ -14,12 +14,14 @@ function Navbar(props) {
     const auth = firebase.auth();
     const [dropdownState, setDropdownState] = useState(false);
     const [email, setEmail] = useState("");
+    const userEmail = useRef("placeholder");
 
     // get users email to search db for their info
     const currentUser = firebase.auth().currentUser;
     useEffect(() => { 
         if (currentUser !== null) {
             setEmail(currentUser.email);
+            userEmail.current = user.email;
           }
       });
 
@@ -78,7 +80,7 @@ function Navbar(props) {
 
                             <img src={ProfilePic} height="35px" width="35px" alt="User profile pic" />
                             <Dropdown onChange={handleProfileDropdown}>
-                                <Option value="UserName" />
+                                <Option value="Username" />
                                 <Option value="Profile" />
                                 <Option value="Logout" />
                             </Dropdown>
