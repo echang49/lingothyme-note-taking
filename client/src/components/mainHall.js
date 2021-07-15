@@ -21,11 +21,7 @@ function MainHall() {
     const auth = firebase.auth();
     const [ url, setURL ] = useState("/");
 
-    const numberInput = useRef(null);
-    const numberValue = useRef(null);
-    const questionInput = useRef(null);
-    const dateInput = useRef(null);
-    const textInput = useRef(null);
+    const [update, setUpdate] = useState('');
 
     const roomList = useRef([]);
     const ongoingRoomList = useRef([]);
@@ -57,9 +53,9 @@ function MainHall() {
             if (user) {
                 callback({loggedIn: true});
                 const res = await axios.post('/api/auth/mainhall_getRoomList');
-                console.log("type of res.data mainHall get room list: " +  res.data);
                 roomList.current = res.data; // list of all rooms from mainhallrooms collection 
                 console.log("roomList: " + JSON.stringify(roomList.current) );
+                setUpdate('2'); // forces update after getting roomList
 
                 roomList.current.forEach(element => {
                     let elementdate = new Date(element.date);
