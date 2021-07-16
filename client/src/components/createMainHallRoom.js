@@ -1,4 +1,4 @@
-import { Link, Redirect, useLocation } from "react-router-dom";
+import { Link, Redirect, useHistory } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import axios from 'axios'
 import Logo from "../assets/main-logo.png";
@@ -46,8 +46,10 @@ function CreateMainHallRoom(props) {
                     let { roomKey } = res.data;
                     alert(`Your room key is: ${roomKey}. NOTE: YOUR ROOM EXPIRES ${expirationMonth} - ${expirationDate} - ${expirationYear} AT MIDNIGHT EST/EDT.` );  
                     
-                    // TODO: change this to not use window.location.href, insecure
+                    // TODO: change this to not use window.location.href, insecure, history.push instead
                     window.location.href = "/mainHall" // send user back to main hall
+                    // let history = useHistory();
+                    // history.push("/mainHall")
                 })
                 .catch((err) => {
                   alert(err);
