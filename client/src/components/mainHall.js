@@ -1,12 +1,12 @@
 import { useEffect, useState, useRef } from "react";
 import { Redirect, useLocation, Link} from "react-router-dom"; 
 
-import ColorLogo from "../assets/main-logo.png";
 import OngoingCard from "./viewComponents/ongoingCard"; 
 import ScheduledCard from "./viewComponents/scheduledCard";
 import Navbar from "./viewComponents/navbar"; 
 import Logo from "../assets/main-logo.png";
 import CreateMainHallRoom from "./createMainHallRoom";
+import Login from "./login.js";
 
 import firebase from "../firebase.js";
 import axios from "axios";
@@ -89,26 +89,7 @@ function MainHall() {
         );
     }
     if(!user.loggedIn) { // user not logged in, prompt them to login or signup
-        return(
-            <div className="enterRoom center">
-                <img src={ColorLogo} alt="LingoThyme Logo" height="250px"/>
-                <div className="input">
-                    <label>Email:</label>
-                    <input type="text" ref={emailInput} />
-
-                    <label>Password:</label>
-                    <input type="password" ref={passInput} />
-                    
-                    <Link to="/signup" style={{ textDecoration: 'none' }}>Sign up</Link>
-                    <Link to="/passwordReset" style={{ textDecoration: 'none' }}>Forgot password?</Link>
-                    <div className="buttons">
-                        <button className="primary-button" onClick={() => handleLogin()} >LOGIN</button> 
-                        <Link className="secondary-button" to="/">RETURN</Link>
-                    </div>
-
-                </div>
-            </div>
-        );
+        return <Login />
     }
 
     switch(phase) {
