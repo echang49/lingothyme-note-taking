@@ -45,26 +45,6 @@ function Profile() {
         };
     }, []);
 
-    async function handleLogin() { 
-        let email = emailInput.current.value;
-        let pass = passInput.current.value;
-        auth.signInWithEmailAndPassword(email, pass)
-        .then(() => {
-            setUser(auth.currentUser); 
-            <Redirect to="/mainHall" />
-        }).catch((error) => {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            if (errorCode === 'auth/wrong-password') {
-                alert('Wrong password.');
-            } else {
-                alert('Error: ' + errorMessage);
-            }
-            console.log(error);
-        });     
-    }
-
     async function handleProfileEdit(){
         console.log("getting room list...")
         const res = await axios.post('/api/auth/mainhall_getRoomList');
