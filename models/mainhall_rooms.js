@@ -2,7 +2,11 @@
 const mongoose = require('mongoose'); //mongoDB management
 
 const MainhallRoomSchema = new mongoose.Schema({
-    roomKey: {
+    publicKey: {
+        type: String,
+        required: true
+    },
+    privateKey: {
         type: String,
         required: true
     },
