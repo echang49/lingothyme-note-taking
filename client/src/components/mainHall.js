@@ -33,7 +33,7 @@ function MainHall() {
                 callback({loggedIn: true});
                 const res = await axios.post('/api/auth/mainhall_getRoomList');
                 roomList.current = res.data; // list of all rooms from mainhallrooms collection 
-                console.log("roomList: " + JSON.stringify(roomList.current) );
+                //console.log("roomList: " + JSON.stringify(roomList.current) );
                 setUpdate('2'); // forces update after getting roomList
 
                 roomList.current.forEach(element => {
