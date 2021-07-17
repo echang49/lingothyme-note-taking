@@ -13,8 +13,6 @@ import Navbar from "./viewComponents/navbar";
 
 function Profile() {
     const [bool, setBool] = useState(true);
-    const emailInput = useRef(null);
-    const passInput = useRef(null);
     const [user, setUser] = useState({ loggedIn: false });
     const [userName, setUserName] = useState('loading');
     const [aboutMeText, setAboutMeText] = useState('loading');
@@ -46,24 +44,12 @@ function Profile() {
     }, []);
 
     async function handleProfileEdit(){
-        console.log("getting room list...")
-        const res = await axios.post('/api/auth/mainhall_getRoomList');
-        console.log("finished getting room list");
-        const roomList = res.data;
-        JSON.stringify(roomList);
-        console.log("printing room list... " + typeof roomList);
-        console.log("current users username: " + userName.current);
+        window.location.href = "/profile/editProfile";
+
     }
 
-    async function handleAboutMeEdit(){
-        setAboutMeText("this is the new replacement text");
-        console.log("about me text: " + aboutMeText);
-        let data = {
-            email: userEmail,
-            aboutMe: aboutMeText
-        }
-        console.log("data.email: " + data.email + "data.aboutMe" + data.aboutMe);
-        await axios.post('/api/auth/mainhall_editAboutme', data);
+    function handleAboutMeEdit(){
+        window.location.href = "/profile/editAboutMe";
     }
     
     // TODO: add loading screen using react-loading package here so login screen isn't shown on page reload while logged in
@@ -109,16 +95,11 @@ function Profile() {
                                 <div className="about-me">
                                     <div className="about-me-inner">
                                         <Edit className="edit-icon" onClick={() => handleAboutMeEdit()} />
+                                        {/* <Edit className="edit-icon" onClick={() => window.location.href = "/mainHall/editAboutMe"}/> */}
                                         <div className="title"><h>About Me</h></div>
                                         <diV className="content">
-                                            {/* <p>{aboutMeTextRef.current}</p> */}
                                             <p>{aboutMeText}</p>
-
-
-                                            <label>Edit:</label>
-                                            <input type="text" />
                                         </diV>
-                                        
                                     </div>
                                 </div>
 
