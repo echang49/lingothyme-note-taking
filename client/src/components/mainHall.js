@@ -26,27 +26,6 @@ function MainHall() {
     const roomList = useRef([]);
     const ongoingRoomList = useRef([]);
     const scheduledRoomlist = useRef([]);
-    
-
-    async function handleLogin() { 
-        let email = emailInput.current.value;
-        let pass = passInput.current.value;
-        auth.signInWithEmailAndPassword(email, pass)
-        .then(() => {
-            setUser(auth.currentUser); 
-            <Redirect to="/mainHall" />
-        }).catch((error) => {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            if (errorCode === 'auth/wrong-password') {
-                alert('Wrong password.');
-            } else {
-                alert('Error: ' + errorMessage);
-            }
-            console.log(error);
-        });     
-    }
 
     function onAuthStateChange(callback) {
         return firebase.auth().onAuthStateChanged(async user => {
@@ -110,7 +89,7 @@ function MainHall() {
                                             })
                                         }
                                         <div className="buttons">
-                                            <Link to="/mainhall/roomCreation" className="primary-button">Create Room</Link>
+                                            <Link to="/mainhallRoomCreation" className="primary-button">Create Room</Link>
                                         </div> 
                                     </div>
                                 </div>
