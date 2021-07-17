@@ -161,16 +161,17 @@ function mainhall_makeid(length) {
 }
 
 //utility function to help /createRoom to make room
-function mainhall_makeRoom(roomKey, number, question, date, createdBy, res) {
-    MainhallRoom.findOne({roomKey: roomKey})
+function mainhall_makeRoom(publicKey, privateKey, number, question, date, createdBy, res) {
+    MainhallRoom.findOne({publicKey: publicKey})
     .then(room => {
         if(room) {
-            roomKey = mainhall_makeid(7);
-            mainhall_makeRoom(roomKey, number, question, date, createdBy, res);
+            let publicKey = makeid(5);
+            mainhall_makeRoom(publicKey, privateKey, number, question, date, createdBy, res);
         }
         else {
             const newMainhallRoom = new MainhallRoom({
-                roomKey,
+                publicKey,
+                privateKey,
                 capacity: number,
                 question,
                 date,
@@ -179,7 +180,7 @@ function mainhall_makeRoom(roomKey, number, question, date, createdBy, res) {
             });
         
             newMainhallRoom.save().then().catch(err => console.log(err));
-            res.send({roomKey});
+            res.send({publicKey, privateKey});
         }
     });
 }
@@ -226,6 +227,25 @@ function mainhall_editAboutMe(email, aboutMe){
     });
 }
 
+function mainhall_edit_username(email, username){
+    Profile.findOne({email: email})
+    .then(profile => {
+        if(profile == null){
+            console.log("profile is null");
+        }else{ // profile is found
+            if( profile.username !== null) {
+                console.log("current about me text of this profile is: " + profile.aboutMe);
+                profile.username = username; // set new about me section
+                profile.save().then().catch(err => console.log(err)); // update about me section 
+                console.log("new username is: " + profile.username);
+            }
+            else {
+                console.log("profile.aboutMe is null."); 
+            }
+        }    
+    });
+}
+
 router.post('/mainhall_createProfile', (req, res) => {
     let { email, username } = req.body;
     mainhall_makeProfile(email, username);   
@@ -239,17 +259,29 @@ router.post('/mainhall_editAboutMe', (req, res) => {
     res.send(true);
 });
 
+router.post('/mainhall_edit_username', (req, res) => {
+    let { email, username } = req.body;
+    mainhall_edit_username(email, username);   
+    // set up useEffect hook so we can just run getAboutMe text again after edit
+    //res.send({aboutMe});
+    res.send(true);
+});
+
+
+
 router.post('/mainhall_createRoom', (req, res) => {
     let { number, question, date, createdBy } = req.body;
-    let roomKey = mainhall_makeid(7);
+    let publicKey = makeid(5);
+    let privateKey = makeid(5);
+    
     //If publicKey is taken, redo
-    mainhall_makeRoom(roomKey, number, question, date, createdBy, res);   
+    mainhall_makeRoom(publicKey, privateKey, number, question, date, createdBy, res);   
 });
 
 
 router.post('/mainhall_addRoom', (req, res) => { // add room to users list of rooms
-    let { roomKey, email } = req.body;
-    MainhallRoom.findOne({roomKey: roomKey})
+    let { roomKey, email } = req.body; 
+    MainhallRoom.findOne({publicKey: publicKey})
     .then(room => {
         if(room) { // roomKey found in mainHallRooms 
             Profile.findOne({email: email})
@@ -338,7 +370,7 @@ router.post('/mainhall_joinRoom', (req, res) => { // join the room (send user to
     
 });
 
-router.post('/enterRoom', (req, res) => {
+router.post('/mainhall_joinRoom', (req, res) => { // join the room (send user to new url of room)
     let { code } = req.body;
     let normalCode, adminCode;
     //if code has - go to admin half, if it doesn't continue on normal
@@ -356,7 +388,7 @@ router.post('/enterRoom', (req, res) => {
     }
     //not an admin
     if(adminCode === undefined) {
-        Room.findOne({publicKey: normalCode})
+        MainhallRoom.findOne({publicKey: normalCode})
         .then(room => {
             if(room) {
                 return res.send([true, false]);
