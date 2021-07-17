@@ -4,14 +4,13 @@ import axios from 'axios'
 import Logo from "../assets/main-logo.png";
 import firebase from "../firebase.js";
 
-function EditAboutMe(){
+function EditProfile(){
     const [bool, setBool] = useState(true);
     const [user, setUser] = useState({ loggedIn: false });
     const [userName, setUserName] = useState('loading');
-    const [aboutMeText, setAboutMeText] = useState('loading');
     const [email, setEmail] = useState('loading');
     const userEmail = useRef("placeholder");
-    const aboutMeTextInput = useRef("");
+    const userNameInput = useRef("");
     const auth = firebase.auth();
 
     function onAuthStateChange(callback) {
@@ -21,9 +20,6 @@ function EditAboutMe(){
                 userEmail.current = user.email;
                 console.log(userEmail.current);
                 setEmail(userEmail.current);
-
-                const res = await axios.post('/api/auth/getAboutMeText', {email: user.email})
-                setAboutMeText(res.data);
 
                 const res2 = await axios.post('/api/auth/getUsername', {email: user.email})
                 setUserName(res2.data);
@@ -48,15 +44,14 @@ function EditAboutMe(){
 
 
     async function save(){
-        setAboutMeText(aboutMeTextInput.current.value);
-        console.log("about me text: " + aboutMeText);
+        setUserName(userNameInput.current.value);
+        console.log("userName: " + userName);
         let data = {
             email: email,
-            aboutMe: aboutMeTextInput.current.value
+            username: userNameInput.current.value
         }
-        console.log("data.email: " + data.email + "data.aboutMe" + data.aboutMe);
-        await axios.post('/api/auth/mainhall_editAboutme', data);
-        console.log("aboutMeTextInput ref: " + aboutMeTextInput.current.value);
+        console.log("data.email: " + data.email + "data.username" + data.username);
+        await axios.post('/api/auth/mainhall_edit_username', data);
         window.location.href="/profile";
     }
 
@@ -68,14 +63,14 @@ function EditAboutMe(){
                         <img src={Logo} alt="LingoThyme Logo" height="100px"/>
                         <div className="flex-column">
                             <div className="input">
-                                <label>New About Me Text:</label>
-                                <textarea rows="6" type="text" ref={aboutMeTextInput} />
-                                <p>{aboutMeTextInput.current.innerHTML}</p>
+                                <label>New username:</label>
+                                <textarea rows="1" type="text" ref={userNameInput} />
+                                <p>{userNameInput.current.innerHTML}</p>
                             </div>
 
                             <div className="buttons">
                                 <button className="primary-button" onClick={() => save()}>SAVE</button>
-                                <Link to="/profile" className="secondary-button">CANCEL</Link>
+                                <Link to="/mainHall" className="secondary-button">CANCEL</Link>
                             </div>
                         </div>
                     </div>
@@ -88,4 +83,4 @@ function EditAboutMe(){
 
 }
 
-export default EditAboutMe;
+export default EditProfile;
