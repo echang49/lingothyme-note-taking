@@ -13,12 +13,26 @@ function CreateMainHallRoom(props) {
     const [phase, setPhase] = useState(1);
     const [bool, setBool] = useState(true);
     const [email, setEmail] = useState("");
+    const [user, setUser] = useState({ loggedIn: false });
     const userEmail = useRef("");
     const auth = firebase.auth();
 
-    useEffect(() => {
-      userEmail.current = auth.userEmail;
-      console.log("createMainHallRoom useEffect: " + userEmail.current)
+    // get user email 
+    function onAuthStateChange() {
+      return firebase.auth().onAuthStateChanged(async user => {
+          if (user) {
+              userEmail.current = user.email;
+              setEmail(userEmail.current);
+          } else {
+              console.log("user not found");
+          }
+      });
+  }
+  useEffect(() => {
+      const unsubscribe = onAuthStateChange();
+      return () => {
+        unsubscribe();
+      };
   }, []);
 
     function changeNumber() {
@@ -45,7 +59,7 @@ function CreateMainHallRoom(props) {
                 number: numberInput.current.value,
                 question: questionInput.current.value,
                 date: date,
-                createdBy: "user" // email
+                createdBy: email
               }
               let expirationMonth = date.getMonth() + 1;
               let expirationDate = date.getDate() + 1;
