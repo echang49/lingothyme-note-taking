@@ -273,7 +273,7 @@ router.post('/mainhall_createRoom', (req, res) => {
     let { number, question, date, createdBy } = req.body;
     let publicKey = makeid(5);
     let privateKey = makeid(5);
-    
+
     //If publicKey is taken, redo
     mainhall_makeRoom(publicKey, privateKey, number, question, date, createdBy, res);   
 });
@@ -351,24 +351,25 @@ router.post('/getUsername', (req, res) => { // return user's username
     });    
 });
 
-router.post('/mainhall_joinRoom', (req, res) => { // join the room (send user to new url of room)
-    let { code } = req.body;
-    let roomKey = code;
-    //if code not of proper length 
-    if(roomKey.length !== 7) {
-        return res.send([false]);
-    }
-    MainhallRoom.findOne({roomKey: roomKey})
-    .then(room => {
-        if(room) {
-            return res.send([true, true]);
-        }
-        else {
-            return res.send([false]);
-        }
-    });
+// router.post('/mainhall_joinRoom', (req, res) => { // join the room (send user to new url of room)
+//     let { publicKey, privateKey } = req.body;
+//     let publicKey = publicKey;
+//     let privateKey = privateKey
+//     //if code not of proper length 
+//     if(roomKey.length !== 7) {
+//         return res.send([false]);
+//     }
+//     MainhallRoom.findOne({roomKey: roomKey})
+//     .then(room => {
+//         if(room) {
+//             return res.send([true, true]);
+//         }
+//         else {
+//             return res.send([false]);
+//         }
+//     });
     
-});
+// });
 
 router.post('/mainhall_joinRoom', (req, res) => { // join the room (send user to new url of room)
     let { code } = req.body;
@@ -400,6 +401,47 @@ router.post('/mainhall_joinRoom', (req, res) => { // join the room (send user to
     }
     else {
         Room.findOne({publicKey: normalCode, privateKey: adminCode})
+        .then(room => {
+            if(room) {
+                return res.send([true, true]);
+            }
+            else {
+                return res.send([false]);
+            }
+        });
+    }
+});
+
+router.post('/mainhall_joinRoom', (req, res) => { // join the room (send user to new url of room)
+    let { code } = req.body;
+    let normalCode, adminCode;
+    //if code has - go to admin half, if it doesn't continue on normal
+    if(code.includes("-")) {
+        code = code.split("-");
+        normalCode = code[0];
+        adminCode = code[1];
+    }
+    else {
+        normalCode = code;
+    }
+    //if code not of proper length or it is an admin and that code is not of proper length.
+    if((normalCode.length !== 5) || (adminCode !== undefined && adminCode.length !== 5)) {
+        return res.send([false]);
+    }
+    //not an admin
+    if(adminCode === undefined) {
+        MainhallRoom.findOne({publicKey: normalCode})
+        .then(room => {
+            if(room) {
+                return res.send([true, false]);
+            }
+            else {
+                return res.send([false]);
+            }
+        });
+    }
+    else {
+        MainhallRoom.findOne({publicKey: normalCode, privateKey: adminCode})
         .then(room => {
             if(room) {
                 return res.send([true, true]);
