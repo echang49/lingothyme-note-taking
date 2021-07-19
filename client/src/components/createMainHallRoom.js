@@ -1,7 +1,8 @@
 import { Link, Redirect, useHistory } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
-import axios from 'axios'
+import axios from 'axios';
 import Logo from "../assets/main-logo.png";
+import firebase from "firebase";
 
 function CreateMainHallRoom(props) {
     const numberInput = useRef(null);
@@ -11,6 +12,14 @@ function CreateMainHallRoom(props) {
     const textInput = useRef(null);
     const [phase, setPhase] = useState(1);
     const [bool, setBool] = useState(true);
+    const [email, setEmail] = useState("");
+    const userEmail = useRef("");
+    const auth = firebase.auth();
+
+    useEffect(() => {
+      userEmail.current = auth.userEmail;
+      console.log("createMainHallRoom useEffect: " + userEmail.current)
+  }, []);
 
     function changeNumber() {
         let number = numberInput.current.value;
@@ -26,8 +35,8 @@ function CreateMainHallRoom(props) {
           dateInput.current.valueAsDate = new Date();
         }
       }
-
-    function createRoom(){
+    
+    async function createRoom(){
         if(questionInput.current.value !== "") {
             if(questionInput.current.value.length <= 240) {
               let date = new Date(dateInput.current.value);
@@ -36,17 +45,18 @@ function CreateMainHallRoom(props) {
                 number: numberInput.current.value,
                 question: questionInput.current.value,
                 date: date,
-                createdBy: "user"
+                createdBy: "user" // email
               }
               let expirationMonth = date.getMonth() + 1;
               let expirationDate = date.getDate() + 1;
               let expirationYear = date.getFullYear();
               axios.post('/api/auth/mainhall_createRoom', data)
                 .then((res) => {
-                    let { roomKey } = res.data;
-                    alert(`Your room key is: ${roomKey}. NOTE: YOUR ROOM EXPIRES ${expirationMonth} - ${expirationDate} - ${expirationYear} AT MIDNIGHT EST/EDT.` );  
+                    let { publicKey, privateKey } = res.data;
+                    alert(`The public key is: ${publicKey}. The private key is: ${privateKey}. NOTE: YOUR ROOM EXPIRES ${expirationMonth} - ${expirationDate} - ${expirationYear} AT MIDNIGHT EST/EDT.` );  
                     
                     // TODO: change this to not use window.location.href, insecure, history.push instead
+                    console.log("you are here, in .then of create room");
                     window.location.href = "/mainHall" // send user back to main hall
                     // let history = useHistory();
                     // history.push("/mainHall")
