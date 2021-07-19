@@ -6,7 +6,7 @@ import Calendar from "../../assets/calendar-icon.svg";
 import People from "../../assets/people-icon.svg";
 
 
-function ScheduledCard({roomKey, title, card_content, time, capacity }) { // same as ongoingCard, with added number of current users in room
+function ScheduledCard({publicKey, privateKey,  title, card_content, time, capacity }) { // same as ongoingCard, with added number of current users in room
     const textInput = useRef(null);
     const [ url, setURL ] = useState("/");
     const [bool, setBool] = useState(true);
@@ -17,32 +17,36 @@ function ScheduledCard({roomKey, title, card_content, time, capacity }) { // sam
     //   }, []);
 
     function joinRoom() { // join room
-        let code = roomKey;
-        console.log("joining room with code: " + code);
-        axios.post("/api/auth/mainhall_joinRoom", {code})
-        .then((res) => {
-            if(res.data[0]) {
-                if(res.data[1]) { // admin mode
-                    setURL("/admin/room?id=".concat(code));
-                    console.log("admin view: sending to room " + code);
+        // let publicKey = publicKey;
+        // let privateKey = privateKey;
+        // let data = {
+        //     publicKey: publicKey,
+        //     privateKey: privateKey
+        // }
+        // axios.post("/api/auth/mainhall_joinRoom", data)
+        // .then((res) => {
+        //     if(res.data[0]) {
+        //         if(res.data[1]) { // admin mode
+        //             setURL("/admin/room?id=".concat(code));
+        //             console.log("admin view: sending to room " + code);
 
-                    // TODO: change this to not use window.location.href, insecure
-                    window.location.href = url;
-                }
-                else {
-                    setURL("/room?id=".concat(code));
-                    console.log("user view: sending to room " + code);
-                    window.location.href = url;   
-                }
-                setBool(false);
-            }
-            else {
-                alert("Incorrect code. Ensure you have the proper room code.");
-            }
-        })
-        .catch((err) => {
-            alert(err);
-        });  
+        //             // TODO: change this to not use window.location.href, insecure
+        //             window.location.href = url;
+        //         }
+        //         else {
+        //             setURL("/room?id=".concat(code));
+        //             console.log("user view: sending to room " + code);
+        //             window.location.href = url;   
+        //         }
+        //         setBool(false);
+        //     }
+        //     else {
+        //         alert("Incorrect code. Ensure you have the proper room code.");
+        //     }
+        // })
+        // .catch((err) => {
+        //     alert(err);
+        // });  
     }
     return (
         <div className="card">
