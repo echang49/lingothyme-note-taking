@@ -4,49 +4,70 @@ import axios from 'axios';
 
 import Calendar from "../../assets/calendar-icon.svg";
 import People from "../../assets/people-icon.svg";
+import firebase from "firebase";
 
 
-function ScheduledCard({publicKey, privateKey,  title, card_content, time, capacity }) { // same as ongoingCard, with added number of current users in room
+function ScheduledCard({publicKey, privateKey, title, card_content, time, capacity, createdBy}) { // same as ongoingCard, with added number of current users in room
     const textInput = useRef(null);
-    const [ url, setURL ] = useState("/");
+    let url = "/";
     const [bool, setBool] = useState(true);
     const [phase, setPhase] = useState(1);
 
-    // useEffect(() => {
-        
-    //   }, []);
+    const [email, setEmail] = useState("");
+    const userEmail = useRef("");
+    const auth = firebase.auth();
 
-    function joinRoom() { // join room
+    // get user email 
+    function onAuthStateChange() {
+        return firebase.auth().onAuthStateChanged(async user => {
+            if (user) {
+                userEmail.current = user.email;
+                setEmail(userEmail.current);
+            } else {
+                console.log("user not found");
+            }
+        });
+    }
+    useEffect(() => {
+        const unsubscribe = onAuthStateChange();
+        return () => {
+          unsubscribe();
+        };
+    }, []);
+
+    function joinRoom() { // join room 
         // let publicKey = publicKey;
         // let privateKey = privateKey;
-        // let data = {
-        //     publicKey: publicKey,
-        //     privateKey: privateKey
-        // }
-        // axios.post("/api/auth/mainhall_joinRoom", data)
-        // .then((res) => {
-        //     if(res.data[0]) {
-        //         if(res.data[1]) { // admin mode
-        //             setURL("/admin/room?id=".concat(code));
-        //             console.log("admin view: sending to room " + code);
-
-        //             // TODO: change this to not use window.location.href, insecure
-        //             window.location.href = url;
-        //         }
-        //         else {
-        //             setURL("/room?id=".concat(code));
-        //             console.log("user view: sending to room " + code);
-        //             window.location.href = url;   
-        //         }
-        //         setBool(false);
-        //     }
-        //     else {
-        //         alert("Incorrect code. Ensure you have the proper room code.");
-        //     }
-        // })
-        // .catch((err) => {
-        //     alert(err);
-        // });  
+        let data = {
+            publicKey: publicKey,
+            privateKey: privateKey, 
+            createdBy: createdBy,
+            currentUserEmail: email
+        }
+        axios.post("/api/auth/mainhall_joinRoom", data)
+        .then((res) => {
+            if(res.data[0]) {
+                let normalCode = publicKey;
+                let adminCode = normalCode.concat('-').concat(privateKey);
+                if(res.data[1]) { // user view
+                    console.log("sending to user view url: " + url);
+                    // TODO: change this to not use window.location.href, insecure
+                    window.location.href = "/mainHall/room?id=".concat(normalCode);
+                }
+                else { // admin view
+                    console.log("sending to admin view url: " + url);
+                    // TODO: change this to not use window.location.href, insecure
+                    window.location.href = "/mainHall/admin/room?id=".concat(adminCode);   
+                }
+                setBool(false);
+            }
+            else { // room not found, with given code
+                alert("Incorrect code. Ensure you have the proper room code.");
+            }
+        })
+        .catch((err) => {
+            alert(err.response);
+        });  
     }
     return (
         <div className="card">

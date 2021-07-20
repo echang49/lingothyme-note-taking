@@ -85,7 +85,7 @@ function MainHall() {
                                         <OngoingCard />
                                         <h2>Scheduled</h2> <div className="break"></div>
                                         {roomList.current.map(element => {
-                                            return <ScheduledCard title="Idea Brainstorming" roomKey={element.roomKey} card_content={element.question} time={element.date.toString().substring(0, 10)} capacity={element.capacity} />
+                                            return <ScheduledCard title="Idea Brainstorming" publicKey={element.publicKey} privateKey={element.privateKey} card_content={element.question} time={element.date.toString().substring(0, 10)} capacity={element.capacity} createdBy={element.createdBy}/>
                                             })
                                         }
                                         <div className="buttons">
@@ -95,7 +95,7 @@ function MainHall() {
                                 </div>
                             </div>
                         :
-                            <Redirect to="/" />
+                            <Redirect push to={url} />
                     }
                 </div>
             );

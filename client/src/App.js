@@ -12,6 +12,8 @@ import Profile from "./components/profile";
 import CreateMainHallRoom from "./components/createMainHallRoom";
 import EditAboutMe from "./components/editAboutMe";
 import EditProfile from "./components/editProfile";
+import MainhallAdminView from "./components/mainHallAdminView";
+import MainhallUserView from "./components/mainHallUserView";
 
 function App() {
   return (
@@ -32,6 +34,14 @@ function App() {
 
           <Route exact path="/mainHallRoomCreation"> 
             <CreateMainHallRoom />
+          </Route>
+
+          <Route exact path="/mainHall/admin/room">
+            <MainhallAdminView />
+          </Route>
+
+          <Route path="/mainHall/room">
+            <MainhallUserView />
           </Route>
 
           <Route exact path="/schedule">

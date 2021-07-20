@@ -351,106 +351,95 @@ router.post('/getUsername', (req, res) => { // return user's username
     });    
 });
 
-// router.post('/mainhall_joinRoom', (req, res) => { // join the room (send user to new url of room)
-//     let { publicKey, privateKey } = req.body;
-//     let publicKey = publicKey;
-//     let privateKey = privateKey
-//     //if code not of proper length 
-//     if(roomKey.length !== 7) {
-//         return res.send([false]);
-//     }
-//     MainhallRoom.findOne({roomKey: roomKey})
-//     .then(room => {
-//         if(room) {
-//             return res.send([true, true]);
-//         }
-//         else {
-//             return res.send([false]);
-//         }
-//     });
-    
-// });
-
 router.post('/mainhall_joinRoom', (req, res) => { // join the room (send user to new url of room)
-    let { code } = req.body;
-    let normalCode, adminCode;
+    let { publicKey, privateKey, createdBy, currentUserEmail } = req.body;
     //if code has - go to admin half, if it doesn't continue on normal
-    if(code.includes("-")) {
-        code = code.split("-");
-        normalCode = code[0];
-        adminCode = code[1];
-    }
-    else {
-        normalCode = code;
-    }
+    let normalCode = publicKey;
+    let adminCode = publicKey.concat(privateKey);
     //if code not of proper length or it is an admin and that code is not of proper length.
-    if((normalCode.length !== 5) || (adminCode !== undefined && adminCode.length !== 5)) {
+    if((normalCode.length !== 5) || (adminCode !== undefined && adminCode.length !== 10)) {
+        console.log("code not of proper length");
         return res.send([false]);
     }
     //not an admin
-    if(adminCode === undefined) {
+    if(createdBy == currentUserEmail) { // current user is admin, return admin view
         MainhallRoom.findOne({publicKey: normalCode})
         .then(room => {
             if(room) {
                 return res.send([true, false]);
             }
             else {
+                console.log("searched with public key, room not found");
                 return res.send([false]);
             }
         });
     }
-    else {
-        Room.findOne({publicKey: normalCode, privateKey: adminCode})
+    else { // current user is not admin, return user view
+        MainhallRoom.findOne({publicKey: normalCode, privateKey: privateKey})
         .then(room => {
             if(room) {
                 return res.send([true, true]);
             }
             else {
+                console.log("searched with public and private keys, room not found");
                 return res.send([false]);
             }
         });
     }
 });
 
-router.post('/mainhall_joinRoom', (req, res) => { // join the room (send user to new url of room)
-    let { code } = req.body;
-    let normalCode, adminCode;
-    //if code has - go to admin half, if it doesn't continue on normal
-    if(code.includes("-")) {
-        code = code.split("-");
-        normalCode = code[0];
-        adminCode = code[1];
+router.post('/mainhall_verifyUser', (req, res) => {
+    let { location } = req.body;
+    //split ?id=. if the result is length 5, look for the code.
+    let code = location.split("?id=")[1];
+    if(code !== undefined && code.length === 5) {
+         MainhallRoom.findOne({publicKey: code})
+         .then(room => {
+             if(room) {
+                 let rawdata = fs.readFileSync('./config/mainhall_rooms.json');
+                 let rooms = JSON.parse(rawdata);
+                 if(rooms[code] == null){
+                     rooms[code] = { users: {} };
+                     fs.writeFileSync('config/mainhall_rooms.json', JSON.stringify(rooms));
+                 }
+                 return res.send([true, room.phase, room.question]);
+             }
+             else {
+                 return res.send([false]);
+             }
+         });
     }
     else {
-        normalCode = code;
+         return res.send([false]);
     }
-    //if code not of proper length or it is an admin and that code is not of proper length.
-    if((normalCode.length !== 5) || (adminCode !== undefined && adminCode.length !== 5)) {
-        return res.send([false]);
-    }
-    //not an admin
-    if(adminCode === undefined) {
-        MainhallRoom.findOne({publicKey: normalCode})
-        .then(room => {
-            if(room) {
-                return res.send([true, false]);
-            }
-            else {
-                return res.send([false]);
-            }
-        });
-    }
-    else {
+ });
+ 
+ router.post('/mainhall_verifyAdmin', (req, res) => {
+     let { location } = req.body;
+     //split ?id=. if the result is length 5, look for the code.
+     location = location.split("?id=")[1].split("-");
+     let normalCode = location[0];
+     let adminCode = location[1];
+     if(normalCode !== undefined && normalCode.length === 5 && adminCode !== undefined && adminCode.length === 5) {
         MainhallRoom.findOne({publicKey: normalCode, privateKey: adminCode})
-        .then(room => {
-            if(room) {
-                return res.send([true, true]);
-            }
-            else {
-                return res.send([false]);
-            }
-        });
-    }
-});
+         .then(room => {
+             if(room) {
+                 let rawdata = fs.readFileSync('./config/mainhall_rooms.json');
+                 let rooms = JSON.parse(rawdata);
+                 if(rooms[normalCode] == null){
+                     rooms[normalCode] = { users: {} };
+                     fs.writeFileSync('config/mainhall_rooms.json', JSON.stringify(rooms));
+                 }
+                 return res.send([true, room.phase, room.question]);
+             }
+             else {
+                 return res.send([false]);
+             }
+         });
+     }
+     else {
+          return res.send([false]);
+     }
+  });
 
 module.exports = router;

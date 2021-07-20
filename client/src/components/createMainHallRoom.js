@@ -12,8 +12,9 @@ function CreateMainHallRoom(props) {
     const textInput = useRef(null);
     const [phase, setPhase] = useState(1);
     const [bool, setBool] = useState(true);
-    const [email, setEmail] = useState("");
     const [user, setUser] = useState({ loggedIn: false });
+    
+    const [email, setEmail] = useState("");
     const userEmail = useRef("");
     const auth = firebase.auth();
 
@@ -27,13 +28,13 @@ function CreateMainHallRoom(props) {
               console.log("user not found");
           }
       });
-  }
-  useEffect(() => {
-      const unsubscribe = onAuthStateChange();
-      return () => {
-        unsubscribe();
-      };
-  }, []);
+    }
+    useEffect(() => {
+        const unsubscribe = onAuthStateChange();
+        return () => {
+          unsubscribe();
+        };
+    }, []);
 
     function changeNumber() {
         let number = numberInput.current.value;

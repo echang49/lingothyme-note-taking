@@ -15,7 +15,7 @@ import {ReactComponent as Note} from "../assets/note-icon.svg";
 
 let socket;
 
-function mainhallUserView() {
+function MainhallUserView() {
     const nameInput = useRef(null);
     const location = useLocation().search;
     const [bool, setBool] = useState(true);
@@ -36,7 +36,7 @@ function mainhallUserView() {
 
         socketIO(socket);
 
-        axios.post('/api/auth/verifyUser', {location})
+        axios.post('/api/auth/mainhall_verifyUser', {location})
         .then((res) => {
             if(!res.data[0]) {
                 setBool(false);
