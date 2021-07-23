@@ -17,33 +17,33 @@ function MainHall() {
     const [user, setUser] = useState({ loggedIn: false });
     const emailInput = useRef(null);
     const passInput = useRef(null);
-    const [phase, setPhase] = useState(1);
     const auth = firebase.auth();
     const [ url, setURL ] = useState("/");
 
-    const [update, setUpdate] = useState('');
+    const [update, setUpdate] = useState(1);
 
     const roomList = useRef([]);
     const ongoingRoomList = useRef([]);
-    const scheduledRoomlist = useRef([]);
+    const scheduledRoomList = useRef([]);
 
     function onAuthStateChange(callback) {
-        return firebase.auth().onAuthStateChanged(async user => {
+        return auth.onAuthStateChanged(async user => {
             if (user) {
                 callback({loggedIn: true});
                 const res = await axios.post('/api/auth/mainhall_getRoomList');
                 roomList.current = res.data; // list of all rooms from mainhallrooms collection 
-                //console.log("roomList: " + JSON.stringify(roomList.current) );
-                setUpdate('2'); // forces update after getting roomList
-
+                setUpdate(update + 1); // forces update after getting roomList
+                console.log(JSON.stringify(roomList));
                 roomList.current.forEach(element => {
-                    let elementdate = new Date(element.date);
-                    let now = new Date();
-                    if (elementdate >= now) { // room has date in future
-                        scheduledRoomlist.current.push(element);
-                   } else{ // room is currently ongoing
+                    let roomDate = new Date(element.date);
+                    let currentDate = new Date();
+                    if (roomDate.getDate() == currentDate.getDate()) { // room is ongoing
+                        console.log(`pushing ${element.Date} to ongoingRoomList`);
                         ongoingRoomList.current.push(element);
-                   }
+                    } else{ // room is scheduled
+                        console.log(`pushing ${element} to scheduledRoomList`);
+                        scheduledRoomList.current.push(element);
+                    }
                 });
             } else {
                 callback({loggedIn: false});
@@ -56,7 +56,13 @@ function MainHall() {
         return () => {
           unsubscribe();
         };
-      }, []);
+    }, []);
+
+    useEffect(() => {
+        setUpdate('2');
+    }, [ongoingRoomList.current, scheduledRoomList.current, roomList.current]);
+
+
 
     //firebase WIP 
 
@@ -70,36 +76,35 @@ function MainHall() {
     if(!user.loggedIn) { // user not logged in, prompt them to login or signup
         return <Login />
     }
-
-    switch(phase) {
-        case 1: // main hall
-            return(
-                <div>
-                    {
-                        bool ?
-                            <div className="MainHall">
-                                <Navbar />
-                                <div className="mainhall-body">
-                                    <div className="canvas">
-                                        <h1>Ongoing</h1> <div className="break"></div> 
-                                        <OngoingCard />
-                                        <h2>Scheduled</h2> <div className="break"></div>
-                                        {roomList.current.map(element => {
-                                            return <ScheduledCard title="Idea Brainstorming" publicKey={element.publicKey} privateKey={element.privateKey} card_content={element.question} time={element.date.toString().substring(0, 10)} capacity={element.capacity} createdBy={element.createdBy}/>
-                                            })
-                                        }
-                                        <div className="buttons">
-                                            <Link to="/mainhallRoomCreation" className="primary-button">Create Room</Link>
-                                        </div> 
-                                    </div>
-                                </div>
+    return(
+        <div>
+            {
+                bool ?
+                    <div className="MainHall">
+                        <Navbar />
+                        <div className="mainhall-body">
+                            <div className="canvas">
+                                <h1>Ongoing</h1> <div className="break"></div> 
+                                {ongoingRoomList.current.map(element => {
+                                    return <OngoingCard title="Idea Brainstorming" publicKey={element.publicKey} privateKey={element.privateKey} card_content={element.question} time={element.date.toString().substring(0, 10)} capacity={element.capacity} createdBy={element.createdBy}/>
+                                    })
+                                }
+                                <h2>Scheduled</h2> <div className="break"></div>
+                                {scheduledRoomList.current.map(element => {
+                                    return <ScheduledCard title="Idea Brainstorming" publicKey={element.publicKey} privateKey={element.privateKey} card_content={element.question} time={element.date.toString().substring(0, 10)} capacity={element.capacity} createdBy={element.createdBy}/>
+                                    })
+                                }
+                                <div className="buttons">
+                                    <Link to="/mainhallRoomCreation" className="primary-button">Create Room</Link>
+                                </div> 
                             </div>
-                        :
-                            <Redirect push to={url} />
-                    }
-                </div>
-            );
-    }
+                        </div>
+                    </div>
+                :
+                    <Redirect push to={url} />
+            }
+        </div>
+    ); 
 }
     
 export default MainHall;
