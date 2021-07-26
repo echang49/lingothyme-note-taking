@@ -361,12 +361,19 @@ router.post('/mainhall_joinRoom', (req, res) => { // join the room (send user to
         console.log("code not of proper length");
         return res.send([false]);
     }
-    //not an admin
+
     if(createdBy == currentUserEmail) { // current user is admin, return admin view
         MainhallRoom.findOne({publicKey: normalCode})
         .then(room => {
+            let currentDate = new Date();
             if(room) {
-                return res.send([true, false]);
+                console.log("room date: " + room.date);
+                if(room.date > currentDate.getDate()){ // if roomDate !== currentDate send false
+                    return res.send([true, false, false]);
+                }
+                else{
+                    return res.send([true, false, true]); // room is today, allow user to join
+                }  
             }
             else {
                 console.log("searched with public key, room not found");
@@ -378,7 +385,12 @@ router.post('/mainhall_joinRoom', (req, res) => { // join the room (send user to
         MainhallRoom.findOne({publicKey: normalCode, privateKey: privateKey})
         .then(room => {
             if(room) {
-                return res.send([true, true]);
+                if(room.getDate() > currentDate.getDate()){ // if roomDate !== currentDate send false
+                    return res.send([true, true, false]); // room is not today, do not allow user to join
+                }
+                else{
+                    return res.send([true, true, true]); // room is today, allow user to join
+                }  
             }
             else {
                 console.log("searched with public and private keys, room not found");
