@@ -191,7 +191,7 @@ function MainhallUserView() {
                                 </div>
                             </div>
                         :
-                        <Redirect to="/" />
+                        <Redirect to="/mainHall" />
                     }
                 </div>
             );
@@ -212,7 +212,7 @@ function MainhallUserView() {
                                         <Note className="note-icon" onClick={() => handleNoteClick()} />
                                     </span>
                                     <span className="nav-end">
-                                        <Link to="/" style={{ textDecoration: 'none' }}>  {/* remove link styling */}
+                                        <Link to="/mainHall" style={{ textDecoration: 'none' }}>  {/* remove link styling */}
                                             <button>
                                                 <p>Leave </p>
                                                 <Brace />
@@ -246,7 +246,7 @@ function MainhallUserView() {
                                 </div>
                             </div>
                         :
-                            <Redirect to="/" />
+                            <Redirect to="/mainHall" />
                     }
                 </div>
             );
@@ -267,7 +267,7 @@ function MainhallUserView() {
                                         <Note className="note-icon" onClick={() => handleNoteClick()} />
                                     </span>
                                     <span className="nav-end">
-                                        <Link to="/" style={{ textDecoration: 'none' }}>  {/* remove link styling */}
+                                        <Link to="/mainHall" style={{ textDecoration: 'none' }}>  {/* remove link styling */}
                                             <button>
                                                 <p>Leave </p>
                                                 <Brace />
@@ -304,7 +304,7 @@ function MainhallUserView() {
                                 </div>
                             </div>
                         :
-                            <Redirect to="/" />
+                            <Redirect to="/mainHall" />
                     }
                 </div>
             );
@@ -319,12 +319,12 @@ function MainhallUserView() {
                                 </div>    
                                 <div className="center-button">
                                     <div className="buttons">
-                                        <Link to="/" className="primary-button">Exit</Link>
+                                        <Link to="/mainHall" className="primary-button">Exit</Link>
                                     </div>
                                 </div>
                             </div>
                         :
-                            <Redirect to="/" />
+                            <Redirect to="/mainHall" />
                     }
                 </div>
             );
@@ -332,6 +332,3 @@ function MainhallUserView() {
 }
     
 export default MainhallUserView;
-
-//components are question component, editor list component, pt 1 response, pt 2 response
-//Three different stages : Brainstorming, pargraph writing, finish

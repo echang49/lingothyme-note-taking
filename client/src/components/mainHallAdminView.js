@@ -203,7 +203,7 @@ function MainhallAdminView() {
                             </div>
                         </div>
                     :
-                        <Redirect to="/" />
+                        <Redirect to="/mainHall" />
                 }
             </div>
         );
@@ -226,7 +226,7 @@ function MainhallAdminView() {
                                     </div>
                                 </div>
                             :
-                            <Redirect to="/" />
+                            <Redirect to="/mainHall" />
                         }
                     </div>
                 );
@@ -279,7 +279,7 @@ function MainhallAdminView() {
                                     </div>
                                 </div>
                             :
-                                <Redirect to="/" />
+                                <Redirect to="/mainHall" />
                         }
                     </div>
                 );
@@ -335,7 +335,7 @@ function MainhallAdminView() {
                                     </div>
                                 </div>
                             :
-                                <Redirect to="/" />
+                                <Redirect to="/mainHall" />
                         }
                     </div>
                 );
@@ -350,12 +350,12 @@ function MainhallAdminView() {
                                     </div>    
                                     <div className="center-button">
                                         <div className="buttons">
-                                            <Link to="/" className="primary-button">Exit</Link>
+                                            <Link to="/mainHall" className="primary-button">Exit</Link>
                                         </div>
                                     </div>
                                 </div>
                             :
-                                <Redirect to="/" />
+                                <Redirect to="/mainHall" />
                         }
                     </div>
                 );
