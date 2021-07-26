@@ -46,24 +46,31 @@ function ScheduledCard({publicKey, privateKey, title, card_content, time, capaci
         }
         axios.post("/api/auth/mainhall_joinRoom", data)
         .then((res) => {
-            if(res.data[0]) {
-                let normalCode = publicKey;
-                let adminCode = normalCode.concat('-').concat(privateKey);
-                if(res.data[1]) { // user view
-                    console.log("sending to user view url: " + url);
-                    // TODO: change this to not use window.location.href, insecure
-                    window.location.href = "/mainHall/room?id=".concat(normalCode);
+            // res.data[(bool), (bool), (bool)]
+            // res.data[(roomFound),(f = userView or adminView),(current date < roomDate)]
+            if (res.data[3]){ // room is today, allow user to join room
+                if(res.data[0]) {
+                    let normalCode = publicKey;
+                    let adminCode = normalCode.concat('-').concat(privateKey);
+    
+                    if(res.data[1]) { // user view
+                        console.log("sending to user view url: " + url);
+                        // TODO: change this to not use window.location.href, insecure
+                        window.location.href = "/mainHall/room?id=".concat(normalCode);
+                    }
+                    else { // admin view
+                        console.log("sending to admin view url: " + url);
+                        // TODO: change this to not use window.location.href, insecure
+                        window.location.href = "/mainHall/admin/room?id=".concat(adminCode);   
+                    }
+                    setBool(false);
                 }
-                else { // admin view
-                    console.log("sending to admin view url: " + url);
-                    // TODO: change this to not use window.location.href, insecure
-                    window.location.href = "/mainHall/admin/room?id=".concat(adminCode);   
+                else { // room not found, with given code
+                    alert("Incorrect code. Ensure you have the proper room code.");
                 }
-                setBool(false);
-            }
-            else { // room not found, with given code
-                alert("Incorrect code. Ensure you have the proper room code.");
-            }
+            }else{ // room is not today, do not allow user to join room
+                alert("This room is not currently taking place, please try again on the room date.");
+            }  
         })
         .catch((err) => {
             alert(err.response);
