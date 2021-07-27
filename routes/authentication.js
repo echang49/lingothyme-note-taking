@@ -384,8 +384,9 @@ router.post('/mainhall_joinRoom', (req, res) => { // join the room (send user to
     else { // current user is not admin, return user view
         MainhallRoom.findOne({publicKey: normalCode, privateKey: privateKey})
         .then(room => {
+            let currentDate = new Date();
             if(room) {
-                if(room.getDate() > currentDate.getDate()){ // if roomDate !== currentDate send false
+                if(room.date > currentDate.getDate()){ // if roomDate !== currentDate send false
                     return res.send([true, true, false]); // room is not today, do not allow user to join
                 }
                 else{
