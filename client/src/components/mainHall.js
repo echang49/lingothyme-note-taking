@@ -38,10 +38,8 @@ function MainHall() {
                     let roomDate = new Date(element.date);
                     let currentDate = new Date();
                     if (roomDate.getDate() == currentDate.getDate()) { // room is ongoing
-                        console.log(`pushing ${element.Date} to ongoingRoomList`);
                         ongoingRoomList.current.push(element);
                     } else{ // room is scheduled
-                        console.log(`pushing ${element} to scheduledRoomList`);
                         scheduledRoomList.current.push(element);
                     }
                 });
