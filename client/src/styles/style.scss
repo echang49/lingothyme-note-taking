@@ -253,6 +253,18 @@ textarea {
                     cursor: pointer;
                 }
             }
+            .text-icon {
+                margin-left: 5vw;
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+            .microphone-icon {
+                margin-left: 5vw;
+                &:hover {
+                    cursor: pointer;
+                }
+            }
         }
         .nav-end {
             grid-column-start: 5;

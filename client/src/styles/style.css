@@ -303,6 +303,22 @@ textarea {
   cursor: pointer;
 }
 
+.userView nav .nav-center .text-icon {
+  margin-left: 5vw;
+}
+
+.userView nav .nav-center .text-icon:hover {
+  cursor: pointer;
+}
+
+.userView nav .nav-center .microphone-icon {
+  margin-left: 5vw;
+}
+
+.userView nav .nav-center .microphone-icon:hover {
+  cursor: pointer;
+}
+
 .userView nav .nav-end {
   -ms-grid-column: 5;
       grid-column-start: 5;
