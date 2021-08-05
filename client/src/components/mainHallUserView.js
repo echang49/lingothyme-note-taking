@@ -12,6 +12,8 @@ import Paragraphs from "./viewComponents/paragraphResponse";
 import {ReactComponent as Logo} from "../assets/logo-white.svg";
 import {ReactComponent as Brace} from "../assets/right-brace.svg";
 import {ReactComponent as Note} from "../assets/note-icon.svg";
+import {ReactComponent as Microphone} from "../assets/microphone-icon.svg";
+import {ReactComponent as Text} from "../assets/text-icon.svg";
 
 let socket;
 
@@ -49,7 +51,7 @@ function MainhallUserView() {
             if(localStorageName !== null) {
                 if(new Date(localStorageName[1]).getTime() > currentTime) {
                     setNameState(false);
-                    socket.emit("new-user", location.split("?id=")[1], localStorageName[0], (res) => {
+                    socket.emit("mainhall-new-user", location.split("?id=")[1], localStorageName[0], (res) => {
                         setUserID(res.id);
                     });
                 }
@@ -59,6 +61,16 @@ function MainhallUserView() {
             alert(err);
         });
 
+        // start voice
+        console.log("starting voice from admin view...");
+        let from = 'fromUser';
+        axios.post('/api/auth/voice', { from })
+        .then((res) => {
+            console.log("res.data: " + res.data);
+        }).catch((err) => {
+            alert(err);
+        });
+        
         // Anything in here is fired on component unmount.
         return () => {
             socket.disconnect();
@@ -67,7 +79,7 @@ function MainhallUserView() {
 
     function socketIO(socket) {
         //on connection, set the user list of people already connected
-        socket.on('connection', (data) => {
+        socket.on('mainhall-connection', (data) => {
             let tempUserList = userList;
             for(let i in data) {
                 tempUserList.push(data[i]);
@@ -76,14 +88,14 @@ function MainhallUserView() {
         });
     
         //when a new user joins, add them to the user list
-        socket.on('user-connected', (data) => {
+        socket.on('mainhall-user-connected', (data) => {
             let tempUserList = userList;
             tempUserList.push(data);
             setUserList([...tempUserList]);
         });
 
         //when a user leaves, remove them from the user list
-        socket.on('user-disconnected', (data) => {
+        socket.on('mainhall-user-disconnected', (data) => {
             let slicedIndex = userList.findIndex((element) =>  JSON.stringify(element) === JSON.stringify(data));
             let tempUserList = userList;
             tempUserList.splice(slicedIndex,1);
@@ -91,12 +103,12 @@ function MainhallUserView() {
         });
 
         //when a user creates a new brainstorming component
-        socket.on('new-brainstorm', (data) => {
+        socket.on('mainhall-new-brainstorm', (data) => {
             setBrainstormList(list => [...list, ["", data[0], data[1]]])
         });
 
         //when a user edits a brainstorming component
-        socket.on('edit-brainstorm', (data) => {
+        socket.on('mainhall-edit-brainstorm', (data) => {
             setBrainstormList(list => {
                 list[data[1]][0] = data[0];
                 return [...list];
@@ -104,12 +116,12 @@ function MainhallUserView() {
         });
 
         //when a user creates a new paragraph component
-        socket.on('new-paragraph', (data) => {
+        socket.on('mainhall-new-paragraph', (data) => {
             setParagraphList(list => [...list, [["", "", ""], data]]);
         });
 
         //when a user edits a paragraph component
-        socket.on('edit-paragraph', (data) => {
+        socket.on('mainhall-edit-paragraph', (data) => {
             setParagraphList(list => {
                 list[data[1]][0] = data[0];
                 return [...list];
@@ -117,12 +129,12 @@ function MainhallUserView() {
         });
 
         //when another user requests for the info on the doc
-        socket.on('request-info', (data) => {
+        socket.on('mainhall-request-info', (data) => {
             // console.log(brainstormList, paragraphList);
             // socket.emit('resolve-info', data, brainstormList, paragraphList);
             setBrainstormList(x => {
                 setParagraphList(y => {
-                    socket.emit('resolve-info', data, x, y);
+                    socket.emit('mainhall-resolve-info', data, x, y);
                     return [...y];
                 });
                 return [...x];
@@ -130,12 +142,12 @@ function MainhallUserView() {
         });
 
         //when another user provides info on the doc
-        socket.on('resolve-info', (data) => {
+        socket.on('mainhall-resolve-info', (data) => {
             setBrainstormList([...data[0]]);
             setParagraphList([...data[1]]);
         });
     
-        socket.on('phase-change', (data) =>  {
+        socket.on('mainhall-phase-change', (data) =>  {
             setPhase(data);
         });
     }
@@ -151,17 +163,26 @@ function MainhallUserView() {
         });
     }
 
+    function handleMicClick () { // mute/unmute mic
+        console.log("clicked mute button");
+        
+    }
+
+    function handleTextClick () { // 
+        console.log("clicking text button");
+    }
+
     function handleNoteClick () {
         if(phase === 2) {
             //useRef. create a Brainstorming component under the testing area
             let tempBrainstormList = brainstormList;
             setBrainstormList([...tempBrainstormList, ["", userID, tempBrainstormList.length]]);
-            socket.emit('new-brainstorm', location.split("?id=")[1], userID, tempBrainstormList.length);
+            socket.emit('mainhall-new-brainstorm', location.split("?id=")[1], userID, tempBrainstormList.length);
         }
         else { //phase === 3
             let tempParagraphList = paragraphList;
             setParagraphList([...tempParagraphList, [["", "", ""], tempParagraphList.length]]);
-            socket.emit('new-paragraph', location.split("?id=")[1], tempParagraphList.length);
+            socket.emit('mainhall-new-paragraph', location.split("?id=")[1], tempParagraphList.length);
         }
     }
 
@@ -169,14 +190,14 @@ function MainhallUserView() {
         let tempBrainstormList = brainstormList;
         tempBrainstormList[id][0] = value;
         setBrainstormList([...tempBrainstormList]);
-        socket.emit('edit-brainstorm', location.split("?id=")[1], [value, id]);
+        socket.emit('mainhall-edit-brainstorm', location.split("?id=")[1], [value, id]);
     }
 
     function setParagraph(value, id) {
         let tempParagraphList = paragraphList;
         tempParagraphList[id][0] = value;
         setParagraphList([...tempParagraphList]);
-        socket.emit('edit-paragraph', location.split("?id=")[1], [value, id]);
+        socket.emit('mainhall-edit-paragraph', location.split("?id=")[1], [value, id]);
     }
 
     switch(phase) {
@@ -210,6 +231,8 @@ function MainhallUserView() {
                                     </span>
                                     <span className="nav-center">
                                         <Note className="note-icon" onClick={() => handleNoteClick()} />
+                                        <Text className="text-icon" onClick={() => handleTextClick()}/>
+                                        <Microphone className="microphone-icon" onClick={() => handleMicClick()} />
                                     </span>
                                     <span className="nav-end">
                                         <Link to="/mainHall" style={{ textDecoration: 'none' }}>  {/* remove link styling */}
@@ -265,6 +288,8 @@ function MainhallUserView() {
                                     </span>
                                     <span className="nav-center">
                                         <Note className="note-icon" onClick={() => handleNoteClick()} />
+                                        <Text className="text-icon" onClick={() => handleTextClick()}/>
+                                        <Microphone className="microphone-icon" onClick={() => handleMicClick()} />
                                     </span>
                                     <span className="nav-end">
                                         <Link to="/mainHall" style={{ textDecoration: 'none' }}>  {/* remove link styling */}

@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { Redirect, useLocation, Link} from "react-router-dom"; 
 import io from "socket.io-client";
 import axios from "axios"; 
+import { Device } from '@twilio/voice-sdk';
 
 import Question from "./viewComponents/question";
 import User from "./viewComponents/users";
@@ -13,6 +14,10 @@ import ColorLogo from "../assets/main-logo.png";
 import {ReactComponent as Logo} from "../assets/logo-white.svg";
 import {ReactComponent as Brace} from "../assets/right-brace.svg";
 import {ReactComponent as Note} from "../assets/note-icon.svg";
+import {ReactComponent as Microphone} from "../assets/microphone-icon.svg";
+import {ReactComponent as Text} from "../assets/text-icon.svg";
+
+
 
 let socket;
 
@@ -36,7 +41,6 @@ function MainhallAdminView() {
         });
 
         socketIO(socket);
-        alert('you are in mainHallAdminView');
         axios.post('/api/auth/mainhall_verifyAdmin', {location})
         .then((res) => {
             if(!res.data[0]) {
@@ -50,13 +54,23 @@ function MainhallAdminView() {
             if(localStorageName !== null) {
                 if(new Date(localStorageName[1]).getTime() > currentTime) {
                     setNameState(false);
-                    socket.emit("new-user", location.split("?id=")[1].split("-")[0], localStorageName[0], (res) => {
+                    socket.emit("mainhall-new-user", location.split("?id=")[1].split("-")[0], localStorageName[0], (res) => {
                         setUserID(res.id);
                     });
                 }
             }
         })
         .catch((err) => {
+            alert(err);
+        });
+
+        // start voice
+        console.log("starting voice from admin view...");
+        let from = 'fromModerator';
+        axios.post('/api/auth/voice', { from })
+        .then((res) => {
+            console.log("res.data: " + res.data);
+        }).catch((err) => {
             alert(err);
         });
 
@@ -68,7 +82,7 @@ function MainhallAdminView() {
 
     function socketIO(socket) {
         //on connection, set the user list of people already connected
-        socket.on('connection', (data) => {
+        socket.on('mainhall-connection', (data) => {
             let tempUserList = userList;
             for(let i in data) {
                 tempUserList.push(data[i]);
@@ -77,14 +91,14 @@ function MainhallAdminView() {
         });
     
         //when a new user joins, add them to the user list
-        socket.on('user-connected', (data) => {
+        socket.on('mainhall-user-connected', (data) => {
             let tempUserList = userList;
             tempUserList.push(data);
             setUserList([...tempUserList]);
         });
 
         //when a user leaves, remove them from the user list
-        socket.on('user-disconnected', (data) => {
+        socket.on('mainhall-user-disconnected', (data) => {
             let slicedIndex = userList.findIndex((element) =>  JSON.stringify(element) === JSON.stringify(data));
             let tempUserList = userList;
             tempUserList.splice(slicedIndex,1);
@@ -92,12 +106,12 @@ function MainhallAdminView() {
         });
 
         //when a user creates a new brainstorming component
-        socket.on('new-brainstorm', (data) => {
+        socket.on('mainhall-new-brainstorm', (data) => {
             setBrainstormList(list => [...list, ["", data[0], data[1]]])
         });
 
         //when a user edits a brainstorming component
-        socket.on('edit-brainstorm', (data) => {
+        socket.on('mainhall-edit-brainstorm', (data) => {
             setBrainstormList(list => {
                 list[data[1]][0] = data[0];
                 return [...list];
@@ -105,12 +119,12 @@ function MainhallAdminView() {
         });
 
         //when a user creates a new paragraph component
-        socket.on('new-paragraph', (data) => {
+        socket.on('mainhall-new-paragraph', (data) => {
             setParagraphList(list => [...list, [["", "", ""], data]]);
         });
 
         //when a user edits a paragraph component
-        socket.on('edit-paragraph', (data) => {
+        socket.on('mainhall-edit-paragraph', (data) => {
             setParagraphList(list => {
                 list[data[1]][0] = data[0];
                 return [...list];
@@ -118,12 +132,12 @@ function MainhallAdminView() {
         });
 
         //when another user requests for the info on the doc
-        socket.on('request-info', (data) => {
+        socket.on('mainhall-request-info', (data) => {
             // console.log(brainstormList, paragraphList);
             // socket.emit('resolve-info', data, brainstormList, paragraphList);
             setBrainstormList(x => {
                 setParagraphList(y => {
-                    socket.emit('resolve-info', data, x, y);
+                    socket.emit('mainhall-resolve-info', data, x, y);
                     return [...y];
                 });
                 return [...x];
@@ -131,12 +145,12 @@ function MainhallAdminView() {
         });
 
         //when another user provides info on the doc
-        socket.on('resolve-info', (data) => {
+        socket.on('mainhall-resolve-info', (data) => {
             setBrainstormList([...data[0]]);
             setParagraphList([...data[1]]);
         });
     
-        socket.on('phase-change', (data) =>  {
+        socket.on('mainhall-phase-change', (data) =>  {
             setPhase(data);
         });
     }
@@ -147,9 +161,18 @@ function MainhallAdminView() {
         tomorrow.setDate(tomorrow.getDate() + 1);
         localStorage.setItem('name', JSON.stringify([name, tomorrow]));
         setNameState(false);
-        socket.emit('new-user', location.split("?id=")[1].split("-")[0], name, (res) => {
+        socket.emit('mainhall-new-user', location.split("?id=")[1].split("-")[0], name, (res) => {
             setUserID(res.id);
         });
+    }
+
+    function handleMicClick () { // mute/unmute mic
+        console.log("clicking mute button");
+
+    }
+
+    function handleTextClick () { // 
+        console.log("clicking text button");
     }
 
     function handleNoteClick () {
@@ -157,12 +180,12 @@ function MainhallAdminView() {
             //useRef. create a Brainstorming component under the testing area
             let tempBrainstormList = brainstormList;
             setBrainstormList([...tempBrainstormList, ["", userID, tempBrainstormList.length]]);
-            socket.emit('new-brainstorm', location.split("?id=")[1].split("-")[0], userID, tempBrainstormList.length);
+            socket.emit('mainhall-new-brainstorm', location.split("?id=")[1].split("-")[0], userID, tempBrainstormList.length);
         }
         else { //phase === 3
             let tempParagraphList = paragraphList;
             setParagraphList([...tempParagraphList, [["", "", ""], tempParagraphList.length]]);
-            socket.emit('new-paragraph', location.split("?id=")[1].split("-")[0], tempParagraphList.length);
+            socket.emit('mainhall-new-paragraph', location.split("?id=")[1].split("-")[0], tempParagraphList.length);
         }
     }
 
@@ -170,19 +193,19 @@ function MainhallAdminView() {
         let tempBrainstormList = brainstormList;
         tempBrainstormList[id][0] = value;
         setBrainstormList([...tempBrainstormList]);
-        socket.emit('edit-brainstorm', location.split("?id=")[1].split("-")[0], [value, id]);
+        socket.emit('mainhall-edit-brainstorm', location.split("?id=")[1].split("-")[0], [value, id]);
     }
 
     function setParagraph(value, id) {
         let tempParagraphList = paragraphList;
         tempParagraphList[id][0] = value;
         setParagraphList([...tempParagraphList]);
-        socket.emit('edit-paragraph', location.split("?id=")[1].split("-")[0], [value, id]);
+        socket.emit('mainhall-edit-paragraph', location.split("?id=")[1].split("-")[0], [value, id]);
     }
     
     function incrementPhase(data) {
         setPhase(data);
-        socket.emit('phase-change', location.split("?id=")[1].split("-")[0], data, brainstormList, paragraphList);
+        socket.emit('mainhall-phase-change', location.split("?id=")[1].split("-")[0], data, brainstormList, paragraphList);
     }
 
     if(nameState === true) { // if name has not been set yet, allow user to set name
@@ -245,6 +268,8 @@ function MainhallAdminView() {
                                         </span>
                                         <span className="nav-center">
                                             <Note className="note-icon" onClick={() => handleNoteClick()} />
+                                            <Text className="text-icon" onClick={() => handleTextClick()}/>
+                                            <Microphone className="microphone-icon" onClick={() => handleMicClick()} />
                                         </span>
                                         <span className="nav-end">
                                             <button onClick={() => incrementPhase(3)}>
@@ -298,10 +323,12 @@ function MainhallAdminView() {
                                         </span>
                                         <span className="nav-center">
                                             <Note className="note-icon" onClick={() => handleNoteClick()} />
+                                            <Text className="text-icon" onClick={() => handleTextClick()}/>
+                                            <Microphone className="microphone-icon" onClick={() => handleMicClick()} />
                                         </span>
                                         <span className="nav-end">
                                             <button onClick={() => incrementPhase(4)}>
-                                                <p>Next Phase </p>
+                                                <p>End Session</p>
                                                 <Brace />
                                             </button>
                                         </span>
