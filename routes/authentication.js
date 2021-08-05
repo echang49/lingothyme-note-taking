@@ -1,9 +1,13 @@
 const fs = require('fs');
 const express = require('express')
 const router  = express.Router();
+
 const Room = require('../models/Rooms');
 const Profile = require('../models/profiles');
 const MainhallRoom = require('../models/mainhall_rooms');
+
+const twilio = require('twilio');
+const VoiceResponse = twilio.twiml.VoiceResponse;
 
 //utility function to make an ID
 function makeid(length) {
@@ -367,7 +371,6 @@ router.post('/mainhall_joinRoom', (req, res) => { // join the room (send user to
         .then(room => {
             let currentDate = new Date();
             if(room) {
-                console.log("room date: " + room.date);
                 if(room.date > currentDate.getDate()){ // if roomDate !== currentDate send false
                     return res.send([true, false, false]);
                 }
@@ -454,5 +457,48 @@ router.post('/mainhall_verifyUser', (req, res) => {
           return res.send([false]);
      }
   });
+
+// twilio voice
+
+// Create a route that will handle Twilio webhook requests, sent as an
+// HTTP POST to /voice in our application
+router.post('/voice', (req, res) => {
+    let { from } = req.body;
+
+    // Use the Twilio Node.js SDK to build an XML response
+    const twiml = new VoiceResponse();
+
+    // Start with a <Dial> verb
+    const dial = twiml.dial();
+    // If the caller is our MODERATOR, then start the conference when they
+    // join and end the conference when they leave
+    if (from == 'fromModerator') {
+        console.log("Joining conference call as moderator");
+        dial.conference('Room conference', {
+            maxParticipants: 8,
+            startConferenceOnEnter: true,
+            endConferenceOnExit: true,
+            muted: false, // false for testing purposes, change to true later
+            //waitURL: '', // this will disable music while waiting for call start
+            // while waitURL is not set, copyright free music will play until 2 people join call
+
+        });
+    } else {
+      // Otherwise have the caller join as a regular user
+        console.log("Joining conference call as user");
+        dial.conference('Room conference', {
+        maxParticipants: 8,
+        startConferenceOnEnter: false,
+        muted: true,
+        //waitURL: '', // this will disable music while waiting for call start
+        // while waitURL is not set, copyright free music will play until 2 people join call
+
+      });
+    }
+  
+    // Render the response as XML in reply to the webhook request
+    res.type('text/xml');
+    res.send(twiml.toString());
+});
 
 module.exports = router;
