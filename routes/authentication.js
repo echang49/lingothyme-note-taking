@@ -6,8 +6,12 @@ const Room = require('../models/Rooms');
 const Profile = require('../models/profiles');
 const MainhallRoom = require('../models/mainhall_rooms');
 
-const twilio = require('twilio');
-const VoiceResponse = twilio.twiml.VoiceResponse;
+//twilio
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const client = require('twilio')(accountSid, authToken);
+// const twilio = require('twilio');
+const VoiceResponse = require('twilio').twiml.VoiceResponse;
 
 //utility function to make an ID
 function makeid(length) {
