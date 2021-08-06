@@ -33,7 +33,7 @@ function MainHall() {
                 const res = await axios.post('/api/auth/mainhall_getRoomList');
                 roomList.current = res.data; // list of all rooms from mainhallrooms collection 
                 setUpdate(update + 1); // forces update after getting roomList
-                console.log(JSON.stringify(roomList));
+                //console.log(JSON.stringify(roomList));
                 roomList.current.forEach(element => {
                     let roomDate = new Date(element.date);
                     let currentDate = new Date();
