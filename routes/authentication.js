@@ -470,23 +470,30 @@ router.post('/voice', (req, res) => {
     let { from } = req.body;
 
     // Use the Twilio Node.js SDK to build an XML response
-    const twiml = new VoiceResponse();
+    const response = new VoiceResponse();
+    console.log("playing message before starting conference");
+    response.say({
+        voice: 'man',
+        language: 'en'
+    }, 'Test message!');
+    //response.say('Starting conference.');
 
     // Start with a <Dial> verb
-    const dial = twiml.dial();
+    const dial = response.dial();
     // If the caller is our MODERATOR, then start the conference when they
     // join and end the conference when they leave
     if (from == 'fromModerator') {
         console.log("Joining conference call as moderator");
-        dial.conference('Room conference', {
+
+        dial.conference('Room1', {
             maxParticipants: 8,
             startConferenceOnEnter: true,
             endConferenceOnExit: true,
             muted: false, // false for testing purposes, change to true later
             //waitURL: '', // this will disable music while waiting for call start
             // while waitURL is not set, copyright free music will play until 2 people join call
-
         });
+        console.log("response.toString: " + response.toString());
     } else {
       // Otherwise have the caller join as a regular user
         console.log("Joining conference call as user");
@@ -496,13 +503,13 @@ router.post('/voice', (req, res) => {
         muted: true,
         //waitURL: '', // this will disable music while waiting for call start
         // while waitURL is not set, copyright free music will play until 2 people join call
-
       });
+      console.log("response.toString: " + response.toString());
     }
   
     // Render the response as XML in reply to the webhook request
     res.type('text/xml');
-    res.send(twiml.toString());
+    res.send(response.toString());
 });
 
 module.exports = router;

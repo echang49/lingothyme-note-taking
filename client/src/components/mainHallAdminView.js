@@ -33,6 +33,7 @@ function MainhallAdminView() {
     const [userID, setUserID] = useState(); 
     const [brainstormList, setBrainstormList] = useState([]); //[value, userID, id]
     const [paragraphList, setParagraphList] = useState([]); //[[paragraphx, paragraphx+1], id]
+    const [update, setUpdate] = useState(1);
 
     useEffect(() => {
         socket = io(window.location.origin, {
@@ -64,6 +65,12 @@ function MainhallAdminView() {
             alert(err);
         });
 
+        console.log("phase: " + phase);
+        setUpdate(update + 1);
+        console.log("phase after update" + phase);
+        // if(phase !== 3){
+        //     alert("test");
+        // }
         // start voice
         console.log("starting voice from admin view...");
         let from = 'fromModerator';
