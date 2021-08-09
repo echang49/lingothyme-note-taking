@@ -68,7 +68,7 @@ function CreateMainHallRoom(props) {
               axios.post('/api/auth/mainhall_createRoom', data)
                 .then((res) => {
                     let { publicKey, privateKey } = res.data;
-                    alert(`The public key is: ${publicKey}. The private key is: ${privateKey}. NOTE: YOUR ROOM EXPIRES ${expirationMonth} - ${expirationDate} - ${expirationYear} AT MIDNIGHT EST/EDT.` );  
+                    alert(`NOTE: YOUR ROOM EXPIRES ${expirationMonth} - ${expirationDate} - ${expirationYear} AT MIDNIGHT EST/EDT.` );  
                     
                     // TODO: change this to not use window.location.href, insecure, history.push instead
                     console.log("you are here, in .then of create room");
