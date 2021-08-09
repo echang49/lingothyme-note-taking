@@ -7,10 +7,22 @@ const Profile = require('../models/profiles');
 const MainhallRoom = require('../models/mainhall_rooms');
 
 //twilio
+const AccessToken = require('twilio').jwt.AccessToken;
+const VoiceGrant = AccessToken.VoiceGrant;
+
+// Used when generating any kind of tokens
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
+
+
+const twilioApiKey = 'SKxxxxxxxxxx';
+const twilioApiSecret = 'xxxxxxxxxxxx';
+
+// Used specifically for creating Voice tokens
+const outgoingApplicationSid = 'APxxxxxxxxxxxxx';
+const identity = 'user';
+
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
-// const twilio = require('twilio');
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 
 //utility function to make an ID
