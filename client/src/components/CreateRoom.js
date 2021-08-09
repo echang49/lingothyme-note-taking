@@ -94,14 +94,15 @@ function CreateRoom(props) {
             </div>
             <div className="input">
               <label>Flow of Events:</label>
-              <p className="flow">Changing flow of events is currently not supported. The current flow is 'brainstorming', 'pargraph writing', and then 'end'.</p>
+              <p className="flow">Changing flow of events is currently not supported. The current flow is 'brainstorming', 'paragraph writing', and then 'end'.</p>
             </div>
             <div className="input">
               <label>Date of discussion</label>
               <input type="date" ref={dateInput} onChange={() => changeDate()}/>
             </div>
             <div className="buttons">
-              <button className="primary-button" onClick={() => handleClick()}>CREATE</button>
+              {/* when admin clicks create, send to home page */}
+              <button className="primary-button" onClick={() => handleClick()}>CREATE</button> 
               <Link className="secondary-button" to="/">CANCEL</Link>
             </div>
           </div>

@@ -10,6 +10,7 @@ const schedule = require('node-schedule'); //for cron jobs
 const Room = require('./models/Rooms');
 const puppeteer = require('puppeteer') //for creating the PDF
 const sgMail = require('@sendgrid/mail'); //for sending email TWILIO SENDGRID API
+const MainHallRoom = require('./models/mainhall_rooms');
 
 //Load config
 dotenv.config({path: './config/config.env'});
@@ -62,13 +63,33 @@ const job = schedule.scheduleJob('0 0 * * *', () => {
     })
 });
 
+//CRON JOB FOR MAINHALL DONE EVERYDAY AT MIDNIGHT TO ENSURE ALL THE EXPIRED ROOMS ARE DELETED
+const mainHalljob = schedule.scheduleJob('0 0 * * *', () => {
+    //get date as of right now. If this is older than the one posted, deleted the posted ones
+    let date = Date.now();
+    MainHallRoom.find({} , (err, rooms) => {
+        if(err) {
+            console.log(err);
+        }
+        rooms.map(room => {
+            if(date > room.date.getTime()) {
+                MainHallRoom.deleteOne({_id: room._id}, (err) => {
+                    if(err) {
+                        console.log(err);
+                    }
+                });
+            }
+        })
+    })
+});
+
 var io = require('socket.io')(undefined, {
     cors: {
       origin: process.env.SOCKET_ORIGIN,
       methods: ["GET", "POST"],
       credentials: true
     }
-  }).listen(server); //socket.io over http for "live-editing"
+}).listen(server); //socket.io over http for "live-editing"
 
 //WEB SOCKET CREATED UPON NEW CONNECTION
 io.on('connect', (socket) => {
@@ -199,6 +220,91 @@ io.on('connect', (socket) => {
                 }
 
                 fs.writeFileSync('config/rooms.json', JSON.stringify(rooms));
+                break;
+            }
+        }
+    });
+    // = = = = = = = = = = = = = = = = = = = = MAIN HALL = = = = = = = = = = = = = = = = = = = = // 
+
+    socket.on('mainhall-new-user', (location, name, callback) => {
+        let room = location;
+        socket.join(room);
+        let rawdata = fs.readFileSync('./config/mainhall_rooms.json');
+        let rooms = JSON.parse(rawdata);
+        if (!rooms[room]) rooms[room] = {users: {}};
+        //tell new user who's already in
+        socket.emit('mainhall-connection', rooms[room].users);
+        let ids = [1,2,3,4,5,6,7,8]
+        let bool = true;
+        //only unique ids left
+        for(let i in rooms[room].users) {
+            if (bool){ //if this is the first user
+                io.to(i).emit('mainhall-request-info', ID);
+            }
+            ids.splice(ids.indexOf(rooms[room].users[i][1]),1);
+        }
+        rooms[room].users[ID] = [name, ids[0]];
+        fs.writeFileSync('config/mainhall_rooms.json', JSON.stringify(rooms));
+        //emit to everyone in room that someone new is here
+        io.to(room).emit('mainhall-user-connected', [name, ids[0]]);
+        callback({
+            id: ids[0]
+        });
+    })
+
+    //User gives info to another user
+    socket.on('mainhall-resolve-info', (socketID, brainstormList, paragraphList) => {
+        io.to(socketID).emit('mainhall-resolve-info', [brainstormList, paragraphList]);
+    });
+
+    //A new brainstorm component was created
+    socket.on('mainhall-new-brainstorm', (room, userID, id) => {
+        socket.broadcast.to(room).emit('mainhall-new-brainstorm', [userID, id]);
+    });
+
+    //A new brainstorm component was created
+    socket.on('mainhall-edit-brainstorm', (room, data) => {
+        socket.broadcast.to(room).emit('mainhall-edit-brainstorm', data);
+    });
+
+    //A new paragraph component was created
+    socket.on('mainhall-new-paragraph', (room, id) => {
+        socket.broadcast.to(room).emit('mainhall-new-paragraph', id);
+    });
+
+    //A new paragraph component was created
+    socket.on('mainhall-edit-paragraph', (room, data) => {
+        socket.broadcast.to(room).emit('mainhall-edit-paragraph', data);
+    });
+
+    //Room phase has been changed by admin
+    socket.on('mainhall-phase-change', (room, phase, brainstormList, paragraphList) => {
+        socket.broadcast.to(room).emit('mainhall-phase-change', phase);
+        MainHallRoom.findOne({publicKey: room})
+        .then(async (room) => {
+            room.phase = phase;
+            room.brainstormList = brainstormList;
+            room.paragraphList = paragraphList;
+            await room.save();
+        });
+    });
+
+    // //disconnect the users from the room
+    socket.on('mainhall-disconnect', () => {
+        let rawdata = fs.readFileSync('./config/mainhall_rooms.json');
+        let rooms = JSON.parse(rawdata);
+
+        for(const room in rooms) {
+            if (rooms[room].users[ID]) {
+                io.to(room).emit('mainhall-user-disconnected', rooms[room].users[ID]);
+                delete rooms[room].users[ID];
+
+                //if the room now has 0 users, delete room
+                if(Object.keys(rooms[room].users).length === 0) {
+                    delete rooms[room];
+                }
+
+                fs.writeFileSync('config/mainhall_rooms.json', JSON.stringify(rooms));
                 break;
             }
         }

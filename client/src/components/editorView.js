@@ -181,7 +181,7 @@ function EditorView() {
         socket.emit('edit-paragraph', location.split("?id=")[1], [value, id]);
     }
 
-    if(nameState === true) {
+    if(nameState === true) { // name not set, allow user to set name
         return(
             <div>
                 {
@@ -206,7 +206,7 @@ function EditorView() {
     }
     else {
         switch(phase) {
-            case 1:
+            case 1: // wait for admin to start session
                 return(
                     <div>
                         {
@@ -221,7 +221,7 @@ function EditorView() {
                         }
                     </div>
                 );
-            case 2:
+            case 2: // session started, brainstorm phase
                 return(
                     <div>
                         {
@@ -276,7 +276,7 @@ function EditorView() {
                         }
                     </div>
                 );
-            case 3:
+            case 3: // session started, paragraph phase
                 return(
                     <div>
                         {
@@ -334,7 +334,7 @@ function EditorView() {
                         }
                     </div>
                 );
-            case 4: 
+            case 4: // meeting has ended screen
                 return(
                     <div>
                         {

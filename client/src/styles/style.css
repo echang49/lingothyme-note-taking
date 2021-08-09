@@ -47,7 +47,6 @@ textarea {
   -webkit-box-shadow: none;
   box-shadow: none;
   resize: none;
-  /*remove the resize handle on the bottom right*/
 }
 
 .color-1 {
@@ -314,6 +313,22 @@ textarea {
   cursor: pointer;
 }
 
+.userView nav .nav-center .text-icon {
+  margin-left: 5vw;
+}
+
+.userView nav .nav-center .text-icon:hover {
+  cursor: pointer;
+}
+
+.userView nav .nav-center .microphone-icon {
+  margin-left: 5vw;
+}
+
+.userView nav .nav-center .microphone-icon:hover {
+  cursor: pointer;
+}
+
 .userView nav .nav-end {
   -ms-grid-column: 5;
       grid-column-start: 5;
@@ -356,8 +371,19 @@ textarea {
   color: #666666;
 }
 
-.userView nav .nav-end button:hover svg path {
-  stroke: #666666 !important;
+.userView nav .nav-end button .username-button {
+  all: unset;
+}
+
+.userView nav .nav-end button .username-button p {
+  font-size: 1px;
+  letter-spacing: 0.5px;
+  margin-bottom: 40px;
+  padding-bottom: 0px;
+}
+
+.userView nav .nav-end button .username-button:hover {
+  cursor: pointer;
 }
 
 .userView .body {
@@ -703,7 +729,67 @@ textarea {
           flex-direction: column;
 }
 
-.pdfView span {
+.pdfView span {}
+.MainHall nav {
+  background-color: #FAFAFA;
+  height: 64px;
+  padding: 0 50px;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 10vw 20vw auto 20vw 10vw;
+      grid-template-columns: 10vw 20vw auto 20vw 10vw;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.MainHall nav .logo img {
+  margin: 5px 10px 5px 0px;
+}
+
+.MainHall nav p {
+  margin: 0;
+  color: #666666;
+  font-family: 'Roboto', sans-serif;
+  font-weight: lighter;
+  font-size: 1.7em;
+}
+
+.MainHall nav p .current-tab {
+  color: #467AFF !important;
+}
+
+.MainHall nav p .current-tab:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.MainHall nav p .other-tab {
+  color: #666666 !important;
+}
+
+.MainHall nav p .other-tab:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.MainHall nav .nav-center {
+  -ms-grid-column: 3;
+  -ms-grid-column-span: 1;
+  grid-column: 3/4;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.MainHall nav .nav-end {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
