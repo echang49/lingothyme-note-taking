@@ -729,7 +729,22 @@ textarea {
           flex-direction: column;
 }
 
-.pdfView span {}
+.pdfView span {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin: 0 -20px;
+}
+
 .MainHall nav {
   background-color: #FAFAFA;
   height: 64px;
@@ -797,11 +812,646 @@ textarea {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  -ms-grid-column: 5;
+  -ms-grid-column-span: 1;
+  grid-column: 5/6;
+  justify-self: end;
+}
+
+.MainHall nav .nav-end img {
+  margin: 10px 10px 0px 0px;
+}
+
+.MainHall nav .nav-end button {
+  all: unset;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: #ffffff00;
+  font-size: 22px;
+  font-weight: 400;
+  color: #FAFAFA;
+  border: 2px solid #FAFAFA;
+  border-radius: 4px;
+  padding: 7px 15px;
+}
+
+.MainHall nav .nav-end button p {
+  margin-right: 10px;
+}
+
+.MainHall nav .nav-end button:hover {
+  cursor: pointer;
+  background-color: #FAFAFA;
+}
+
+.MainHall nav .nav-end button:hover p {
+  color: #666666;
+}
+
+.MainHall nav .nav-end button:hover svg path {
+  stroke: #666666 !important;
+}
+
+.MainHall .mainhall-body {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[5];
+      grid-template-columns: repeat(5, 1fr);
+  height: calc(100vh - 64px);
+  background-color: #E9EDF5;
+}
+
+.MainHall .mainhall-body .canvas {
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 5;
+  grid-column: 1/6;
+  -ms-grid-row: 1;
+  -ms-grid-row-span: 5;
+  grid-row: 1/6;
+  padding: 45px;
+  overflow-y: auto;
+}
+
+.MainHall .mainhall-body .canvas h1 {
+  -ms-grid-row: 1;
+  -ms-grid-row-span: 1;
+  grid-row: 1/2;
+  -ms-grid-column-align: start;
+      justify-self: start;
+  font-family: 'Roboto', sans-serif;
+  font-size: 2.5em;
+}
+
+.MainHall .mainhall-body .canvas h2 {
+  -ms-grid-row: 3;
+  -ms-grid-row-span: 1;
+  grid-row: 3/4;
+  -ms-grid-column-align: start;
+      justify-self: start;
+  font-family: 'Roboto', sans-serif;
+  font-size: 2.5em;
+}
+
+.MainHall .mainhall-body .canvas .card {
+  background-color: #FAFAFA;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-radius: 25px;
+  width: 400px;
+  padding: 25px 20px;
+  margin: 20px;
+  -ms-grid-column: 2;
+  -ms-grid-column-span: 1;
+  grid-column: 2/3;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[3];
+      grid-template-columns: repeat(3, 1fr);
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.MainHall .mainhall-body .canvas .card p {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 23px;
+  margin-bottom: 0;
+}
+
+.MainHall .mainhall-body .canvas .card p .time {
+  font-size: 14px;
+  color: #aaa5a5;
+  font-weight: lighter;
+}
+
+.MainHall .mainhall-body .canvas .card hr {
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 2;
+  grid-column: 1/3;
+  -ms-grid-row: 1;
+  -ms-grid-row-span: 1;
+  grid-row: 1/2;
+  margin-top: 3vw;
+  border-right: 350px solid #E6E6E6;
+  border-radius: 50px;
+}
+
+.MainHall .mainhall-body .canvas .card .card-header {
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 2;
+  grid-column: 1/3;
+  -ms-grid-row: 1;
+  -ms-grid-row-span: 1;
+  grid-row: 1/2;
+}
+
+.MainHall .mainhall-body .canvas .card .card-header h1 {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 28px;
+  color: #666666;
+  margin: 0;
+}
+
+.MainHall .mainhall-body .canvas .card .card-header .icon {
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 1;
+  grid-column: 1/2;
+  -ms-grid-row: 1;
+  -ms-grid-row-span: 1;
+  grid-row: 1/2;
+}
+
+.MainHall .mainhall-body .canvas .card .card-content {
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 2;
+  grid-column: 1/3;
+  -ms-grid-row: 2;
+  -ms-grid-row-span: 1;
+  grid-row: 2/3;
+  margin: 0vw -3.5vw 1vw 0vw;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+.MainHall .mainhall-body .canvas .card .icon1 {
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 1;
+  grid-column: 1/2;
+  -ms-grid-row: 3;
+  -ms-grid-row-span: 1;
+  grid-row: 3/4;
+  -ms-flex-item-align: end;
+      -ms-grid-row-align: end;
+      align-self: end;
+  -ms-grid-column-align: start;
+      justify-self: start;
+}
+
+.MainHall .mainhall-body .canvas .card .time-text {
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 1;
+  grid-column: 1/2;
+  -ms-grid-row: 3;
+  -ms-grid-row-span: 1;
+  grid-row: 3/4;
+  -ms-grid-column-align: end;
+      justify-self: end;
+  margin-top: -5px;
+  margin-left: 35px;
+  white-space: nowrap;
+}
+
+.MainHall .mainhall-body .canvas .card .date-text {
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 1;
+  grid-column: 1/2;
+  -ms-grid-row: 3;
+  -ms-grid-row-span: 1;
+  grid-row: 3/4;
+  -ms-grid-column-align: end;
+      justify-self: end;
+  margin-top: -5px;
+  margin-left: 35px;
+  white-space: nowrap;
+}
+
+.MainHall .mainhall-body .canvas .card .icon2-ongoing {
+  -ms-grid-column: 2;
+  -ms-grid-column-span: 1;
+  grid-column: 2/3;
+  -ms-grid-row: 3;
+  -ms-grid-row-span: 1;
+  grid-row: 3/4;
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+  -ms-grid-column-align: center;
+      justify-self: center;
+  margin-right: -98px;
+}
+
+.MainHall .mainhall-body .canvas .card .room-size-text-ongoing {
+  -ms-grid-column: 2;
+  -ms-grid-column-span: 1;
+  grid-column: 2/3;
+  -ms-grid-row: 3;
+  -ms-grid-row-span: 1;
+  grid-row: 3/4;
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+  -ms-grid-column-align: end;
+      justify-self: end;
+  margin-top: -15px;
+  margin-right: -37px;
+}
+
+.MainHall .mainhall-body .canvas .card .join-button-ongoing {
+  all: unset;
+  -ms-grid-row: 3;
+  -ms-grid-row-span: 1;
+  grid-row: 3/4;
+  -ms-grid-column: 3;
+  -ms-grid-column-span: 1;
+  grid-column: 3/4;
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+  font-size: 18px;
+  letter-spacing: 1px;
+  padding: 10px 20px 10px 20px;
+  color: #FFFFFF;
+  cursor: pointer;
+  margin: 0px 0px 0px 0px;
+  border-radius: 25px;
+  -ms-grid-column-align: end;
+      justify-self: end;
+  background-color: #5B8AFD;
+}
+
+.MainHall .mainhall-body .canvas .card .join-button-ongoing:hover {
+  background-color: #3564da;
+}
+
+.MainHall .mainhall-body .canvas .card .icon2-scheduled {
+  -ms-grid-column: 2;
+  -ms-grid-column-span: 1;
+  grid-column: 2/3;
+  -ms-grid-row: 3;
+  -ms-grid-row-span: 1;
+  grid-row: 3/4;
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+  -ms-grid-column-align: center;
+      justify-self: center;
+  margin-right: -38px;
+}
+
+.MainHall .mainhall-body .canvas .card .room-size-text-scheduled {
+  -ms-grid-column: 2;
+  -ms-grid-column-span: 1;
+  grid-column: 2/3;
+  -ms-grid-row: 3;
+  -ms-grid-row-span: 1;
+  grid-row: 3/4;
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+  -ms-grid-column-align: end;
+      justify-self: end;
+  margin-top: -15px;
+  margin-right: -17px;
+}
+
+.MainHall .mainhall-body .canvas .card .join-button-scheduled {
+  all: unset;
+  -ms-grid-row: 3;
+  -ms-grid-row-span: 1;
+  grid-row: 3/4;
+  -ms-grid-column: 3;
+  -ms-grid-column-span: 1;
+  grid-column: 3/4;
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+  font-size: 18px;
+  letter-spacing: 1px;
+  padding: 10px 20px 10px 20px;
+  color: #FFFFFF;
+  cursor: pointer;
+  margin: 0px 0px 0px 0px;
+  border-radius: 25px;
+  -ms-grid-column-align: end;
+      justify-self: end;
+  background-color: #5B8AFD;
+}
+
+.MainHall .mainhall-body .canvas .card .join-button-scheduled:hover {
+  background-color: #3564da;
+}
+
+.MainHall .phase1 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  margin: 0 -20px;
+  height: 100vh;
+}
+
+.MainHall .join-room input {
+  width: 100%;
+  padding-right: 40px;
+}
+
+.MainHall .join-room button {
+  width: 40px;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.MainHall .join-room img {
+  text-align: center;
+  margin-left: 100px;
+}
+
+.profile .profile-container {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 5fr 5fr 3fr;
+      grid-template-columns: 5fr 5fr 3fr;
+  grid-column-gap: 50px;
+  grid-row-gap: 50px;
+  margin: 40px 50px 40px 50px;
+}
+
+.profile .profile-container h {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.55vw;
+  color: #333333;
+  white-space: nowrap;
+}
+
+.profile .profile-container p {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1vw;
+  color: #999999;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+.profile .profile-container .remind {
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 2;
+  grid-column: 1/3;
+  -ms-grid-row: 1;
+  -ms-grid-row-span: 1;
+  grid-row: 1/2;
+  background-color: #FAFAFA;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-radius: 10px;
+  width: 69.5vw;
+  height: 7vw;
+  padding: 25px 20px;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  padding: 30px 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: start;
+}
+
+.profile .profile-container .achievments {
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 1;
+  grid-column: 1/2;
+  -ms-grid-row: 2;
+  -ms-grid-row-span: 2;
+  grid-row: 2/4;
+  background-color: #FAFAFA;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-radius: 15px;
+  width: 32vw;
+  height: 34vw;
+  justify-self: left;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  padding: 30px 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: start;
+}
+
+.profile .profile-container .friends {
+  -ms-grid-column: 2;
+  -ms-grid-column-span: 1;
+  grid-column: 2/3;
+  -ms-grid-row: 2;
+  -ms-grid-row-span: 2;
+  grid-row: 2/4;
+  background-color: #FAFAFA;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-radius: 15px;
+  width: 32vw;
+  height: 34vw;
+  justify-self: left;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  padding: 30px 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: start;
+}
+
+.profile .profile-container .profile-box {
+  -ms-grid-column: 3;
+  -ms-grid-column-span: 1;
+  grid-column: 3/4;
+  -ms-grid-row: 1;
+  -ms-grid-row-span: 2;
+  grid-row: 1/3;
+  background-color: #FAFAFA;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-radius: 15px;
+  width: 17.5vw;
+  height: 17.5vw;
+  padding: 25px 0px 20px 0px;
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.profile .profile-container .profile-box .profile-box-inner {
+  display: -ms-grid;
+  display: grid;
+  width: inherit;
+  height: inherit;
+  padding: 0px;
+  -ms-grid-columns: 1fr;
+      grid-template-columns: 1fr;
+  grid-row-gap: 20px;
+  position: absolute;
+}
+
+.profile .profile-container .profile-box .profile-box-inner .edit-icon {
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 1;
+  grid-column: 1/2;
+  -ms-grid-row: 1;
+  -ms-grid-row-span: 1;
+  grid-row: 1/2;
+  -ms-grid-column-align: end;
+      justify-self: end;
+  margin: 0px 25px -25px 0px;
+}
+
+.profile .profile-container .profile-box .profile-box-inner .edit-icon:hover {
+  cursor: pointer;
+}
+
+.profile .profile-container .profile-box .profile-box-inner .profile-pic {
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 1;
+  grid-column: 1/2;
+  -ms-grid-row: 2;
+  -ms-grid-row-span: 1;
+  grid-row: 2/3;
+  -ms-grid-column-align: center;
+      justify-self: center;
+  -ms-flex-item-align: start;
+      -ms-grid-row-align: start;
+      align-self: start;
+}
+
+.profile .profile-container .profile-box .profile-box-inner .profile-pic img {
+  margin: -70px 0px 0px 0px;
+  border-radius: 50%;
+}
+
+.profile .profile-container .profile-box .profile-box-inner .username {
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 1;
+  grid-column: 1/2;
+  -ms-grid-row: 3;
+  -ms-grid-row-span: 1;
+  grid-row: 3/4;
+  -ms-grid-column-align: center;
+      justify-self: center;
+  -ms-flex-item-align: start;
+      -ms-grid-row-align: start;
+      align-self: start;
+  margin: -70px 0px 0px 0px;
+}
+
+.profile .profile-container .about-me {
+  -ms-grid-column: 3;
+  -ms-grid-column-span: 1;
+  grid-column: 3/4;
+  -ms-grid-row: 2;
+  -ms-grid-row-span: 1;
+  grid-row: 2/3;
+  background-color: #FAFAFA;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-radius: 15px;
+  width: 18vw;
+  height: 24.5vw;
+  padding: 25px 20px;
+  justify-self: start;
+  margin-top: 9.5vw;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: start;
+}
+
+.profile .profile-container .about-me .about-me-inner {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
+  grid-column-gap: 10px;
+  grid-row-gap: 20px;
+}
+
+.profile .profile-container .about-me .about-me-inner .title {
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 1;
+  grid-column: 1/2;
+  -ms-grid-row: 1;
+  -ms-grid-row-span: 1;
+  grid-row: 1/2;
+  -ms-grid-column-align: start;
+      justify-self: start;
+  margin: 5px;
+}
+
+.profile .profile-container .about-me .about-me-inner .edit-icon {
+  -ms-grid-column: 2;
+  -ms-grid-column-span: 1;
+  grid-column: 2/3;
+  -ms-grid-row: 1;
+  -ms-grid-row-span: 1;
+  grid-row: 1/2;
+  -ms-grid-column-align: end;
+      justify-self: end;
+  margin: 10px;
+}
+
+.profile .profile-container .about-me .about-me-inner .edit-icon:hover {
+  cursor: pointer;
+}
+
+.profile .profile-container .about-me .about-me-inner .content {
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 2;
+  grid-column: 1/3;
+  -ms-grid-row: 2;
+  -ms-grid-row-span: 1;
+  grid-row: 2/3;
+  height: 17vw;
+  width: auto;
+  margin: -20px 10px 10px 6px;
+  word-wrap: break-word;
+  word-break: break-word;
 }
 /*# sourceMappingURL=style.css.map */
