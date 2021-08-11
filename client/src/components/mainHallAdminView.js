@@ -18,7 +18,6 @@ import {ReactComponent as Microphone} from "../assets/microphone-icon.svg";
 import {ReactComponent as Text} from "../assets/text-icon.svg";
 
 
-
 let socket;
 
 function MainhallAdminView() {
@@ -71,16 +70,17 @@ function MainhallAdminView() {
         // if(phase !== 3){
         //     alert("test");
         // }
+
         
-        // start voice
-        console.log("starting voice from admin view...");
-        let from = 'fromModerator';
-        axios.post('/api/auth/voice', { from })
-        .then((res) => {
-            console.log("res.data: " + res.data);
-        }).catch((err) => {
-            alert(err);
-        });
+        // // start voice
+        // console.log("starting voice from admin view...");
+        // let from = 'fromModerator';
+        // axios.post('/api/auth/voice', { from })
+        // .then((res) => {
+        //     console.log("res.data: " + res.data);
+        // }).catch((err) => {
+        //     alert(err);
+        // });
 
         // Anything in here is fired on component unmount.
         return () => {
@@ -174,6 +174,29 @@ function MainhallAdminView() {
         });
     }
 
+    function handleVoiceClick(){
+        axios.post('/api/auth/generate_token', 'fanog82554@jmpant.com') // TODO: get user email and use var here instead of string
+        .then((res) => {
+            let token = res.data;
+            const device = new Device(token);
+            console.log("device created: " + device);
+
+            const handleSuccessfulRegistration = () => {
+                console.log('The device is ready to receive incoming calls - handleSuccessfulRegistration.')
+            }
+            device.on('registered', handleSuccessfulRegistration); 
+            
+            device.addListener('registered', device => {
+                console.log('The device is ready to receive incoming calls - registered listener.')
+            }); 
+
+            console.log("registering device");
+            device.register();
+        }).catch((err) => {
+            alert(err);
+        });
+    }
+
     function handleMicClick () { // mute/unmute mic
         console.log("clicking mute button");
 
@@ -230,7 +253,7 @@ function MainhallAdminView() {
                                     <div className="buttons">
                                         <button className="primary-button" onClick={() => setName(nameInput.current.value)}>Continue</button>
                                     </div>
-                                    </div>
+                                </div>
                             </div>
                         </div>
                     :
@@ -251,6 +274,9 @@ function MainhallAdminView() {
                                         <p className="title">The session has not started yet.<br />Press the button below to begin the session.</p>                              
                                     </div>
                                     <div className="center-button">
+                                        <div className="buttons">
+                                            <button className="primary-button" onClick={() => handleVoiceClick()}>Join Voice</button>
+                                        </div>
                                         <div className="buttons">
                                             <button className="primary-button" onClick={() => incrementPhase(2)}>START SESSION</button>
                                         </div>

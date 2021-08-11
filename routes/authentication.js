@@ -7,6 +7,11 @@ const Profile = require('../models/profiles');
 const MainhallRoom = require('../models/mainhall_rooms');
 
 //twilio
+const AccessToken = require('twilio').jwt.AccessToken;
+const VoiceGrant = AccessToken.VoiceGrant;
+
+
+
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
@@ -463,6 +468,34 @@ router.post('/mainhall_verifyUser', (req, res) => {
   });
 
 // twilio voice
+
+router.post('/generate_token', (req, res) => {
+    const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID;
+    const twilioApiKey = process.env.TWILIO_API_KEY;
+    const twilioApiSecret = process.env.TWILIO_API_SECRET;
+    const outgoingApplicationSid = process.env.TWILIO_TWIML_APP_SID;
+    let { identity } = req.body;
+
+    //const identity = 'user';
+
+    const voiceGrant = new VoiceGrant({
+        outgoingApplicationSid: outgoingApplicationSid,
+        incomingAllow: true, // Optional: add to allow incoming calls
+    });
+
+    const token = new AccessToken(
+        twilioAccountSid,
+        twilioApiKey,
+        twilioApiSecret,
+        {identity: identity}
+    );
+    token.addGrant(voiceGrant);
+    // Serialize the token to a JWT string
+
+    const tokenJWT = token.toJwt();
+    console.log("tokenJWT: " + tokenJWT);
+    res.send(tokenJWT);
+});
 
 // Create a route that will handle Twilio webhook requests, sent as an
 // HTTP POST to /voice in our application
