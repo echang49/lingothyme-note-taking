@@ -174,27 +174,40 @@ function MainhallAdminView() {
         });
     }
 
-    function handleVoiceClick(){
-        axios.post('/api/auth/generate_token', 'fanog82554@jmpant.com') // TODO: get user email and use var here instead of string
+    function handleVoiceClick(){ // start voice
+        console.log("starting voice from admin view...");
+        let from = 'fromModerator';
+        axios.post('/api/auth/voice', { from })
         .then((res) => {
-            let token = res.data;
-            const device = new Device(token);
-            console.log("device created: " + device);
-
-            const handleSuccessfulRegistration = () => {
-                console.log('The device is ready to receive incoming calls - handleSuccessfulRegistration.')
-            }
-            device.on('registered', handleSuccessfulRegistration); 
-            
-            device.addListener('registered', device => {
-                console.log('The device is ready to receive incoming calls - registered listener.')
-            }); 
-
-            console.log("registering device");
-            device.register();
+            console.log("res.data: " + res.data);
         }).catch((err) => {
             alert(err);
         });
+
+        // axios.post('/api/auth/generate_token', 'fanog82554@jmpant.com') // TODO: get user email and use var here instead of string
+        // .then((res) => {
+        //     let token = res.data;
+        //     const device = new Device(token);
+
+        //     device.on('registered', () => {
+        //         console.log('The device is registered and ready to receive incoming calls');
+        //     }); 
+
+        //     device.on('error', e => {
+        //         console.log(e);
+        //     });
+
+        //     device.on('registering', () => {
+        //         console.log("REGISTERING");
+        //    });
+            
+        //     // device.addListener('registered', device => {
+        //     //     console.log('The device is ready to receive incoming calls - registered listener.')
+        //     // }); 
+        //     device.register();
+        // }).catch((err) => {
+        //     console.log(err);
+        // });
     }
 
     function handleMicClick () { // mute/unmute mic
