@@ -493,51 +493,45 @@ router.post('/generate_token', (req, res) => {
     // Serialize the token to a JWT string
 
     const tokenJWT = token.toJwt();
-    console.log("tokenJWT: " + tokenJWT);
+    console.log(tokenJWT);
     res.send(tokenJWT);
 });
 
-// Create a route that will handle Twilio webhook requests, sent as an
-// HTTP POST to /voice in our application
 router.post('/voice', (req, res) => {
     let { from } = req.body;
-
-    // Use the Twilio Node.js SDK to build an XML response
     const response = new VoiceResponse();
     console.log("playing message before starting conference");
     response.say({
         voice: 'man',
         language: 'en'
     }, 'Test message!');
-    //response.say('Starting conference.');
 
-    // Start with a <Dial> verb
     const dial = response.dial();
-    // If the caller is our MODERATOR, then start the conference when they
+    // If the caller is our moderator, then start the conference when they
     // join and end the conference when they leave
     if (from == 'fromModerator') {
         console.log("Joining conference call as moderator");
 
-        dial.conference('Room1', {
+        dial.conference({
             maxParticipants: 8,
             startConferenceOnEnter: true,
             endConferenceOnExit: true,
             muted: false, // false for testing purposes, change to true later
             //waitURL: '', // this will disable music while waiting for call start
             // while waitURL is not set, copyright free music will play until 2 people join call
-        });
+        }, 'moderated-conference-room');
         console.log("response.toString: " + response.toString());
     } else {
       // Otherwise have the caller join as a regular user
         console.log("Joining conference call as user");
-        dial.conference('Room conference', {
+        dial.conference({
         maxParticipants: 8,
         startConferenceOnEnter: false,
         muted: true,
         //waitURL: '', // this will disable music while waiting for call start
         // while waitURL is not set, copyright free music will play until 2 people join call
-      });
-      console.log("response.toString: " + response.toString());
+      }, 'moderated-conference-room');
+      console.log("response: " + response.toString());
     }
   
     // Render the response as XML in reply to the webhook request
